@@ -80,6 +80,10 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	public Path getPath(URI uri) {
 		TVFSTools.checkParamNotNull(uri, "uri null");
+		if (tvFileSystem == null) {
+			LOGGER.info("creation du FS");
+			createFileSystem(uri);
+		}
 		LOGGER.info("uri=" + uri);
 		if (uri.getScheme() == null || !uri.getScheme().equals(SCHEME)) {
 			throw new IllegalArgumentException("scheme invalide");
@@ -111,9 +115,9 @@ public class VirtualFSProvider extends FileSystemProvider {
 			liste.add(buf.toString());
 		}
 		LOGGER.info("liste=" + liste);
-		if (liste.isEmpty()) {
+		/*if (liste.isEmpty()) {
 			throw new IllegalArgumentException("no Root path");
-		}
+		}*/
 		String root = uri.getAuthority();
 		LOGGER.info("root=" + root);
 		if (root.isEmpty() || !root.startsWith("$")) {
