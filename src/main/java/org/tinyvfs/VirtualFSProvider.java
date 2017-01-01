@@ -22,11 +22,17 @@ public class VirtualFSProvider extends FileSystemProvider {
 	final static Logger LOGGER = LoggerFactory.getLogger(VirtualFSProvider.class);
 
 	public static String SCHEME = "tvfs";
-
+	protected FileSystem defautFileSystem;
 	private TVFileSystem tvFileSystem;
 
 	public VirtualFSProvider() {
 		super();
+		defautFileSystem = FileSystems.getDefault();
+	}
+
+	public VirtualFSProvider(FileSystem defautFileSystem) {
+		super();
+		this.defautFileSystem = defautFileSystem;
 	}
 
 	public String getScheme() {
@@ -51,7 +57,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	private TVFileSystem createFileSystem(URI uri) {
 		TVFSTools.checkParamNotNull(uri, "uri null");
-		tvFileSystem = new TVFileSystem(this, null, FileSystems.getDefault());
+		tvFileSystem = new TVFileSystem(this, null, defautFileSystem);
 		return tvFileSystem;
 	}
 

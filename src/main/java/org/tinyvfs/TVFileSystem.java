@@ -90,12 +90,6 @@ public class TVFileSystem extends FileSystem {
 		return defautFileSystem;
 	}
 
-	/*public Path getPath(URI uri) {
-		TVFSTools.checkParam(isOpen(), "FS closed");
-		TVFSTools.checkParamNotNull(uri, "Param null");
-		return null;
-	}*/
-
 	private void unsupportedOperation() {
 		TVFSTools.unsupportedOperation();
 	}
