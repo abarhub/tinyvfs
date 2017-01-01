@@ -1,6 +1,5 @@
 package org.tinyvfs;
 
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 /**
@@ -8,17 +7,17 @@ import java.nio.file.Path;
  */
 public final class TVFSPaths {
 
-	public static Path get(String first,String... more){
+	public static Path get(String first, String... more) {
 		//FileSystems.getFileSystem()
 
-		FSParam fsParam=new FSParam();
-		TVFileSystem tvFileSystem=new TVFileSystem(null,fsParam,null);
-		return tvFileSystem.getPath(first,more);
+		FSParam fsParam = new FSParam();
+		TVFileSystem tvFileSystem = new TVFileSystem(null, fsParam, null);
+		return tvFileSystem.getPath(first, more);
 	}
 
-	public static Path getPath(String name,String... paths){
-		FSParam fsParam=new FSParam();
-		TVFileSystem tvFileSystem=new TVFileSystem(null,fsParam,null);
-		return tvFileSystem.getPath(name,paths);
+	public static Path getPath(String name, String... paths) {
+		FSParam fsParam = new FSParam();
+		TVFileSystem tvFileSystem = new TVFileSystem(null, fsParam, null);
+		return tvFileSystem.getPath(name, paths);
 	}
 }

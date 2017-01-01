@@ -27,7 +27,7 @@ public class Test1 {
 	final static Logger LOGGER = LoggerFactory.getLogger(Test1.class);
 
 	@Rule
-	public TemporaryFolder folder= new TemporaryFolder();
+	public TemporaryFolder folder = new TemporaryFolder();
 
 	@Test
 	public void test1() throws IOException {
@@ -35,13 +35,13 @@ public class Test1 {
 
 		LOGGER.info("Test 1");
 
-		tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
+		tvFileSystem = new TVFileSystem(null, null, FileSystems.getDefault());
 
-		tvFileSystem.add(new TVFSConfigParam(new TVFSRoot("test1"), newTemp(),false));
+		tvFileSystem.add(new TVFSConfigParam(new TVFSRoot("test1"), newTemp(), false));
 
-		Path p=tvFileSystem.getPath("$test1","toto.txt");
+		Path p = tvFileSystem.getPath("$test1", "toto.txt");
 
-		LOGGER.info("p="+p);
+		LOGGER.info("p=" + p);
 	}
 
 	@Test
@@ -51,30 +51,30 @@ public class Test1 {
 
 		LOGGER.info("Test 2");
 
-		virtualFSProvider=new VirtualFSProvider();
+		virtualFSProvider = new VirtualFSProvider();
 
 		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
-		tvFileSystem= (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("vfs://test"),null);
+		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("vfs://test"), null);
 
-		tvFileSystem.add(new TVFSConfigParam(new TVFSRoot("test1"), newTemp(),false));
+		tvFileSystem.add(new TVFSConfigParam(new TVFSRoot("test1"), newTemp(), false));
 
-		Path p=tvFileSystem.getPath("$test1","toto2.txt");
+		Path p = tvFileSystem.getPath("$test1", "toto2.txt");
 
-		LOGGER.info("p="+p);
+		LOGGER.info("p=" + p);
 
 		assertNotNull(p);
 		assertNotNull(p.getFileSystem());
 		assertNotNull(p.getFileSystem().provider());
-		assertTrue(p.getFileSystem().provider()==virtualFSProvider);
+		assertTrue(p.getFileSystem().provider() == virtualFSProvider);
 
 		//Files.createFile(p);
 		Files.createFile(p);
 
-		Set<OpenOption> set=new HashSet<>();
+		Set<OpenOption> set = new HashSet<>();
 		//set.add(StandardOpenOption.READ);
 		set.add(StandardOpenOption.CREATE);
 		set.add(StandardOpenOption.WRITE);
-		SeekableByteChannel s=virtualFSProvider.newByteChannel(p, set,new FileAttribute[0]);
+		SeekableByteChannel s = virtualFSProvider.newByteChannel(p, set, new FileAttribute[0]);
 		assertNotNull(s);
 	}
 
@@ -85,48 +85,48 @@ public class Test1 {
 
 		LOGGER.info("Test 2");
 
-		virtualFSProvider=new VirtualFSProvider();
+		virtualFSProvider = new VirtualFSProvider();
 
 		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
-		tvFileSystem= (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("vfs://test"),null);
+		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("vfs://test"), null);
 
-		tvFileSystem.add(new TVFSConfigParam(new TVFSRoot("test1"), newTemp(),false));
+		tvFileSystem.add(new TVFSConfigParam(new TVFSRoot("test1"), newTemp(), false));
 
-		Path p=tvFileSystem.getPath("$test1","toto2.txt");
+		Path p = tvFileSystem.getPath("$test1", "toto2.txt");
 
-		LOGGER.info("p="+p);
+		LOGGER.info("p=" + p);
 
 
-		Path p2=tvFileSystem.getPath("$test1","toto3.txt");
+		Path p2 = tvFileSystem.getPath("$test1", "toto3.txt");
 
-		LOGGER.info("p2="+p2);
+		LOGGER.info("p2=" + p2);
 
 		assertNotNull(p);
 		assertNotNull(p.getFileSystem());
 		assertNotNull(p.getFileSystem().provider());
-		assertTrue(p.getFileSystem().provider()==virtualFSProvider);
+		assertTrue(p.getFileSystem().provider() == virtualFSProvider);
 
 		//Files.createFile(p);
 		Files.createFile(p);
 
-		String buf0="test 5";
+		String buf0 = "test 5";
 
-		LOGGER.info("write="+buf0);
+		LOGGER.info("write=" + buf0);
 
-		Files.write(p,buf0.getBytes("UTF-8"),StandardOpenOption.APPEND);
+		Files.write(p, buf0.getBytes("UTF-8"), StandardOpenOption.APPEND);
 
-		Files.copy(p,p2);
+		Files.copy(p, p2);
 
-		byte[] buf=Files.readAllBytes(p2);
+		byte[] buf = Files.readAllBytes(p2);
 
-		String s=new String(buf,"UTF-8");
+		String s = new String(buf, "UTF-8");
 
-		LOGGER.info("read="+s);
+		LOGGER.info("read=" + s);
 
 	}
 
 	private Path newTemp() throws IOException {
-		File f=folder.newFolder();
+		File f = folder.newFolder();
 		return f.toPath();
 	}
 }

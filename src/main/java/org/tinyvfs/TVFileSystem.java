@@ -8,8 +8,6 @@ import java.nio.file.*;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.spi.FileSystemProvider;
 import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -18,18 +16,18 @@ import java.util.Set;
 public class TVFileSystem extends FileSystem {
 
 	private final VirtualFSProvider virtualFSProvider;
-	private boolean open;
 	private final FSParam fsParam;
 	private final FileSystem defautFileSystem;
 	private final TVFSConfig tvfsConfig;
+	private boolean open;
 
-	public TVFileSystem(VirtualFSProvider virtualFSProvider,FSParam fsParam,FileSystem defautFileSystem) {
+	public TVFileSystem(VirtualFSProvider virtualFSProvider, FSParam fsParam, FileSystem defautFileSystem) {
 		super();
-		this.virtualFSProvider=virtualFSProvider;
-		open=true;
-		this.fsParam=fsParam;
-		this.defautFileSystem=defautFileSystem;
-		tvfsConfig=new TVFSConfig(this);
+		this.virtualFSProvider = virtualFSProvider;
+		open = true;
+		this.fsParam = fsParam;
+		this.defautFileSystem = defautFileSystem;
+		tvfsConfig = new TVFSConfig(this);
 	}
 
 	public FileSystemProvider provider() {
@@ -37,7 +35,7 @@ public class TVFileSystem extends FileSystem {
 	}
 
 	public void close() throws IOException {
-		open=false;
+		open = false;
 	}
 
 	public boolean isOpen() {
@@ -67,19 +65,19 @@ public class TVFileSystem extends FileSystem {
 	}
 
 	public Path getPath(String first, String... more) {
-		TVFSTools.checkIsNotEmpty(first,"Param null");
-		TVFSTools.checkParam(first.startsWith("$"),"Root invalide (must start with $)");
-		TVFSTools.checkParam(TVFSTools.isNameValide(first.substring(1)),"Root invalide (must start with $)");
+		TVFSTools.checkIsNotEmpty(first, "Param null");
+		TVFSTools.checkParam(first.startsWith("$"), "Root invalide (must start with $)");
+		TVFSTools.checkParam(TVFSTools.isNameValide(first.substring(1)), "Root invalide (must start with $)");
 
-		TVFSRoot tvfsRoot=new TVFSRoot(first.substring(1));
-		VirtualFS fs=getFS(tvfsRoot);
+		TVFSRoot tvfsRoot = new TVFSRoot(first.substring(1));
+		VirtualFS fs = getFS(tvfsRoot);
 
 		return fs.get(more);
 	}
 
-	private VirtualFS getFS(TVFSRoot name){
-		VirtualFS fs=tvfsConfig.getFS(name);
-		if(fs==null){
+	private VirtualFS getFS(TVFSRoot name) {
+		VirtualFS fs = tvfsConfig.getFS(name);
+		if (fs == null) {
 			throw new InvalidParameterException("Erreur");
 		}
 		return fs;
@@ -112,7 +110,7 @@ public class TVFileSystem extends FileSystem {
 		return null;
 	}
 
-	public void add(TVFSConfigParam tvfsConfigParam){
+	public void add(TVFSConfigParam tvfsConfigParam) {
 		tvfsConfig.add(tvfsConfigParam);
 	}
 }

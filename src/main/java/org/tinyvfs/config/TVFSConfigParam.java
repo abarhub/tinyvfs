@@ -15,9 +15,9 @@ public class TVFSConfigParam {
 	private final boolean readOnly;
 
 	public TVFSConfigParam(TVFSRoot name, Path path, boolean readOnly) {
-		TVFSTools.checkParamNotNull(name,"Name is null");
-		TVFSTools.checkParam(TVFSTools.isNameValide(name.getName()),"Name is invalid");
-		TVFSTools.checkParamNotNull(path,"Path is null");
+		TVFSTools.checkParamNotNull(name, "Name is null");
+		TVFSTools.checkParam(TVFSTools.isNameValide(name.getName()), "Name is invalid");
+		TVFSTools.checkParamNotNull(path, "Path is null");
 		this.name = name;
 		this.path = path;
 		this.readOnly = readOnly;

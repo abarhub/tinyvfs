@@ -17,26 +17,26 @@ public class TVFSPath implements Path {
 	private final VirtualFS virtualFS;
 	private final List<String> path;
 
-	protected TVFSPath(VirtualFS virtualFS,List<String> path){
-		TVFSTools.checkParamNotNull(virtualFS,"Param null");
-		this.virtualFS=virtualFS;
-		if(path==null||path.size()==0){
-			this.path= Collections.unmodifiableList(new ArrayList<>());
+	protected TVFSPath(VirtualFS virtualFS, List<String> path) {
+		TVFSTools.checkParamNotNull(virtualFS, "Param null");
+		this.virtualFS = virtualFS;
+		if (path == null || path.size() == 0) {
+			this.path = Collections.unmodifiableList(new ArrayList<>());
 		} else {
-			List<String> liste=new ArrayList<String>(path);
+			List<String> liste = new ArrayList<String>(path);
 			this.path = Collections.unmodifiableList(liste);
 		}
 	}
 
-	public Path getRealPath(){
-		Path root=virtualFS.getRootPath();
-		String s="";
-		for(String s2:path){
-			if(s.length()>0)
-				s+=getFileSystem().getSeparator();
-			s+=s2;
+	public Path getRealPath() {
+		Path root = virtualFS.getRootPath();
+		String s = "";
+		for (String s2 : path) {
+			if (s.length() > 0)
+				s += getFileSystem().getSeparator();
+			s += s2;
 		}
-		Path p=root.resolve(s);
+		Path p = root.resolve(s);
 		return p;
 	}
 

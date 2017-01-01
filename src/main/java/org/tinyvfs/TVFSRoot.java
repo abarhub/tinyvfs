@@ -8,8 +8,8 @@ public class TVFSRoot {
 	private final String name;
 
 	public TVFSRoot(String name) {
-		TVFSTools.checkIsNotEmpty(name,"Param is Null");
-		TVFSTools.checkParam(TVFSTools.isNameValide(name),"Name is invalid");
+		TVFSTools.checkIsNotEmpty(name, "Param is Null");
+		TVFSTools.checkParam(TVFSTools.isNameValide(name), "Name is invalid");
 		this.name = name;
 	}
 
