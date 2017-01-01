@@ -3,7 +3,7 @@ package org.tinyvfs.config;
 import org.tinyvfs.TVFSTools;
 import org.tinyvfs.TVFileSystem;
 import org.tinyvfs.VirtualFS;
-import org.tinyvfs.path.TVFSRoot;
+import org.tinyvfs.path.TVFSRootName;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +13,8 @@ import java.util.Map;
  */
 public class TVFSConfig {
 
-	private final Map<TVFSRoot, TVFSConfigParam> map;
-	private final Map<TVFSRoot, VirtualFS> mapFS;
+	private final Map<TVFSRootName, TVFSConfigParam> map;
+	private final Map<TVFSRootName, VirtualFS> mapFS;
 	private final TVFileSystem tvFileSystem;
 
 	public TVFSConfig(TVFileSystem tvFileSystem) {
@@ -30,7 +30,7 @@ public class TVFSConfig {
 		mapFS.put(tvfsConfigParam.getName(), new VirtualFS(tvFileSystem, tvfsConfigParam.getName(), tvfsConfigParam.getPath()));
 	}
 
-	public VirtualFS getFS(TVFSRoot name) {
+	public VirtualFS getFS(TVFSRootName name) {
 		TVFSTools.checkParamNotNull(name, "Param is Null");
 		if (mapFS.containsKey(name)) {
 			return mapFS.get(name);

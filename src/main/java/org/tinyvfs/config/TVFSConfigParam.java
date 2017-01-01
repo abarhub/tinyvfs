@@ -1,7 +1,7 @@
 package org.tinyvfs.config;
 
 import org.tinyvfs.TVFSTools;
-import org.tinyvfs.path.TVFSRoot;
+import org.tinyvfs.path.TVFSRootName;
 
 import java.nio.file.Path;
 
@@ -10,11 +10,11 @@ import java.nio.file.Path;
  */
 public class TVFSConfigParam {
 
-	private final TVFSRoot name;
+	private final TVFSRootName name;
 	private final Path path;
 	private final boolean readOnly;
 
-	public TVFSConfigParam(TVFSRoot name, Path path, boolean readOnly) {
+	public TVFSConfigParam(TVFSRootName name, Path path, boolean readOnly) {
 		TVFSTools.checkParamNotNull(name, "Name is null");
 		TVFSTools.checkParam(TVFSTools.isNameValide(name.getName()), "Name is invalid");
 		TVFSTools.checkParamNotNull(path, "Path is null");
@@ -23,7 +23,7 @@ public class TVFSConfigParam {
 		this.readOnly = readOnly;
 	}
 
-	public TVFSRoot getName() {
+	public TVFSRootName getName() {
 		return name;
 	}
 

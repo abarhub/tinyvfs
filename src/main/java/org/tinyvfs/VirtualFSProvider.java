@@ -2,7 +2,7 @@ package org.tinyvfs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tinyvfs.path.TVFSPath;
+import org.tinyvfs.path.TVFSAbsolutePath;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,8 +12,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.spi.FileSystemProvider;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Alain on 11/12/2016.
@@ -36,12 +35,17 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	public FileSystem newFileSystem(URI uri, Map<String, ?> env) throws IOException {
 		TVFSTools.checkParamNotNull(uri, "uri null");
-		TVFSTools.checkParam(tvFileSystem == null, "le FS existe déjà");
+		if (tvFileSystem != null) {
+			throw new FileSystemAlreadyExistsException("Le FS existe déjà");
+		}
 		return createFileSystem(uri);
 	}
 
 	public FileSystem getFileSystem(URI uri) {
 		TVFSTools.checkParamNotNull(uri, "uri null");
+		if (tvFileSystem == null) {
+			throw new FileSystemNotFoundException("Le FS n'existe pas");
+		}
 		return tvFileSystem;
 	}
 
@@ -52,8 +56,53 @@ public class VirtualFSProvider extends FileSystemProvider {
 	}
 
 	public Path getPath(URI uri) {
-		unsupportedOperation();
-		return null;
+		TVFSTools.checkParamNotNull(uri, "uri null");
+		LOGGER.info("uri=" + uri);
+		if (uri.getScheme() == null || !uri.getScheme().equals(SCHEME)) {
+			throw new IllegalArgumentException("scheme invalide");
+		}
+		String path = uri.getPath();
+		if (path == null || path.length() == 0) {
+			throw new IllegalArgumentException("path empty");
+		}
+		LOGGER.info("path=" + path);
+		char separator = '/';
+		List<String> liste = new ArrayList<>();
+		StringBuilder buf = new StringBuilder();
+		while (path.startsWith("/")) {
+			path = path.substring(1);
+		}
+		for (int i = 0; i < path.length(); i++) {
+			char c = path.charAt(i);
+			if (c == separator) {
+				liste.add(buf.toString());
+				buf.setLength(0);
+				while (i + 1 < path.length() && path.charAt(i + 1) == separator) {
+					i++;
+				}
+			} else {
+				buf.append(c);
+			}
+		}
+		if (buf.length() > 0) {
+			liste.add(buf.toString());
+		}
+		LOGGER.info("liste=" + liste);
+		if (liste.isEmpty()) {
+			throw new IllegalArgumentException("no Root path");
+		}
+		String root = uri.getAuthority();
+		LOGGER.info("root=" + root);
+		if (root.isEmpty() || !root.startsWith("$")) {
+			throw new IllegalArgumentException("Root path invalide");
+		}
+		String[] tab = null;
+		if (liste.size() > 0) {
+			//liste = liste.subList(1, liste.size() - 1);
+			tab = liste.toArray(new String[liste.size()]);
+			LOGGER.info("tab=" + Arrays.toString(tab));
+		}
+		return tvFileSystem.getPath(root, tab);
 	}
 
 	private void unsupportedOperation() {
@@ -62,7 +111,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	public SeekableByteChannel newByteChannel(Path path, Set<? extends OpenOption> options, FileAttribute<?>[] attrs) throws IOException {
 		checkVirtualPath(path);
-		TVFSTools.checkParam(path instanceof TVFSPath, "le path n'est pas valide");
+		TVFSTools.checkParam(path instanceof TVFSAbsolutePath, "le path n'est pas valide");
 		TVFSTools.checkParamNotNull(path.getFileSystem(), "le FS est null");
 		Path p = getRealPath(path);
 		FileSystem fs = getRealFileSystem(path);
@@ -71,14 +120,14 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	private void checkVirtualPath(Path p) {
 		TVFSTools.checkParamNotNull(p, "le Path est null");
-		TVFSTools.checkParam(p instanceof TVFSPath, "le path n'est pas valide");
+		TVFSTools.checkParam(p instanceof TVFSAbsolutePath, "le path n'est pas valide");
 		TVFSTools.checkParamNotNull(p.getFileSystem(), "le FS est null");
 		TVFSTools.checkParam(p.getFileSystem().provider() == this, "le FS est invalide");
 	}
 
 	private Path getRealPath(Path path) {
 		checkVirtualPath(path);
-		TVFSPath p2 = (TVFSPath) path;
+		TVFSAbsolutePath p2 = (TVFSAbsolutePath) path;
 		Path p3 = p2.getRealPath();
 		LOGGER.info(path + "->" + p3);
 		return p3;
@@ -167,7 +216,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	public void checkAccess(Path path, AccessMode... modes) throws IOException {
 		checkVirtualPath(path);
-		TVFSTools.checkParam(path instanceof TVFSPath, "le path n'est pas valide");
+		TVFSTools.checkParam(path instanceof TVFSAbsolutePath, "le path n'est pas valide");
 		TVFSTools.checkParamNotNull(path.getFileSystem(), "le FS est null");
 
 		Path p2 = getRealPath(path);

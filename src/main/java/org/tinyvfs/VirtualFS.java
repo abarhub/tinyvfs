@@ -1,7 +1,7 @@
 package org.tinyvfs;
 
-import org.tinyvfs.path.TVFSPath;
-import org.tinyvfs.path.TVFSRoot;
+import org.tinyvfs.path.TVFSAbsolutePath;
+import org.tinyvfs.path.TVFSRootName;
 
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -12,10 +12,10 @@ import java.util.Arrays;
 public class VirtualFS {
 
 	private final TVFileSystem tvFileSystem;
-	private final TVFSRoot name;
+	private final TVFSRootName name;
 	private final Path rootPath;
 
-	public VirtualFS(TVFileSystem tvFileSystem, TVFSRoot name, Path rootPath) {
+	public VirtualFS(TVFileSystem tvFileSystem, TVFSRootName name, Path rootPath) {
 		TVFSTools.checkParamNotNull(tvFileSystem, "Param null");
 		TVFSTools.checkParamNotNull(name, "Name invalide");
 		TVFSTools.checkParamNotNull(rootPath, "Param null");
@@ -27,11 +27,11 @@ public class VirtualFS {
 
 	public Path get(String... paths) {
 		if (paths == null || paths.length == 0) {
-			return new TVFSPath(this, null);
+			return new TVFSAbsolutePath(this, null);
 		} else if (paths.length == 1) {
-			return new TVFSPath(this, Arrays.asList(paths));
+			return new TVFSAbsolutePath(this, Arrays.asList(paths));
 		} else {
-			return new TVFSPath(this, Arrays.asList(paths));
+			return new TVFSAbsolutePath(this, Arrays.asList(paths));
 		}
 	}
 
@@ -39,7 +39,7 @@ public class VirtualFS {
 		return tvFileSystem;
 	}
 
-	public TVFSRoot getName() {
+	public TVFSRootName getName() {
 		return name;
 	}
 

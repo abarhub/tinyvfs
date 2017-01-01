@@ -20,4 +20,8 @@ public final class TVFSPaths {
 		TVFileSystem tvFileSystem = new TVFileSystem(null, fsParam, null);
 		return tvFileSystem.getPath(name, paths);
 	}
+
+	public static Path getAbsolutePath(VirtualFS virtualFS, String... paths) {
+		return virtualFS.get(paths);
+	}
 }

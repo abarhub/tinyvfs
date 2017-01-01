@@ -6,8 +6,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tinyvfs.path.TVFSPath;
-import org.tinyvfs.path.TVFSRoot;
+import org.tinyvfs.path.TVFSAbsolutePath;
+import org.tinyvfs.path.TVFSRootName;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -40,7 +40,7 @@ public class VirtualFSTest {
 
 		LOGGER.info("test testGetOK");
 
-		TVFSRoot name = new TVFSRoot("test1");
+		TVFSRootName name = new TVFSRootName("test1");
 
 		Path rootPath = folder.newFolder().toPath();
 
@@ -48,9 +48,9 @@ public class VirtualFSTest {
 
 		Path p = virtualFS.get("a");
 
-		assertTrue(p instanceof TVFSPath);
+		assertTrue(p instanceof TVFSAbsolutePath);
 
-		TVFSPath p2 = (TVFSPath) p;
+		TVFSAbsolutePath p2 = (TVFSAbsolutePath) p;
 
 		LOGGER.info("ref:" + rootPath.resolve("a"));
 		LOGGER.info("realPath:" + p2.getRealPath());
@@ -63,7 +63,7 @@ public class VirtualFSTest {
 
 		LOGGER.info("test testGet2OK");
 
-		TVFSRoot name = new TVFSRoot("test1");
+		TVFSRootName name = new TVFSRootName("test1");
 
 		Path rootPath = folder.newFolder().toPath();
 
@@ -71,9 +71,9 @@ public class VirtualFSTest {
 
 		Path p = virtualFS.get("auuuu", "bssss", "cdf");
 
-		assertTrue(p instanceof TVFSPath);
+		assertTrue(p instanceof TVFSAbsolutePath);
 
-		TVFSPath p2 = (TVFSPath) p;
+		TVFSAbsolutePath p2 = (TVFSAbsolutePath) p;
 
 		LOGGER.info("ref:" + rootPath.resolve(Paths.get("auuuu", "bssss", "cdf")));
 		LOGGER.info("realPath:" + p2.getRealPath());
@@ -87,7 +87,7 @@ public class VirtualFSTest {
 
 		LOGGER.info("test testGet3OK");
 
-		TVFSRoot name = new TVFSRoot("test1");
+		TVFSRootName name = new TVFSRootName("test1");
 
 		Path rootPath = folder.newFolder().toPath();
 
@@ -95,9 +95,9 @@ public class VirtualFSTest {
 
 		Path p = virtualFS.get("gsdf/vghj/cvnjkl");
 
-		assertTrue(p instanceof TVFSPath);
+		assertTrue(p instanceof TVFSAbsolutePath);
 
-		TVFSPath p2 = (TVFSPath) p;
+		TVFSAbsolutePath p2 = (TVFSAbsolutePath) p;
 
 		LOGGER.info("ref:" + rootPath.resolve("gsdf/vghj/cvnjkl"));
 		LOGGER.info("realPath:" + p2.getRealPath());

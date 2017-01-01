@@ -2,7 +2,7 @@ package org.tinyvfs;
 
 import org.tinyvfs.config.TVFSConfig;
 import org.tinyvfs.config.TVFSConfigParam;
-import org.tinyvfs.path.TVFSRoot;
+import org.tinyvfs.path.TVFSRootName;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -72,13 +72,13 @@ public class TVFileSystem extends FileSystem {
 		TVFSTools.checkParam(first.startsWith("$"), "Root invalide (must start with $)");
 		TVFSTools.checkParam(TVFSTools.isNameValide(first.substring(1)), "Root invalide (name invalid)");
 
-		TVFSRoot tvfsRoot = new TVFSRoot(first.substring(1));
+		TVFSRootName tvfsRoot = new TVFSRootName(first.substring(1));
 		VirtualFS fs = getFS(tvfsRoot);
 
 		return fs.get(more);
 	}
 
-	private VirtualFS getFS(TVFSRoot name) {
+	private VirtualFS getFS(TVFSRootName name) {
 		VirtualFS fs = tvfsConfig.getFS(name);
 		if (fs == null) {
 			throw new InvalidParameterException("Erreur");
@@ -89,6 +89,12 @@ public class TVFileSystem extends FileSystem {
 	public FileSystem getDefautFileSystem() {
 		return defautFileSystem;
 	}
+
+	/*public Path getPath(URI uri) {
+		TVFSTools.checkParam(isOpen(), "FS closed");
+		TVFSTools.checkParamNotNull(uri, "Param null");
+		return null;
+	}*/
 
 	private void unsupportedOperation() {
 		TVFSTools.unsupportedOperation();

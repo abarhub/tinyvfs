@@ -5,11 +5,11 @@ import org.tinyvfs.TVFSTools;
 /**
  * Created by Alain on 01/01/2017.
  */
-public class TVFSRoot {
+public class TVFSRootName {
 
 	private final String name;
 
-	public TVFSRoot(String name) {
+	public TVFSRootName(String name) {
 		TVFSTools.checkIsNotEmpty(name, "Param is Null");
 		TVFSTools.checkParam(TVFSTools.isNameValide(name), "Name is invalid");
 		this.name = name;
@@ -24,7 +24,7 @@ public class TVFSRoot {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 
-		TVFSRoot tvfsRoot = (TVFSRoot) o;
+		TVFSRootName tvfsRoot = (TVFSRootName) o;
 
 		return name != null ? name.equals(tvfsRoot.name) : tvfsRoot.name == null;
 	}
@@ -36,7 +36,7 @@ public class TVFSRoot {
 
 	@Override
 	public String toString() {
-		return "TVFSRoot{" +
+		return "TVFSRootName{" +
 				"name='" + name + '\'' +
 				'}';
 	}

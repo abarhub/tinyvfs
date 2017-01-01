@@ -1,6 +1,5 @@
 package org.tinyvfs.path;
 
-import org.tinyvfs.TVFSTools;
 import org.tinyvfs.VirtualFS;
 
 import java.io.File;
@@ -8,43 +7,16 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by Alain on 11/12/2016.
  */
-public class TVFSPath implements Path {
+public class TVFSAbsolutePath extends TVFSAbstractPath {
 
-	private final VirtualFS virtualFS;
-	private final List<String> path;
-
-	protected TVFSPath(VirtualFS virtualFS, List<String> path) {
-		TVFSTools.checkParamNotNull(virtualFS, "Param null");
-		this.virtualFS = virtualFS;
-		if (path == null || path.size() == 0) {
-			this.path = Collections.unmodifiableList(new ArrayList<>());
-		} else {
-			List<String> liste = new ArrayList<String>(path);
-			this.path = Collections.unmodifiableList(liste);
-		}
-	}
-
-	public Path getRealPath() {
-		Path root = virtualFS.getRootPath();
-		String s = "";
-		for (String s2 : path) {
-			if (s.length() > 0)
-				s += getFileSystem().getSeparator();
-			s += s2;
-		}
-		Path p = root.resolve(s);
-		return p;
-	}
-
-	public FileSystem getFileSystem() {
-		return virtualFS.getTvFileSystem();
+	public TVFSAbsolutePath(VirtualFS virtualFS, List<String> liste) {
+		super(virtualFS, liste);
 	}
 
 	public boolean isAbsolute() {
@@ -52,29 +24,7 @@ public class TVFSPath implements Path {
 	}
 
 	public Path getRoot() {
-		return new TVFSPath(virtualFS, new ArrayList<>());
-	}
-
-	public Path getFileName() {
-		return null;
-	}
-
-	public Path getParent() {
-		return null;
-	}
-
-	public int getNameCount() {
-		return path.size();
-	}
-
-	public Path getName(int index) {
-		unsupportedOperation();
-		return null;
-	}
-
-	public Path subpath(int beginIndex, int endIndex) {
-		unsupportedOperation();
-		return null;
+		return new TVFSAbsolutePath(virtualFS, new ArrayList<>());
 	}
 
 	public boolean startsWith(Path other) {
@@ -173,23 +123,12 @@ public class TVFSPath implements Path {
 		return 0;
 	}
 
-	private void unsupportedOperation() {
-		TVFSTools.unsupportedOperation();
-	}
-
-	private void checkVirtualPath(Path p) {
-		TVFSTools.checkParamNotNull(p, "le Path est null");
-		TVFSTools.checkParam(p instanceof TVFSPath, "le path n'est pas valide");
-		TVFSTools.checkParamNotNull(p.getFileSystem(), "le FS est null");
-		TVFSTools.checkParam(p.getFileSystem() == this.getFileSystem(), "le FS est invalide");
-		TVFSTools.checkParam(p.getFileSystem().provider() == this.getFileSystem().provider(), "le FS est invalide");
-	}
-
 	@Override
 	public String toString() {
-		return "TVFSPath{" +
-				"virtualFS=" + virtualFS +
-				", path=" + path +
-				'}';
+		String s = "";
+		for (String s2 : path) {
+			s += "/" + s2;
+		}
+		return s;
 	}
 }

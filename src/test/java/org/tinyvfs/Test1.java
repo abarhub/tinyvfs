@@ -6,7 +6,7 @@ import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinyvfs.config.TVFSConfigParam;
-import org.tinyvfs.path.TVFSRoot;
+import org.tinyvfs.path.TVFSRootName;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class Test1 {
 
 		tvFileSystem = new TVFileSystem(null, null, FileSystems.getDefault());
 
-		tvFileSystem.add(new TVFSConfigParam(new TVFSRoot("test1"), newTemp(), false));
+		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 
 		Path p = tvFileSystem.getPath("$test1", "toto.txt");
 
@@ -57,7 +57,7 @@ public class Test1 {
 		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
 		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("vfs://test"), null);
 
-		tvFileSystem.add(new TVFSConfigParam(new TVFSRoot("test1"), newTemp(), false));
+		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 
 		Path p = tvFileSystem.getPath("$test1", "toto2.txt");
 
@@ -91,7 +91,7 @@ public class Test1 {
 		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
 		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("vfs://test"), null);
 
-		tvFileSystem.add(new TVFSConfigParam(new TVFSRoot("test1"), newTemp(), false));
+		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 
 		Path p = tvFileSystem.getPath("$test1", "toto2.txt");
 
