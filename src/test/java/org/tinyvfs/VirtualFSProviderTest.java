@@ -107,4 +107,52 @@ public class VirtualFSProviderTest {
 		assertTrue(fs == p.getFileSystem());
 		assertEquals("/aaa/bbb/ccc", p.toString());
 	}
+
+	@Test
+	public void testGetPathSlashDoubleOK() throws Exception {
+		URI uri = URI.create("tvfs://$test1///aaaa/bbbbbb//cccc//dddd");
+		VirtualFSProvider virtualFSProvider = new VirtualFSProvider();
+
+		FileSystem fs = virtualFSProvider.newFileSystem(uri, null);
+		assertNotNull(fs);
+		assertTrue(fs instanceof TVFileSystem);
+		TVFileSystem fs2 = (TVFileSystem) fs;
+		fs2.add(new TVFSConfigParam(new TVFSRootName("test1"), folder.newFolder().toPath(), true));
+		Path path = virtualFSProvider.getPath(uri);
+		assertNotNull(path);
+		assertTrue(path instanceof TVFSAbstractPath);
+
+		TVFSAbstractPath p = (TVFSAbstractPath) path;
+		assertEquals(4, p.getNameCount());
+		assertEquals("/aaaa", p.getName(0).toString());
+		assertEquals("/bbbbbb", p.getName(1).toString());
+		assertEquals("/cccc", p.getName(2).toString());
+		assertEquals("/dddd", p.getName(3).toString());
+		assertTrue(fs == p.getFileSystem());
+		assertEquals("/aaaa/bbbbbb/cccc/dddd", p.toString());
+	}
+
+	@Test
+	public void testGetPathSlashFinOK() throws Exception {
+		URI uri = URI.create("tvfs://$test1/aaaa/bbbbbb/cccc/dddd/");
+		VirtualFSProvider virtualFSProvider = new VirtualFSProvider();
+
+		FileSystem fs = virtualFSProvider.newFileSystem(uri, null);
+		assertNotNull(fs);
+		assertTrue(fs instanceof TVFileSystem);
+		TVFileSystem fs2 = (TVFileSystem) fs;
+		fs2.add(new TVFSConfigParam(new TVFSRootName("test1"), folder.newFolder().toPath(), true));
+		Path path = virtualFSProvider.getPath(uri);
+		assertNotNull(path);
+		assertTrue(path instanceof TVFSAbstractPath);
+
+		TVFSAbstractPath p = (TVFSAbstractPath) path;
+		assertEquals(4, p.getNameCount());
+		assertEquals("/aaaa", p.getName(0).toString());
+		assertEquals("/bbbbbb", p.getName(1).toString());
+		assertEquals("/cccc", p.getName(2).toString());
+		assertEquals("/dddd", p.getName(3).toString());
+		assertTrue(fs == p.getFileSystem());
+		assertEquals("/aaaa/bbbbbb/cccc/dddd", p.toString());
+	}
 }
