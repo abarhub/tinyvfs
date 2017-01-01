@@ -2,6 +2,8 @@ package org.tinyvfs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tinyvfs.config.TVFSConfig2;
+import org.tinyvfs.config.TVFSRepository;
 import org.tinyvfs.path.TVFSAbsolutePath;
 
 import java.io.IOException;
@@ -22,17 +24,28 @@ public class VirtualFSProvider extends FileSystemProvider {
 	final static Logger LOGGER = LoggerFactory.getLogger(VirtualFSProvider.class);
 
 	public static String SCHEME = "tvfs";
+
 	protected FileSystem defautFileSystem;
 	private TVFileSystem tvFileSystem;
+	private TVFSConfig2 tvfsConfig;
 
 	public VirtualFSProvider() {
-		super();
-		defautFileSystem = FileSystems.getDefault();
+		this(FileSystems.getDefault(), null);
 	}
 
 	public VirtualFSProvider(FileSystem defautFileSystem) {
+		this(defautFileSystem, null);
+	}
+
+	public VirtualFSProvider(FileSystem defautFileSystem, TVFSConfig2 tvfsConfig) {
 		super();
 		this.defautFileSystem = defautFileSystem;
+		if (tvfsConfig != null) {
+			this.tvfsConfig = tvfsConfig;
+		} else {
+			this.tvfsConfig = getConfig();
+		}
+		LOGGER.info("VFS démarré");
 	}
 
 	public String getScheme() {
@@ -57,8 +70,12 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	private TVFileSystem createFileSystem(URI uri) {
 		TVFSTools.checkParamNotNull(uri, "uri null");
-		tvFileSystem = new TVFileSystem(this, null, defautFileSystem);
+		tvFileSystem = new TVFileSystem(this, tvfsConfig, defautFileSystem);
 		return tvFileSystem;
+	}
+
+	protected TVFSConfig2 getConfig() {
+		return TVFSRepository.getInstance();
 	}
 
 	public Path getPath(URI uri) {

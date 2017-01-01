@@ -1,6 +1,6 @@
 package org.tinyvfs;
 
-import org.tinyvfs.config.TVFSConfig;
+import org.tinyvfs.config.TVFSConfig2;
 import org.tinyvfs.config.TVFSConfigParam;
 import org.tinyvfs.path.TVFSRootName;
 
@@ -17,18 +17,19 @@ import java.util.Set;
 public class TVFileSystem extends FileSystem {
 
 	private final VirtualFSProvider virtualFSProvider;
-	private final FSParam fsParam;
 	private final FileSystem defautFileSystem;
-	private final TVFSConfig tvfsConfig;
+	private final TVFSConfig2 tvfsConfig2;
 	private boolean open;
 
-	public TVFileSystem(VirtualFSProvider virtualFSProvider, FSParam fsParam, FileSystem defautFileSystem) {
+	public TVFileSystem(VirtualFSProvider virtualFSProvider, TVFSConfig2 tvfsConfig2, FileSystem defautFileSystem) {
 		super();
+		TVFSTools.checkParamNotNull(virtualFSProvider, "Param null");
+		TVFSTools.checkParamNotNull(tvfsConfig2, "Param null");
+		TVFSTools.checkParamNotNull(defautFileSystem, "Param null");
 		this.virtualFSProvider = virtualFSProvider;
 		open = true;
-		this.fsParam = fsParam;
+		this.tvfsConfig2 = tvfsConfig2;
 		this.defautFileSystem = defautFileSystem;
-		tvfsConfig = new TVFSConfig(this);
 	}
 
 	public FileSystemProvider provider() {
@@ -79,7 +80,7 @@ public class TVFileSystem extends FileSystem {
 	}
 
 	private VirtualFS getFS(TVFSRootName name) {
-		VirtualFS fs = tvfsConfig.getFS(name);
+		VirtualFS fs = tvfsConfig2.getFS(name, this);
 		if (fs == null) {
 			throw new InvalidParameterException("Erreur");
 		}
@@ -111,6 +112,7 @@ public class TVFileSystem extends FileSystem {
 
 	public void add(TVFSConfigParam tvfsConfigParam) {
 		TVFSTools.checkParam(isOpen(), "FS closed");
-		tvfsConfig.add(tvfsConfigParam);
+		//tvfsConfig.add(tvfsConfigParam);
+		tvfsConfig2.add(tvfsConfigParam.getName(), tvfsConfigParam);
 	}
 }

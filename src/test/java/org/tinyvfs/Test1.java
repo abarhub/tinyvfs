@@ -1,11 +1,14 @@
 package org.tinyvfs;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tinyvfs.config.TVFSConfig2;
 import org.tinyvfs.config.TVFSConfigParam;
+import org.tinyvfs.config.TVFSRepository;
 import org.tinyvfs.path.TVFSRootName;
 
 import java.io.File;
@@ -19,6 +22,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 /**
  * Created by Alain on 11/12/2016.
@@ -30,13 +34,20 @@ public class Test1 {
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
+	@Before
+	public void init() {
+		TVFSRepository.clearInstance();
+	}
+
 	@Test
 	public void test1() throws IOException {
 		TVFileSystem tvFileSystem;
 
 		LOGGER.info("Test 1");
 
-		tvFileSystem = new TVFileSystem(null, null, FileSystems.getDefault());
+		VirtualFSProvider virtualFSProvider = mock(VirtualFSProvider.class);
+		TVFSConfig2 tvfsConfig2 = new TVFSConfig2();
+		tvFileSystem = new TVFileSystem(virtualFSProvider, tvfsConfig2, FileSystems.getDefault());
 
 		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 

@@ -5,6 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.tinyvfs.config.TVFSConfigParam;
+import org.tinyvfs.config.TVFSRepository;
 import org.tinyvfs.path.TVFSAbstractPath;
 import org.tinyvfs.path.TVFSRootName;
 
@@ -27,7 +28,7 @@ public class VirtualFSProviderTest {
 
 	@Before
 	public void init() throws Exception {
-
+		TVFSRepository.clearInstance();
 	}
 
 	@Test
