@@ -1,4 +1,7 @@
-package org.tinyvfs;
+package org.tinyvfs.path;
+
+import org.tinyvfs.TVFSTools;
+import org.tinyvfs.VirtualFS;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,11 +48,11 @@ public class TVFSPath implements Path {
 	}
 
 	public boolean isAbsolute() {
-		return false;
+		return true;
 	}
 
 	public Path getRoot() {
-		return null;
+		return new TVFSPath(virtualFS, new ArrayList<>());
 	}
 
 	public Path getFileName() {
@@ -61,82 +64,100 @@ public class TVFSPath implements Path {
 	}
 
 	public int getNameCount() {
-		return 0;
+		return path.size();
 	}
 
 	public Path getName(int index) {
+		unsupportedOperation();
 		return null;
 	}
 
 	public Path subpath(int beginIndex, int endIndex) {
+		unsupportedOperation();
 		return null;
 	}
 
 	public boolean startsWith(Path other) {
+		unsupportedOperation();
 		return false;
 	}
 
 	public boolean startsWith(String other) {
+		unsupportedOperation();
 		return false;
 	}
 
 	public boolean endsWith(Path other) {
+		unsupportedOperation();
 		return false;
 	}
 
 	public boolean endsWith(String other) {
+		unsupportedOperation();
 		return false;
 	}
 
 	public Path normalize() {
+		unsupportedOperation();
 		return null;
 	}
 
 	public Path resolve(Path other) {
+		unsupportedOperation();
 		return null;
 	}
 
 	public Path resolve(String other) {
+		unsupportedOperation();
 		return null;
 	}
 
 	public Path resolveSibling(Path other) {
+		unsupportedOperation();
 		return null;
 	}
 
 	public Path resolveSibling(String other) {
+		unsupportedOperation();
 		return null;
 	}
 
 	public Path relativize(Path other) {
+		unsupportedOperation();
 		return null;
 	}
 
 	public URI toUri() {
+		unsupportedOperation();
 		return null;
 	}
 
 	public Path toAbsolutePath() {
-		return null;
+		return this;
 	}
 
 	public Path toRealPath(LinkOption... options) throws IOException {
+		unsupportedOperation();
 		return null;
 	}
 
 	public File toFile() {
+		unsupportedOperation();
 		return null;
 	}
 
 	public WatchKey register(WatchService watcher, WatchEvent.Kind<?>[] events, WatchEvent.Modifier... modifiers) throws IOException {
+		unsupportedOperation();
 		return null;
 	}
 
 	public WatchKey register(WatchService watcher, WatchEvent.Kind<?>[] events) throws IOException {
+		unsupportedOperation();
 		return null;
 	}
 
 	public Iterator<Path> iterator() {
+		unsupportedOperation();
 		return null;
 	}
 
@@ -150,6 +171,18 @@ public class TVFSPath implements Path {
 
 	public int hashCode() {
 		return 0;
+	}
+
+	private void unsupportedOperation() {
+		TVFSTools.unsupportedOperation();
+	}
+
+	private void checkVirtualPath(Path p) {
+		TVFSTools.checkParamNotNull(p, "le Path est null");
+		TVFSTools.checkParam(p instanceof TVFSPath, "le path n'est pas valide");
+		TVFSTools.checkParamNotNull(p.getFileSystem(), "le FS est null");
+		TVFSTools.checkParam(p.getFileSystem() == this.getFileSystem(), "le FS est invalide");
+		TVFSTools.checkParam(p.getFileSystem().provider() == this.getFileSystem().provider(), "le FS est invalide");
 	}
 
 	@Override

@@ -1,4 +1,6 @@
-package org.tinyvfs;
+package org.tinyvfs.path;
+
+import org.tinyvfs.TVFSTools;
 
 /**
  * Created by Alain on 01/01/2017.
@@ -30,5 +32,12 @@ public class TVFSRoot {
 	@Override
 	public int hashCode() {
 		return name != null ? name.hashCode() : 0;
+	}
+
+	@Override
+	public String toString() {
+		return "TVFSRoot{" +
+				"name='" + name + '\'' +
+				'}';
 	}
 }

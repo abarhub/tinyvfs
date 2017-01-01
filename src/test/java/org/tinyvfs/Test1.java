@@ -6,6 +6,7 @@ import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinyvfs.config.TVFSConfigParam;
+import org.tinyvfs.path.TVFSRoot;
 
 import java.io.File;
 import java.io.IOException;

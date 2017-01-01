@@ -2,6 +2,7 @@ package org.tinyvfs;
 
 import org.tinyvfs.config.TVFSConfig;
 import org.tinyvfs.config.TVFSConfigParam;
+import org.tinyvfs.path.TVFSRoot;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -84,10 +85,6 @@ public class TVFileSystem extends FileSystem {
 		}
 		return fs;
 	}
-
-	/*public Path getRealPath(Path p){
-
-	}*/
 
 	public FileSystem getDefautFileSystem() {
 		return defautFileSystem;

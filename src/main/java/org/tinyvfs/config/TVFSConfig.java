@@ -1,9 +1,9 @@
 package org.tinyvfs.config;
 
-import org.tinyvfs.TVFSRoot;
 import org.tinyvfs.TVFSTools;
 import org.tinyvfs.TVFileSystem;
 import org.tinyvfs.VirtualFS;
+import org.tinyvfs.path.TVFSRoot;
 
 import java.util.HashMap;
 import java.util.Map;

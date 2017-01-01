@@ -1,7 +1,7 @@
 package org.tinyvfs.config;
 
-import org.tinyvfs.TVFSRoot;
 import org.tinyvfs.TVFSTools;
+import org.tinyvfs.path.TVFSRoot;
 
 import java.nio.file.Path;
 

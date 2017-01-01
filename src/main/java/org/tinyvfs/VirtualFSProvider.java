@@ -2,6 +2,7 @@ package org.tinyvfs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tinyvfs.path.TVFSPath;
 
 import java.io.IOException;
 import java.net.URI;
@@ -63,9 +64,9 @@ public class VirtualFSProvider extends FileSystemProvider {
 		checkVirtualPath(path);
 		TVFSTools.checkParam(path instanceof TVFSPath, "le path n'est pas valide");
 		TVFSTools.checkParamNotNull(path.getFileSystem(), "le FS est null");
-		Path p2 = getRealPath(path);
-		FileSystem fs3 = getRealFileSystem(path);
-		return fs3.provider().newByteChannel(p2, options, attrs);
+		Path p = getRealPath(path);
+		FileSystem fs = getRealFileSystem(path);
+		return fs.provider().newByteChannel(p, options, attrs);
 	}
 
 	private void checkVirtualPath(Path p) {

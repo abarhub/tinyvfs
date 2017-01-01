@@ -1,5 +1,8 @@
 package org.tinyvfs;
 
+import org.tinyvfs.path.TVFSPath;
+import org.tinyvfs.path.TVFSRoot;
+
 import java.nio.file.Path;
 import java.util.Arrays;
 
@@ -28,10 +31,8 @@ public class VirtualFS {
 		} else if (paths.length == 1) {
 			return new TVFSPath(this, Arrays.asList(paths));
 		} else {
-			//Path p = Paths.get(paths);
 			return new TVFSPath(this, Arrays.asList(paths));
 		}
-		//return null;
 	}
 
 	public TVFileSystem getTvFileSystem() {
