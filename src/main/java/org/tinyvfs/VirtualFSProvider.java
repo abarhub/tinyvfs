@@ -72,6 +72,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		TVFSTools.checkParamNotNull(p, "le Path est null");
 		TVFSTools.checkParam(p instanceof TVFSPath, "le path n'est pas valide");
 		TVFSTools.checkParamNotNull(p.getFileSystem(), "le FS est null");
+		TVFSTools.checkParam(p.getFileSystem().provider() == this, "le FS est invalide");
 	}
 
 	private Path getRealPath(Path path) {

@@ -35,6 +35,7 @@ public class TVFileSystem extends FileSystem {
 	}
 
 	public void close() throws IOException {
+		TVFSTools.checkParam(isOpen(), "FS closed");
 		open = false;
 	}
 
@@ -65,9 +66,10 @@ public class TVFileSystem extends FileSystem {
 	}
 
 	public Path getPath(String first, String... more) {
+		TVFSTools.checkParam(isOpen(), "FS closed");
 		TVFSTools.checkIsNotEmpty(first, "Param null");
 		TVFSTools.checkParam(first.startsWith("$"), "Root invalide (must start with $)");
-		TVFSTools.checkParam(TVFSTools.isNameValide(first.substring(1)), "Root invalide (must start with $)");
+		TVFSTools.checkParam(TVFSTools.isNameValide(first.substring(1)), "Root invalide (name invalid)");
 
 		TVFSRoot tvfsRoot = new TVFSRoot(first.substring(1));
 		VirtualFS fs = getFS(tvfsRoot);
@@ -111,6 +113,7 @@ public class TVFileSystem extends FileSystem {
 	}
 
 	public void add(TVFSConfigParam tvfsConfigParam) {
+		TVFSTools.checkParam(isOpen(), "FS closed");
 		tvfsConfig.add(tvfsConfigParam);
 	}
 }
