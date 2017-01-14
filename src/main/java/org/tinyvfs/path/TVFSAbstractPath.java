@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Alain on 01/01/2017.
@@ -33,6 +34,10 @@ public abstract class TVFSAbstractPath implements Path {
 	}
 
 	public Path getRealPath() {
+		return getRealPath2();
+	}
+
+	protected Path getRealPath2() {
 		Path root = virtualFS.getRootPath();
 		String s = "";
 		for (String s2 : path) {
@@ -111,4 +116,48 @@ public abstract class TVFSAbstractPath implements Path {
 		TVFSTools.checkParam(p.getFileSystem().provider() == this.getFileSystem().provider(), "le FS est invalide");
 	}
 
+	public int compareTo(Path other) {
+		if (other == null)
+			throw new NullPointerException("other must not be null");
+		if (other.getClass() != getClass())
+			throw new ClassCastException();
+
+		TVFSAbsolutePath p = (TVFSAbsolutePath) other;
+
+		if (!p.virtualFS.getName().equals(this.virtualFS.getName()))
+			throw new IllegalArgumentException("Path with other root");
+
+		Optional<String> p1 = path.stream().reduce((x, y) -> x + y);
+		Optional<String> p2 = p.path.stream().reduce((x, y) -> x + y);
+		String s1, s2;
+
+		if (p1.isPresent())
+			s1 = p1.get();
+		else
+			s1 = "";
+		if (p2.isPresent())
+			s2 = p2.get();
+		else
+			s2 = "";
+
+		return s1.compareTo(s2);
+	}
+
+	public boolean equals(Object other) {
+		if (other == null)
+			return false;
+		if (!(other instanceof TVFSAbsolutePath))
+			return false;
+
+		TVFSAbsolutePath p = (TVFSAbsolutePath) other;
+
+		if (!p.virtualFS.getName().equals(this.virtualFS.getName()))
+			return false;
+
+		return getRealPath2().equals(p.getRealPath2());
+	}
+
+	public int hashCode() {
+		return getRealPath2().hashCode();
+	}
 }

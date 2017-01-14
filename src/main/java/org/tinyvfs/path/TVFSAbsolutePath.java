@@ -111,21 +111,10 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 		return null;
 	}
 
-	public int compareTo(Path other) {
-		return 0;
-	}
-
-	public boolean equals(Object other) {
-		return false;
-	}
-
-	public int hashCode() {
-		return 0;
-	}
 
 	@Override
 	public String toString() {
-		String s = "";
+		String s = virtualFS.getName().getName() + ":";
 		for (String s2 : path) {
 			s += "/" + s2;
 		}
