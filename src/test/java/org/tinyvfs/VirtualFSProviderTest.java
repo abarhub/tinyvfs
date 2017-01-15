@@ -90,7 +90,7 @@ public class VirtualFSProviderTest {
 
 	@Test
 	public void testGetPathOK() throws Exception {
-		URI uri = URI.create("tvfs://$test1/aaa/bbb/ccc");
+		URI uri = URI.create("tvfs://test1/aaa/bbb/ccc");
 		VirtualFSProvider virtualFSProvider = new VirtualFSProvider();
 
 		FileSystem fs = virtualFSProvider.newFileSystem(uri, null);
@@ -114,7 +114,7 @@ public class VirtualFSProviderTest {
 
 	@Test
 	public void testGetPathSlashDoubleOK() throws Exception {
-		URI uri = URI.create("tvfs://$test1///aaaa/bbbbbb//cccc//dddd");
+		URI uri = URI.create("tvfs://test1///aaaa/bbbbbb//cccc//dddd");
 		VirtualFSProvider virtualFSProvider = new VirtualFSProvider();
 
 		FileSystem fs = virtualFSProvider.newFileSystem(uri, null);
@@ -139,7 +139,7 @@ public class VirtualFSProviderTest {
 
 	@Test
 	public void testGetPathSlashFinOK() throws Exception {
-		URI uri = URI.create("tvfs://$test1/aaaa/bbbbbb/cccc/dddd/");
+		URI uri = URI.create("tvfs://test1/aaaa/bbbbbb/cccc/dddd/");
 		VirtualFSProvider virtualFSProvider = new VirtualFSProvider();
 
 		FileSystem fs = virtualFSProvider.newFileSystem(uri, null);

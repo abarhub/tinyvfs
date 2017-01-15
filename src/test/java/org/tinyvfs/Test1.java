@@ -51,7 +51,7 @@ public class Test1 {
 
 		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 
-		Path p = tvFileSystem.getPath("$test1", "/toto.txt");
+		Path p = tvFileSystem.getPath("test1", "/toto.txt");
 
 		LOGGER.info("p=" + p);
 	}
@@ -66,11 +66,11 @@ public class Test1 {
 		virtualFSProvider = new VirtualFSProvider();
 
 		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
-		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("vfs://test"), null);
+		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("tvfs://test"), null);
 
 		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 
-		Path p = tvFileSystem.getPath("$test1", "/toto2.txt");
+		Path p = tvFileSystem.getPath("test1", "/toto2.txt");
 
 		LOGGER.info("p=" + p);
 
@@ -100,16 +100,16 @@ public class Test1 {
 		virtualFSProvider = new VirtualFSProvider();
 
 		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
-		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("vfs://test"), null);
+		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("tvfs://test"), null);
 
 		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 
-		Path p = tvFileSystem.getPath("$test1", "/toto2.txt");
+		Path p = tvFileSystem.getPath("test1", "/toto2.txt");
 
 		LOGGER.info("p=" + p);
 
 
-		Path p2 = tvFileSystem.getPath("$test1", "/toto3.txt");
+		Path p2 = tvFileSystem.getPath("test1", "/toto3.txt");
 
 		LOGGER.info("p2=" + p2);
 

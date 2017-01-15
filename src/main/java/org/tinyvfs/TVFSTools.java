@@ -12,6 +12,7 @@ public final class TVFSTools {
 	private TVFSTools() {
 	}
 
+	// root name valide ?
 	public static boolean isNameValide(String name) {
 		if (name == null || name.trim().length() == 0) {
 			return false;

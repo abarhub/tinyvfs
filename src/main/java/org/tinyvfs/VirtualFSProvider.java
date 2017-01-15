@@ -53,7 +53,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 	}
 
 	public FileSystem newFileSystem(URI uri, Map<String, ?> env) throws IOException {
-		TVFSTools.checkParamNotNull(uri, "uri null");
+		checkUri(uri);
 		if (tvFileSystem != null) {
 			throw new FileSystemAlreadyExistsException("Le FS existe déjà");
 		}
@@ -61,7 +61,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 	}
 
 	public FileSystem getFileSystem(URI uri) {
-		TVFSTools.checkParamNotNull(uri, "uri null");
+		checkUri(uri);
 		if (tvFileSystem == null) {
 			throw new FileSystemNotFoundException("Le FS n'existe pas");
 		}
@@ -69,9 +69,14 @@ public class VirtualFSProvider extends FileSystemProvider {
 	}
 
 	private TVFileSystem createFileSystem(URI uri) {
-		TVFSTools.checkParamNotNull(uri, "uri null");
+		checkUri(uri);
 		tvFileSystem = new TVFileSystem(this, tvfsConfig, defautFileSystem);
 		return tvFileSystem;
+	}
+
+	private void checkUri(URI uri) {
+		TVFSTools.checkParamNotNull(uri, "uri null");
+		TVFSTools.checkParam(uri.getScheme().equals(SCHEME), "uri scheme invalide : " + uri.getScheme());
 	}
 
 	protected TVFSConfig2 getConfig() {
@@ -120,7 +125,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		}*/
 		String root = uri.getAuthority();
 		LOGGER.info("root=" + root);
-		if (root.isEmpty() || !root.startsWith("$")) {
+		if (root.isEmpty() || !TVFSTools.isNameValide(root)) {
 			throw new IllegalArgumentException("Root path invalide");
 		}
 		String[] tab = null;
