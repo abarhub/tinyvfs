@@ -126,6 +126,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		String[] tab = null;
 		if (liste.size() > 0) {
 			//liste = liste.subList(1, liste.size() - 1);
+			liste.add(0, "" + separator);
 			tab = liste.toArray(new String[liste.size()]);
 			LOGGER.info("tab=" + Arrays.toString(tab));
 		}

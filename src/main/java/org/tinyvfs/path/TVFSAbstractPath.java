@@ -21,11 +21,63 @@ public abstract class TVFSAbstractPath implements Path {
 	public TVFSAbstractPath(VirtualFS virtualFS, List<String> liste) {
 		TVFSTools.checkParamNotNull(virtualFS, "Param null");
 		this.virtualFS = virtualFS;
-		if (liste == null || liste.isEmpty()) {
-			this.path = Collections.unmodifiableList(new ArrayList<>());
-		} else {
-			this.path = Collections.unmodifiableList(liste);
+		this.path = Collections.unmodifiableList(splitPath(liste));
+	}
+
+	private List<String> splitPath(List<String> list) {
+		List<String> res = new ArrayList<>();
+
+		if (list != null && !list.isEmpty()) {
+
+
+			if (isAbsolute()) {
+				if (list.get(0).isEmpty())
+					throw new IllegalArgumentException("Le Path n'est pas absolue");
+				char c = list.get(0).charAt(0);
+				if (c != '/' && c != '\\') {
+					throw new IllegalArgumentException("Le Path n'est pas absolue");
+				}
+			} else {
+				if (!list.get(0).isEmpty()) {
+					char c = list.get(0).charAt(0);
+					if (c == '/' || c == '\\') {
+						throw new IllegalArgumentException("Le Path est absolue");
+					}
+				}
+			}
+
+			for (String s : list) {
+				if (s == null) {
+					throw new NullPointerException("Path null");
+				} else if (s.isEmpty()) {
+					// do nothing
+				} else {
+					if (s.contains("/")) {
+						String[] tab = s.split("/");
+						if (tab != null) {
+							for (String s2 : tab) {
+								if (s2 != null && !s2.isEmpty()) {
+									res.add(s2);
+								}
+							}
+						}
+					} else if (s.contains("\\")) {
+						String[] tab = s.split("\\\\");
+						if (tab != null) {
+							for (String s2 : tab) {
+								if (s2 != null && !s2.isEmpty()) {
+									res.add(s2);
+								}
+							}
+						}
+					} else {
+						res.add(s);
+					}
+				}
+			}
 		}
+
+		return res;
 	}
 
 	@Override

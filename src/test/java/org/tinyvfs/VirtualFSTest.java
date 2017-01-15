@@ -46,7 +46,7 @@ public class VirtualFSTest {
 
 		VirtualFS virtualFS = new VirtualFS(tvFileSystem, name, rootPath);
 
-		Path p = virtualFS.get("a");
+		Path p = virtualFS.get("/a");
 
 		assertTrue(p instanceof TVFSAbsolutePath);
 
@@ -69,7 +69,7 @@ public class VirtualFSTest {
 
 		VirtualFS virtualFS = new VirtualFS(tvFileSystem, name, rootPath);
 
-		Path p = virtualFS.get("auuuu", "bssss", "cdf");
+		Path p = virtualFS.get("/auuuu", "bssss", "cdf");
 
 		assertTrue(p instanceof TVFSAbsolutePath);
 
@@ -93,7 +93,7 @@ public class VirtualFSTest {
 
 		VirtualFS virtualFS = new VirtualFS(tvFileSystem, name, rootPath);
 
-		Path p = virtualFS.get("gsdf/vghj/cvnjkl");
+		Path p = virtualFS.get("/gsdf/vghj/cvnjkl");
 
 		assertTrue(p instanceof TVFSAbsolutePath);
 

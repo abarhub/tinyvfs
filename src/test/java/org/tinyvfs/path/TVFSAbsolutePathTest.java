@@ -36,7 +36,7 @@ public class TVFSAbsolutePathTest {
 		TVFSAbsolutePath p1 = getPath();
 		assertTrue(p1.isAbsolute());
 
-		p1 = getPath("aaa", "bbb", "ccc");
+		p1 = getPath("/aaa", "bbb", "ccc");
 		assertTrue(p1.isAbsolute());
 		assertPath(toList("aaa", "bbb", "ccc"), p1);
 	}
@@ -46,7 +46,7 @@ public class TVFSAbsolutePathTest {
 		TVFSAbsolutePath p1 = getPath();
 		assertEquals(NAME + ":", p1.toString());
 
-		p1 = getPath("aaa", "bbb", "ccc");
+		p1 = getPath("/aaa", "bbb", "ccc");
 		assertEquals(NAME + ":/aaa/bbb/ccc", p1.toString());
 		assertPath(toList("aaa", "bbb", "ccc"), p1);
 	}
@@ -60,7 +60,7 @@ public class TVFSAbsolutePathTest {
 		assertEquals(NAME + ":", p.toString());
 		assertPath(toList(), p);
 
-		p1 = getPath("aaa", "bbbb", "cccc");
+		p1 = getPath("/aaa", "bbbb", "cccc");
 		assertPath(toList("aaa", "bbbb", "cccc"), p1);
 		p = p1.getRoot();
 		assertTrue(p instanceof TVFSAbsolutePath);
@@ -73,10 +73,10 @@ public class TVFSAbsolutePathTest {
 		TVFSAbsolutePath p1 = getPath();
 		assertNull(p1.getFileName());
 
-		p1 = getPath("aaaa", "bbb", "cccc");
+		p1 = getPath("/aaaa", "bbb", "cccc");
 		assertPath(toList("cccc"), p1.getFileName());
 
-		p1 = getPath("aaaa");
+		p1 = getPath("/aaaa");
 		assertPath(toList("aaaa"), p1.getFileName());
 	}
 
@@ -85,13 +85,13 @@ public class TVFSAbsolutePathTest {
 		TVFSAbsolutePath p1 = getPath();
 		assertNull(p1.getParent());
 
-		p1 = getPath("aaaa", "bbb", "cccc");
+		p1 = getPath("/aaaa", "bbb", "cccc");
 		assertPath(toList("bbb"), p1.getParent());
 
-		p1 = getPath("aaaa", "bbb");
+		p1 = getPath("/aaaa", "bbb");
 		assertPath(toList("aaaa"), p1.getParent());
 
-		p1 = getPath("aaaa");
+		p1 = getPath("/aaaa");
 		assertNull(p1.getParent());
 	}
 
@@ -100,13 +100,13 @@ public class TVFSAbsolutePathTest {
 		TVFSAbsolutePath p1 = getPath();
 		assertEquals(0, p1.getNameCount());
 
-		p1 = getPath("aaaa", "bbb", "cccc");
+		p1 = getPath("/aaaa", "bbb", "cccc");
 		assertEquals(3, p1.getNameCount());
 
-		p1 = getPath("aaaa", "bbb");
+		p1 = getPath("/aaaa", "bbb");
 		assertEquals(2, p1.getNameCount());
 
-		p1 = getPath("aaaa");
+		p1 = getPath("/aaaa");
 		assertEquals(1, p1.getNameCount());
 	}
 
@@ -130,7 +130,7 @@ public class TVFSAbsolutePathTest {
 
 	@Test
 	public void testGetName1Path() {
-		TVFSAbsolutePath p1 = getPath("aaa");
+		TVFSAbsolutePath p1 = getPath("/aaa");
 		assertEquals(1, p1.getNameCount());
 		assertPath(toList("aaa"), p1.getName(0));
 		try {
@@ -149,7 +149,7 @@ public class TVFSAbsolutePathTest {
 
 	@Test
 	public void testGetName2Path() {
-		TVFSAbsolutePath p1 = getPath("aaa", "bbb");
+		TVFSAbsolutePath p1 = getPath("/aaa", "bbb");
 		assertEquals(2, p1.getNameCount());
 		assertPath(toList("aaa"), p1.getName(0));
 		assertPath(toList("bbb"), p1.getName(1));
@@ -169,7 +169,7 @@ public class TVFSAbsolutePathTest {
 
 	@Test
 	public void testGetName3Path() {
-		TVFSAbsolutePath p1 = getPath("aaa", "bbb", "ccc");
+		TVFSAbsolutePath p1 = getPath("/aaa", "bbb", "ccc");
 		assertEquals(3, p1.getNameCount());
 		assertPath(toList("aaa"), p1.getName(0));
 		assertPath(toList("bbb"), p1.getName(1));
@@ -181,6 +181,47 @@ public class TVFSAbsolutePathTest {
 			assertEquals("Index 3 invalide", e.getMessage());
 		}
 	}
+
+	@Test
+	public void testConstructor() {
+		TVFSAbsolutePath p1 = getPath();
+		assertEquals(0, p1.getNameCount());
+
+		p1 = getPath("/");
+		assertEquals(0, p1.getNameCount());
+
+		p1 = getPath("/aaa", "bbb", "ccc");
+		assertEquals(3, p1.getNameCount());
+		assertPath(toList("aaa"), p1.getName(0));
+		assertPath(toList("bbb"), p1.getName(1));
+		assertPath(toList("ccc"), p1.getName(2));
+
+		p1 = getPath("/aaa/bbb/ccc");
+		assertEquals(3, p1.getNameCount());
+		assertPath(toList("aaa"), p1.getName(0));
+		assertPath(toList("bbb"), p1.getName(1));
+		assertPath(toList("ccc"), p1.getName(2));
+
+		p1 = getPath("/aaa//bbb///ccc/");
+		assertEquals(3, p1.getNameCount());
+		assertPath(toList("aaa"), p1.getName(0));
+		assertPath(toList("bbb"), p1.getName(1));
+		assertPath(toList("ccc"), p1.getName(2));
+
+
+		p1 = getPath("\\aaa\\bbb\\ccc");
+		assertEquals(3, p1.getNameCount());
+		assertPath(toList("aaa"), p1.getName(0));
+		assertPath(toList("bbb"), p1.getName(1));
+		assertPath(toList("ccc"), p1.getName(2));
+
+		p1 = getPath("\\aaa\\\\bbb\\\\\\ccc\\");
+		assertEquals(3, p1.getNameCount());
+		assertPath(toList("aaa"), p1.getName(0));
+		assertPath(toList("bbb"), p1.getName(1));
+		assertPath(toList("ccc"), p1.getName(2));
+	}
+
 
 	// tools method
 
