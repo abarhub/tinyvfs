@@ -104,9 +104,9 @@ public class VirtualFSProviderTest {
 
 		TVFSAbstractPath p = (TVFSAbstractPath) path;
 		assertEquals(3, p.getNameCount());
-		assertEquals("/aaa", p.getName(0).toString());
-		assertEquals("/bbb", p.getName(1).toString());
-		assertEquals("/ccc", p.getName(2).toString());
+		assertEquals("aaa", p.getName(0).toString());
+		assertEquals("bbb", p.getName(1).toString());
+		assertEquals("ccc", p.getName(2).toString());
 		assertPath(toList("aaa", "bbb", "ccc"), p);
 		assertTrue(fs == p.getFileSystem());
 		assertEquals("test1:/aaa/bbb/ccc", p.toString());
@@ -128,10 +128,10 @@ public class VirtualFSProviderTest {
 
 		TVFSAbstractPath p = (TVFSAbstractPath) path;
 		assertEquals(4, p.getNameCount());
-		assertEquals("/aaaa", p.getName(0).toString());
-		assertEquals("/bbbbbb", p.getName(1).toString());
-		assertEquals("/cccc", p.getName(2).toString());
-		assertEquals("/dddd", p.getName(3).toString());
+		assertEquals("aaaa", p.getName(0).toString());
+		assertEquals("bbbbbb", p.getName(1).toString());
+		assertEquals("cccc", p.getName(2).toString());
+		assertEquals("dddd", p.getName(3).toString());
 		assertPath(toList("aaaa", "bbbbbb", "cccc", "dddd"), p);
 		assertTrue(fs == p.getFileSystem());
 		assertEquals("test1:/aaaa/bbbbbb/cccc/dddd", p.toString());
@@ -153,10 +153,10 @@ public class VirtualFSProviderTest {
 
 		TVFSAbstractPath p = (TVFSAbstractPath) path;
 		assertEquals(4, p.getNameCount());
-		assertEquals("/aaaa", p.getName(0).toString());
-		assertEquals("/bbbbbb", p.getName(1).toString());
-		assertEquals("/cccc", p.getName(2).toString());
-		assertEquals("/dddd", p.getName(3).toString());
+		assertEquals("aaaa", p.getName(0).toString());
+		assertEquals("bbbbbb", p.getName(1).toString());
+		assertEquals("cccc", p.getName(2).toString());
+		assertEquals("dddd", p.getName(3).toString());
 		assertPath(toList("aaaa", "bbbbbb", "cccc", "dddd"), p);
 		assertTrue(fs == p.getFileSystem());
 		assertEquals("test1:/aaaa/bbbbbb/cccc/dddd", p.toString());

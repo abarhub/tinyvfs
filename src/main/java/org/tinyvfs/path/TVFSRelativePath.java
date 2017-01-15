@@ -129,7 +129,10 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 	public String toString() {
 		String s = "";
 		for (String s2 : path) {
-			s += "/" + s2;
+			if (s.length() > 0)
+				s += "/" + s2;
+			else
+				s += s2;
 		}
 		return s;
 	}
