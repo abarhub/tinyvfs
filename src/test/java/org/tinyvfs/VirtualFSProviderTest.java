@@ -16,6 +16,8 @@ import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Path;
 
 import static org.junit.Assert.*;
+import static org.tinyvfs.TVFSTools.toList;
+import static org.tinyvfs.ToolsTests.assertPath;
 
 /**
  * Created by Alain on 01/01/2017.
@@ -105,8 +107,9 @@ public class VirtualFSProviderTest {
 		assertEquals("/aaa", p.getName(0).toString());
 		assertEquals("/bbb", p.getName(1).toString());
 		assertEquals("/ccc", p.getName(2).toString());
+		assertPath(toList("aaa", "bbb", "ccc"), p);
 		assertTrue(fs == p.getFileSystem());
-		assertEquals("/aaa/bbb/ccc", p.toString());
+		assertEquals("test1:/aaa/bbb/ccc", p.toString());
 	}
 
 	@Test
@@ -129,8 +132,9 @@ public class VirtualFSProviderTest {
 		assertEquals("/bbbbbb", p.getName(1).toString());
 		assertEquals("/cccc", p.getName(2).toString());
 		assertEquals("/dddd", p.getName(3).toString());
+		assertPath(toList("aaaa", "bbbbbb", "cccc", "dddd"), p);
 		assertTrue(fs == p.getFileSystem());
-		assertEquals("/aaaa/bbbbbb/cccc/dddd", p.toString());
+		assertEquals("test1:/aaaa/bbbbbb/cccc/dddd", p.toString());
 	}
 
 	@Test
@@ -153,7 +157,10 @@ public class VirtualFSProviderTest {
 		assertEquals("/bbbbbb", p.getName(1).toString());
 		assertEquals("/cccc", p.getName(2).toString());
 		assertEquals("/dddd", p.getName(3).toString());
+		assertPath(toList("aaaa", "bbbbbb", "cccc", "dddd"), p);
 		assertTrue(fs == p.getFileSystem());
-		assertEquals("/aaaa/bbbbbb/cccc/dddd", p.toString());
+		assertEquals("test1:/aaaa/bbbbbb/cccc/dddd", p.toString());
 	}
+
+
 }

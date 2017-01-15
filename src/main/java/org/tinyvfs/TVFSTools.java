@@ -1,6 +1,8 @@
 package org.tinyvfs;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alain on 11/12/2016.
@@ -63,5 +65,17 @@ public final class TVFSTools {
 
 	public static void unsupportedOperation() {
 		throw new UnsupportedOperationException();
+	}
+
+	public static <T> List<T> toList(T... values) {
+		if (values == null || values.length == 0) {
+			return new ArrayList<T>();
+		} else {
+			List<T> list = new ArrayList<T>();
+			for (T v : values) {
+				list.add(v);
+			}
+			return list;
+		}
 	}
 }

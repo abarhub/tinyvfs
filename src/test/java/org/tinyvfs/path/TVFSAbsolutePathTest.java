@@ -12,6 +12,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.tinyvfs.TVFSTools.toList;
+import static org.tinyvfs.ToolsTests.assertPath;
 
 /**
  * Created by Alain on 14/01/2017.
@@ -37,6 +39,7 @@ public class TVFSAbsolutePathTest {
 
 		p1 = getPath("aaa", "bbb", "ccc");
 		assertTrue(p1.isAbsolute());
+		assertPath(toList("aaa", "bbb", "ccc"), p1);
 	}
 
 	@Test
@@ -46,19 +49,24 @@ public class TVFSAbsolutePathTest {
 
 		p1 = getPath("aaa", "bbb", "ccc");
 		assertEquals(NAME + ":/aaa/bbb/ccc", p1.toString());
+		assertPath(toList("aaa", "bbb", "ccc"), p1);
 	}
 
 	@Test
 	public void testGetRootOK() throws Exception {
 		TVFSAbsolutePath p1 = getPath();
+		assertPath(toList(), p1);
 		Path p = p1.getRoot();
 		assertTrue(p instanceof TVFSAbsolutePath);
 		assertEquals(NAME + ":", p.toString());
+		assertPath(toList(), p);
 
 		p1 = getPath("aaa", "bbbb", "cccc");
+		assertPath(toList("aaa", "bbbb", "cccc"), p1);
 		p = p1.getRoot();
 		assertTrue(p instanceof TVFSAbsolutePath);
 		assertEquals(NAME + ":", p.toString());
+		assertPath(toList(), p);
 	}
 
 	// tools method
@@ -74,4 +82,5 @@ public class TVFSAbsolutePathTest {
 			return new TVFSAbsolutePath(virtualFS, liste);
 		}
 	}
+
 }
