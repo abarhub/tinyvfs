@@ -52,16 +52,6 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 		return null;
 	}
 
-	public Path resolve(Path other) {
-		unsupportedOperation();
-		return null;
-	}
-
-	public Path resolve(String other) {
-		unsupportedOperation();
-		return null;
-	}
-
 	public Path resolveSibling(Path other) {
 		unsupportedOperation();
 		return null;

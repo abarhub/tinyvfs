@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.tinyvfs.VirtualFS;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -222,6 +223,110 @@ public class TVFSAbsolutePathTest {
 		assertPath(toList("ccc"), p1.getName(2));
 	}
 
+	@Test
+	public void testResolvePathOK() {
+		Path p1, p2, p3;
+
+		p1 = getPath("/aaa", "bbb", "ccc");
+
+		p2 = getPathRelative("ddd");
+
+		p3 = p1.resolve(p2);
+		assertEquals(4, p3.getNameCount());
+		assertPath(toList("aaa"), p3.getName(0));
+		assertPath(toList("bbb"), p3.getName(1));
+		assertPath(toList("ccc"), p3.getName(2));
+		assertPath(toList("ddd"), p3.getName(3));
+		assertPath(toList("aaa", "bbb", "ccc", "ddd"), p3);
+		assertTrue(p3.isAbsolute());
+
+		p1 = getPath("/aaa", "bbb", "ccc");
+
+		p2 = getPath("fff");
+
+		p3 = p1.resolve(p2);
+		assertTrue(p3.isAbsolute());
+		assertPath(toList("fff"), p3);
+
+		p1 = getPath("/aaa", "bbb", "ccc");
+
+		p2 = getPathRelative("");
+
+		p3 = p1.resolve(p2);
+		assertTrue(p3.isAbsolute());
+		assertPath(toList("aaa", "bbb", "ccc"), p3);
+	}
+
+	@Test
+	public void testResolvePathKO() {
+		Path p1, p2, p3;
+
+		p1 = getPath("/aaa", "bbb", "ccc");
+
+		try {
+			p3 = p1.resolve((Path) null);
+			fail("Error");
+		} catch (IllegalArgumentException e) {
+			assertEquals("param must not be null", e.getMessage());
+		}
+
+		p2 = Paths.get("ddd");
+
+		try {
+			p3 = p1.resolve(p2);
+			fail("Error");
+		} catch (IllegalArgumentException e) {
+			assertEquals("param is invalid", e.getMessage());
+		}
+	}
+
+	@Test
+	public void testResolveStringOK() {
+		Path p1, p3;
+
+		p1 = getPath("/aaa", "bbb", "ccc");
+
+		p3 = p1.resolve("ddd");
+		assertEquals(4, p3.getNameCount());
+		assertPath(toList("aaa"), p3.getName(0));
+		assertPath(toList("bbb"), p3.getName(1));
+		assertPath(toList("ccc"), p3.getName(2));
+		assertPath(toList("ddd"), p3.getName(3));
+		assertPath(toList("aaa", "bbb", "ccc", "ddd"), p3);
+		assertTrue(p3.isAbsolute());
+
+		p1 = getPath("/aaa", "bbb", "ccc");
+
+		p3 = p1.resolve("fff");
+		assertTrue(p3.isAbsolute());
+		assertPath(toList("aaa", "bbb", "ccc", "fff"), p3);
+
+		p1 = getPath("/aaa", "bbb", "ccc");
+
+		p3 = p1.resolve("fff/ggg");
+		assertTrue(p3.isAbsolute());
+		assertPath(toList("aaa", "bbb", "ccc", "fff", "ggg"), p3);
+
+		p1 = getPath("/aaa", "bbb", "ccc");
+
+		p3 = p1.resolve("");
+		assertTrue(p3.isAbsolute());
+		assertPath(toList("aaa", "bbb", "ccc"), p3);
+	}
+
+	@Test
+	public void testResolveStringKO() {
+		Path p1, p3;
+
+		p1 = getPath("/aaa", "bbb", "ccc");
+
+		try {
+			p3 = p1.resolve((String) null);
+			fail("Error");
+		} catch (IllegalArgumentException e) {
+			assertEquals("param must not be null", e.getMessage());
+		}
+	}
 
 	// tools method
 
@@ -237,4 +342,15 @@ public class TVFSAbsolutePathTest {
 		}
 	}
 
+	private TVFSRelativePath getPathRelative(String... paths) {
+		if (paths == null || paths.length == 0) {
+			return new TVFSRelativePath(virtualFS, new ArrayList<>());
+		} else {
+			List<String> liste = new ArrayList<>();
+			for (String p : paths) {
+				liste.add(p);
+			}
+			return new TVFSRelativePath(virtualFS, liste);
+		}
+	}
 }

@@ -29,23 +29,6 @@ public abstract class TVFSAbstractPath implements Path {
 
 		if (list != null && !list.isEmpty()) {
 
-
-			if (isAbsolute()) {
-				if (list.get(0).isEmpty())
-					throw new IllegalArgumentException("Le Path n'est pas absolue");
-				char c = list.get(0).charAt(0);
-				if (c != '/' && c != '\\') {
-					throw new IllegalArgumentException("Le Path n'est pas absolue");
-				}
-			} else {
-				if (!list.get(0).isEmpty()) {
-					char c = list.get(0).charAt(0);
-					if (c == '/' || c == '\\') {
-						throw new IllegalArgumentException("Le Path est absolue");
-					}
-				}
-			}
-
 			for (String s : list) {
 				if (s == null) {
 					throw new NullPointerException("Path null");
@@ -212,4 +195,47 @@ public abstract class TVFSAbstractPath implements Path {
 	public int hashCode() {
 		return getRealPath2().hashCode();
 	}
+
+	@Override
+	public Path resolve(Path other) {
+		if (other == null) {
+			throw new IllegalArgumentException("param must not be null");
+		}
+		if (!(other instanceof TVFSAbstractPath)) {
+			throw new IllegalArgumentException("param is invalid");
+		}
+
+		if (other instanceof TVFSAbsolutePath) {
+			return other;
+		} else {
+			List<String> path = new ArrayList<>();
+			path.addAll(this.path);
+			path.addAll(((TVFSAbstractPath) other).path);
+			if (isAbsolute()) {
+				return new TVFSAbsolutePath(virtualFS, path);
+			} else {
+				return new TVFSRelativePath(virtualFS, path);
+			}
+		}
+	}
+
+	@Override
+	public Path resolve(String other) {
+		if (other == null) {
+			throw new IllegalArgumentException("param must not be null");
+		}
+		if (other.isEmpty()) {
+			return this;
+		}
+
+		List<String> path = new ArrayList<>();
+		path.addAll(this.path);
+		path.add(other);
+		if (isAbsolute()) {
+			return new TVFSAbsolutePath(virtualFS, path);
+		} else {
+			return new TVFSRelativePath(virtualFS, path);
+		}
+	}
+
 }

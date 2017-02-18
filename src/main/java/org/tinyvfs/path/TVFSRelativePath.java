@@ -54,16 +54,6 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 	}
 
 	@Override
-	public Path resolve(Path other) {
-		return null;
-	}
-
-	@Override
-	public Path resolve(String other) {
-		return null;
-	}
-
-	@Override
 	public Path resolveSibling(Path other) {
 		return null;
 	}
