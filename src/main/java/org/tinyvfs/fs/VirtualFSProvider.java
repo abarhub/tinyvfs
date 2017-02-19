@@ -4,8 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinyvfs.TVFSTools;
 import org.tinyvfs.config.TVFSConfig;
+import org.tinyvfs.config.TVFSConfigParam;
 import org.tinyvfs.config.TVFSRepository;
 import org.tinyvfs.path.TVFSAbsolutePath;
+import org.tinyvfs.path.TVFSAbstractPath;
+import org.tinyvfs.path.TVFSRootName;
 
 import java.io.IOException;
 import java.net.URI;
@@ -165,6 +168,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		checkVirtualPath(path);
 		TVFSTools.checkParam(path instanceof TVFSAbsolutePath, "le path n'est pas valide");
 		TVFSTools.checkParamNotNull(path.getFileSystem(), "le FS est null");
+		//checkPathReadOnly ??? TODO: tester si c'est une création
 		Path p = getRealPath(path);
 		FileSystem fs = getRealFileSystem(path);
 		return fs.provider().newByteChannel(p, options, attrs);
@@ -208,6 +212,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	public void createDirectory(Path dir, FileAttribute<?>[] attrs) throws IOException {
 		checkVirtualPath(dir);
+		checkPathReadOnly(dir);
 
 		Path p2 = getRealPath(dir);
 		FileSystem fs3 = getRealFileSystem(dir);
@@ -216,6 +221,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	public void delete(Path path) throws IOException {
 		checkVirtualPath(path);
+		checkPathReadOnly(path);
 
 		Path p2 = getRealPath(path);
 		FileSystem fs3 = getRealFileSystem(path);
@@ -225,6 +231,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 	public void copy(Path source, Path target, CopyOption... options) throws IOException {
 		checkVirtualPath(source);
 		checkVirtualPath(target);
+		checkPathReadOnly(target);
 
 		Path p2 = getRealPath(source);
 		Path p3 = getRealPath(target);
@@ -235,6 +242,8 @@ public class VirtualFSProvider extends FileSystemProvider {
 	public void move(Path source, Path target, CopyOption... options) throws IOException {
 		checkVirtualPath(source);
 		checkVirtualPath(target);
+		checkPathReadOnly(source);
+		checkPathReadOnly(target);
 
 		Path p2 = getRealPath(source);
 		Path p3 = getRealPath(target);
@@ -302,13 +311,12 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	public void setAttribute(Path path, String attribute, Object value, LinkOption... options) throws IOException {
 		checkVirtualPath(path);
+		checkPathReadOnly(path);
 
 		Path p2 = getRealPath(path);
 		FileSystem fs = getRealFileSystem(path);
 		fs.provider().setAttribute(p2, attribute, value, options);
 	}
-
-	// **************** methode à implementer *****************
 
 	public Path readSymbolicLink(Path link) throws IOException {
 		checkVirtualPath(link);
@@ -318,10 +326,10 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return fs.provider().readSymbolicLink(p2);
 	}
 
-
 	public void createLink(Path link, Path existing) throws IOException {
 		checkVirtualPath(link);
 		checkVirtualPath(existing);
+		checkPathReadOnly(link);
 
 		Path p2 = getRealPath(link);
 		Path p3 = getRealPath(existing);
@@ -333,6 +341,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 			throws IOException {
 		checkVirtualPath(link);
 		checkVirtualPath(target);
+		checkPathReadOnly(link);
 
 		Path p2 = getRealPath(link);
 		Path p3 = getRealPath(target);
@@ -346,6 +355,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 	                                                          FileAttribute<?>... attrs)
 			throws IOException {
 		checkVirtualPath(path);
+		// checkPathReadOnly ??? TODO: tester si c'est une création
 
 		Path p2 = getRealPath(path);
 		FileSystem fs = getRealFileSystem(path);
@@ -357,10 +367,26 @@ public class VirtualFSProvider extends FileSystemProvider {
 	                                  FileAttribute<?>... attrs)
 			throws IOException {
 		checkVirtualPath(path);
+		// checkPathReadOnly TODO: tester si c'est une création
 
 		Path p2 = getRealPath(path);
 		FileSystem fs = getRealFileSystem(path);
 		return fs.provider().newFileChannel(p2, options, attrs);
 	}
 
+	private boolean isPathReadOnly(Path path) {
+		checkVirtualPath(path);
+		TVFSAbstractPath p = (TVFSAbstractPath) path;
+		TVFSRootName name = p.getVirtualFS().getName();
+		TVFSConfigParam conf = tvfsConfig.get(name);
+		TVFSTools.checkParamNotNull(conf, "conf null");
+		return conf.isReadOnly();
+	}
+
+	private void checkPathReadOnly(Path path) {
+		checkVirtualPath(path);
+		if (isPathReadOnly(path)) {
+			throw new ReadOnlyFileSystemException();
+		}
+	}
 }
