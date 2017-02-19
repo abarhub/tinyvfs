@@ -9,6 +9,8 @@ import org.tinyvfs.path.TVFSAbsolutePath;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -16,6 +18,7 @@ import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Created by Alain on 11/12/2016.
@@ -51,16 +54,16 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	public static void clearFs() {
 		for (FileSystemProvider fs : installedProviders()) {
-			if(fs instanceof VirtualFSProvider){
-				VirtualFSProvider fs2= (VirtualFSProvider) fs;
+			if (fs instanceof VirtualFSProvider) {
+				VirtualFSProvider fs2 = (VirtualFSProvider) fs;
 				fs2.clear();
 			}
 		}
 	}
 
-	private void clear(){
+	private void clear() {
 		LOGGER.info("VFS clear");
-		tvFileSystem=null;
+		tvFileSystem = null;
 	}
 
 	public String getScheme() {
@@ -304,4 +307,60 @@ public class VirtualFSProvider extends FileSystemProvider {
 		FileSystem fs = getRealFileSystem(path);
 		fs.provider().setAttribute(p2, attribute, value, options);
 	}
+
+	// **************** methode à implementer *****************
+
+	public Path readSymbolicLink(Path link) throws IOException {
+		checkVirtualPath(link);
+
+		Path p2 = getRealPath(link);
+		FileSystem fs = getRealFileSystem(link);
+		return fs.provider().readSymbolicLink(p2);
+	}
+
+
+	public void createLink(Path link, Path existing) throws IOException {
+		checkVirtualPath(link);
+		checkVirtualPath(existing);
+
+		Path p2 = getRealPath(link);
+		Path p3 = getRealPath(existing);
+		FileSystem fs = getRealFileSystem(link);
+		fs.provider().createLink(p2, p3);
+	}
+
+	public void createSymbolicLink(Path link, Path target, FileAttribute<?>... attrs)
+			throws IOException {
+		checkVirtualPath(link);
+		checkVirtualPath(target);
+
+		Path p2 = getRealPath(link);
+		Path p3 = getRealPath(target);
+		FileSystem fs = getRealFileSystem(link);
+		fs.provider().createSymbolicLink(p2, p3, attrs);
+	}
+
+	public AsynchronousFileChannel newAsynchronousFileChannel(Path path,
+	                                                          Set<? extends OpenOption> options,
+	                                                          ExecutorService executor,
+	                                                          FileAttribute<?>... attrs)
+			throws IOException {
+		checkVirtualPath(path);
+
+		Path p2 = getRealPath(path);
+		FileSystem fs = getRealFileSystem(path);
+		return fs.provider().newAsynchronousFileChannel(p2, options, executor, attrs);
+	}
+
+	public FileChannel newFileChannel(Path path,
+	                                  Set<? extends OpenOption> options,
+	                                  FileAttribute<?>... attrs)
+			throws IOException {
+		checkVirtualPath(path);
+
+		Path p2 = getRealPath(path);
+		FileSystem fs = getRealFileSystem(path);
+		return fs.provider().newFileChannel(p2, options, attrs);
+	}
+
 }
