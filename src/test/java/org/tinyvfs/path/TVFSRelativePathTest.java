@@ -2,17 +2,13 @@ package org.tinyvfs.path;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tinyvfs.VirtualFS;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.tinyvfs.TVFSTools.toList;
 import static org.tinyvfs.ToolsTests.assertPath;
 

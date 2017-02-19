@@ -4,9 +4,10 @@ import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.tinyvfs.config.TVFSConfig2;
+import org.tinyvfs.config.TVFSConfig;
 import org.tinyvfs.config.TVFSConfigParam;
 import org.tinyvfs.config.TVFSRepository;
+import org.tinyvfs.fs.TVFileSystem;
 import org.tinyvfs.path.TVFSAbsolutePath;
 import org.tinyvfs.path.TVFSRootName;
 
@@ -38,7 +39,7 @@ public class TVFSPathsTest {
 		assertNotNull(folder);
 		assertTrue(folder.isAbsolute());
 
-		TVFSConfig2 conf = TVFSRepository.getInstance();
+		TVFSConfig conf = TVFSRepository.getInstance();
 		TVFSRootName name = new TVFSRootName("nom1");
 		TVFSConfigParam param = new TVFSConfigParam(name, folder, false);
 		conf.add(name, param);
@@ -94,7 +95,7 @@ public class TVFSPathsTest {
 		assertNotNull(folder);
 		assertTrue(folder.isAbsolute());
 
-		TVFSConfig2 conf = TVFSRepository.getInstance();
+		TVFSConfig conf = TVFSRepository.getInstance();
 		TVFSRootName name = new TVFSRootName("nom1");
 		TVFSConfigParam param = new TVFSConfigParam(name, folder, false);
 		conf.add(name, param);

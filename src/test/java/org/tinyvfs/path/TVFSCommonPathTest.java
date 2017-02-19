@@ -2,8 +2,8 @@ package org.tinyvfs.path;
 
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
-import org.tinyvfs.TVFileSystem;
-import org.tinyvfs.VirtualFS;
+import org.tinyvfs.fs.TVFileSystem;
+import org.tinyvfs.fs.VirtualFS;
 
 import java.io.File;
 import java.io.IOException;

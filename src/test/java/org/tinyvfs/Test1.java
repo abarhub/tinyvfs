@@ -6,9 +6,11 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tinyvfs.config.TVFSConfig2;
+import org.tinyvfs.config.TVFSConfig;
 import org.tinyvfs.config.TVFSConfigParam;
 import org.tinyvfs.config.TVFSRepository;
+import org.tinyvfs.fs.TVFileSystem;
+import org.tinyvfs.fs.VirtualFSProvider;
 import org.tinyvfs.path.TVFSRootName;
 
 import java.io.File;
@@ -46,8 +48,8 @@ public class Test1 {
 		LOGGER.info("Test 1");
 
 		VirtualFSProvider virtualFSProvider = mock(VirtualFSProvider.class);
-		TVFSConfig2 tvfsConfig2 = new TVFSConfig2();
-		tvFileSystem = new TVFileSystem(virtualFSProvider, tvfsConfig2, FileSystems.getDefault());
+		TVFSConfig tvfsConfig = new TVFSConfig();
+		tvFileSystem = new TVFileSystem(virtualFSProvider, tvfsConfig, FileSystems.getDefault());
 
 		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 

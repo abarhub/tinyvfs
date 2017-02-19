@@ -1,5 +1,6 @@
-package org.tinyvfs;
+package org.tinyvfs.fs;
 
+import org.tinyvfs.TVFSTools;
 import org.tinyvfs.path.TVFSAbsolutePath;
 import org.tinyvfs.path.TVFSRootName;
 

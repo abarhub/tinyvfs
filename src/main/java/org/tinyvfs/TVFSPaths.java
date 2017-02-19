@@ -1,5 +1,7 @@
 package org.tinyvfs;
 
+import org.tinyvfs.fs.TVFileSystem;
+import org.tinyvfs.fs.VirtualFSProvider;
 import org.tinyvfs.path.TVFSRelativePath;
 
 import java.io.IOException;

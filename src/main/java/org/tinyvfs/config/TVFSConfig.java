@@ -1,8 +1,8 @@
 package org.tinyvfs.config;
 
 import org.tinyvfs.TVFSTools;
-import org.tinyvfs.TVFileSystem;
-import org.tinyvfs.VirtualFS;
+import org.tinyvfs.fs.TVFileSystem;
+import org.tinyvfs.fs.VirtualFS;
 import org.tinyvfs.path.TVFSRootName;
 
 import java.util.HashMap;
@@ -11,12 +11,12 @@ import java.util.Map;
 /**
  * Created by Alain on 01/01/2017.
  */
-public class TVFSConfig2 {
+public class TVFSConfig {
 
 	private final Map<TVFSRootName, TVFSConfigParam> map;
 	private final Map<TVFSRootName, VirtualFS> mapFS;
 
-	public TVFSConfig2() {
+	public TVFSConfig() {
 		map = new HashMap<>();
 		mapFS = new HashMap<>();
 	}

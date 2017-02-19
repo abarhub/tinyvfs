@@ -1,6 +1,6 @@
 package org.tinyvfs.path;
 
-import org.tinyvfs.VirtualFS;
+import org.tinyvfs.fs.VirtualFS;
 
 import java.io.File;
 import java.io.IOException;

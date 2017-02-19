@@ -5,13 +5,13 @@ package org.tinyvfs.config;
  */
 public class TVFSRepository {
 
-	private static TVFSConfig2 instance = new TVFSConfig2();
+	private static TVFSConfig instance = new TVFSConfig();
 
-	public static TVFSConfig2 getInstance() {
+	public static TVFSConfig getInstance() {
 		return instance;
 	}
 
 	public static void clearInstance() {
-		instance = new TVFSConfig2();
+		instance = new TVFSConfig();
 	}
 }
