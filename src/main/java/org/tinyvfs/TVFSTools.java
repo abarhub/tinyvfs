@@ -20,7 +20,7 @@ public final class TVFSTools {
 
 		for (int i = 0; i < name.length(); i++) {
 			char c = name.charAt(i);
-			if (Character.isDigit(c) || (c >= 'a' && c < 'z') || (c >= 'A' && c < 'Z') || c == '.' || c == '_') {
+			if (Character.isDigit(c) || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '.' || c == '_') {
 				// character valide
 			} else {
 				return false;
@@ -28,7 +28,7 @@ public final class TVFSTools {
 		}
 
 		char c = name.charAt(0);
-		if ((c >= 'a' && c < 'z') || (c >= 'A' && c < 'Z')) {
+		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
 			// premier caractère valide
 		} else {
 			return false;

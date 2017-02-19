@@ -81,7 +81,7 @@ public final class TVFSPaths {
 		return fs;
 	}
 
-	protected static void clear(){
-		fs=null;
+	public static void clear() {
+		fs = null;
 	}
 }
