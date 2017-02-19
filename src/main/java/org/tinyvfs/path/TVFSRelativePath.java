@@ -110,6 +110,23 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 		return null;
 	}
 
+	protected Path getRealPath2() {
+		FileSystem fs = virtualFS.getTvFileSystem().getDefautFileSystem();
+		Path p;
+		if (path == null || path.isEmpty()) {
+			p = fs.getPath("");
+		} else {
+			String path2[] = new String[path.size() - 1];
+			String first;
+			first = path.get(0);
+			for (int i = 1; i < path.size(); i++) {
+				path2[i - 1] = path.get(i);
+			}
+			p = fs.getPath(first, path2);
+		}
+		return p;
+	}
+
 	@Override
 	public int compareTo(Path other) {
 		return 0;

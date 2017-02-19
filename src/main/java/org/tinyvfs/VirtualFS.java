@@ -19,10 +19,22 @@ public class VirtualFS {
 		TVFSTools.checkParamNotNull(tvFileSystem, "Param null");
 		TVFSTools.checkParamNotNull(name, "Name invalide");
 		TVFSTools.checkParamNotNull(rootPath, "Param null");
-		TVFSTools.checkParam(rootPath.isAbsolute(), "Param null");
+		TVFSTools.checkParam(rootPath.isAbsolute(), "path is not absolute : " + rootPath);
+
 		this.tvFileSystem = tvFileSystem;
 		this.name = name;
 		this.rootPath = rootPath;
+	}
+
+	private VirtualFS(TVFileSystem tvFileSystem) {
+		TVFSTools.checkParamNotNull(tvFileSystem, "Param null");
+		this.tvFileSystem = tvFileSystem;
+		name = null;
+		rootPath = null;
+	}
+
+	static public VirtualFS getRelativeVFS(TVFileSystem tvFileSystem) {
+		return new VirtualFS(tvFileSystem);
 	}
 
 	public Path get(String... paths) {

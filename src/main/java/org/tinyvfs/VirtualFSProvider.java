@@ -48,6 +48,20 @@ public class VirtualFSProvider extends FileSystemProvider {
 		LOGGER.info("VFS démarré");
 	}
 
+	public static void clearFs() {
+		for (FileSystemProvider fs : installedProviders()) {
+			if(fs instanceof VirtualFSProvider){
+				VirtualFSProvider fs2= (VirtualFSProvider) fs;
+				fs2.clear();
+			}
+		}
+	}
+
+	private void clear(){
+		LOGGER.info("VFS clear");
+		tvFileSystem=null;
+	}
+
 	public String getScheme() {
 		return SCHEME;
 	}
@@ -70,6 +84,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	private TVFileSystem createFileSystem(URI uri) {
 		checkUri(uri);
+		LOGGER.info("new VFS");
 		tvFileSystem = new TVFileSystem(this, tvfsConfig, defautFileSystem);
 		return tvFileSystem;
 	}
@@ -288,6 +303,4 @@ public class VirtualFSProvider extends FileSystemProvider {
 		FileSystem fs = getRealFileSystem(path);
 		fs.provider().setAttribute(p2, attribute, value, options);
 	}
-
-
 }

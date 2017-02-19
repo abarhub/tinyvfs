@@ -2,6 +2,7 @@ package org.tinyvfs;
 
 import org.tinyvfs.config.TVFSConfig2;
 import org.tinyvfs.config.TVFSConfigParam;
+import org.tinyvfs.config.TVFSRepository;
 import org.tinyvfs.path.TVFSRootName;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class TVFileSystem extends FileSystem {
 	private final VirtualFSProvider virtualFSProvider;
 	private final FileSystem defautFileSystem;
 	private final TVFSConfig2 tvfsConfig2;
+	private final VirtualFS relativeFS;
 	private boolean open;
 
 	public TVFileSystem(VirtualFSProvider virtualFSProvider, TVFSConfig2 tvfsConfig2, FileSystem defautFileSystem) {
@@ -30,6 +32,13 @@ public class TVFileSystem extends FileSystem {
 		open = true;
 		this.tvfsConfig2 = tvfsConfig2;
 		this.defautFileSystem = defautFileSystem;
+		relativeFS = VirtualFS.getRelativeVFS(this);
+	}
+
+	public static void deconnect() {
+		TVFSRepository.clearInstance();
+		TVFSPaths.clear();
+		VirtualFSProvider.clearFs();
 	}
 
 	public FileSystemProvider provider() {
@@ -114,5 +123,9 @@ public class TVFileSystem extends FileSystem {
 		TVFSTools.checkParam(isOpen(), "FS closed");
 		//tvfsConfig.add(tvfsConfigParam);
 		tvfsConfig2.add(tvfsConfigParam.getName(), tvfsConfigParam);
+	}
+
+	public VirtualFS getRelativeFS() {
+		return relativeFS;
 	}
 }

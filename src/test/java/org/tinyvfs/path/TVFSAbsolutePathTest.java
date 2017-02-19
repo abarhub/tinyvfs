@@ -2,33 +2,23 @@ package org.tinyvfs.path;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tinyvfs.VirtualFS;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.tinyvfs.TVFSTools.toList;
 import static org.tinyvfs.ToolsTests.assertPath;
 
 /**
  * Created by Alain on 14/01/2017.
  */
-public class TVFSAbsolutePathTest {
-
-	private static final String NAME = "root1";
-	private VirtualFS virtualFS;
+public class TVFSAbsolutePathTest extends TVFSCommonPathTest {
 
 	@Before
-	public void init() {
-		virtualFS = mock(VirtualFS.class);
-
-		TVFSRootName name = new TVFSRootName(NAME);
-		when(virtualFS.getName()).thenReturn(name);
+	public void init() throws IOException {
+		super.init();
 	}
 
 	@Test
@@ -328,29 +318,39 @@ public class TVFSAbsolutePathTest {
 		}
 	}
 
-	// tools method
+	@Test
+	public void testEqualsOK() {
+		Path p1, p2;
 
-	private TVFSAbsolutePath getPath(String... paths) {
-		if (paths == null || paths.length == 0) {
-			return new TVFSAbsolutePath(virtualFS, new ArrayList<>());
-		} else {
-			List<String> liste = new ArrayList<>();
-			for (String p : paths) {
-				liste.add(p);
-			}
-			return new TVFSAbsolutePath(virtualFS, liste);
-		}
+		p1 = getPath("/aaa", "bbb", "ccc");
+		p2 = getPath("/aaa", "bbb", "ccc");
+		assertTrue(p1.equals(p2));
+		assertTrue(p2.equals(p1));
+
+		p1 = getPath("aaa", "bbb", "ccc");
+		p2 = getPath("aaa/bbb/ccc");
+		assertTrue(p1.equals(p2));
+		assertTrue(p2.equals(p1));
+
+		p1 = getPath("aaa", "bbb", "ccc");
+		p2 = getPath("aaa//bbb/ccc");
+		assertTrue(p1.equals(p2));
+		assertTrue(p2.equals(p1));
+
+		p1 = getPath("aaa", "bbb", "ccc");
+		p2 = getPath("aaa/bbb///ccc/");
+		assertTrue(p1.equals(p2));
+		assertTrue(p2.equals(p1));
+
+		p1 = getPath("aaa", "bbb", "ccc2");
+		p2 = getPath("aaa/bbb/ccc");
+		assertFalse(p1.equals(p2));
+		assertFalse(p2.equals(p1));
+
+		p1 = getPath("aaa", "bbb", "ccc");
+		p2 = getPath("aaa/bbb/ccc/ddd");
+		assertFalse(p1.equals(p2));
+		assertFalse(p2.equals(p1));
 	}
 
-	private TVFSRelativePath getPathRelative(String... paths) {
-		if (paths == null || paths.length == 0) {
-			return new TVFSRelativePath(virtualFS, new ArrayList<>());
-		} else {
-			List<String> liste = new ArrayList<>();
-			for (String p : paths) {
-				liste.add(p);
-			}
-			return new TVFSRelativePath(virtualFS, liste);
-		}
-	}
 }

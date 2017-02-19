@@ -101,6 +101,17 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 		return null;
 	}
 
+	protected Path getRealPath2() {
+		Path root = virtualFS.getRootPath();
+		String s = "";
+		for (String s2 : path) {
+			if (s.length() > 0)
+				s += getFileSystem().getSeparator();
+			s += s2;
+		}
+		Path p = root.resolve(s);
+		return p;
+	}
 
 	@Override
 	public String toString() {

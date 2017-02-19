@@ -72,17 +72,7 @@ public abstract class TVFSAbstractPath implements Path {
 		return getRealPath2();
 	}
 
-	protected Path getRealPath2() {
-		Path root = virtualFS.getRootPath();
-		String s = "";
-		for (String s2 : path) {
-			if (s.length() > 0)
-				s += getFileSystem().getSeparator();
-			s += s2;
-		}
-		Path p = root.resolve(s);
-		return p;
-	}
+	abstract protected Path getRealPath2();
 
 	@Override
 	public Path getFileName() {
@@ -91,7 +81,7 @@ public abstract class TVFSAbstractPath implements Path {
 		} else {
 			List<String> liste2 = new ArrayList<>();
 			liste2.add(path.get(path.size() - 1));
-			return new TVFSRelativePath(virtualFS, liste2);
+			return createRelativePath(liste2);
 		}
 	}
 
@@ -102,7 +92,7 @@ public abstract class TVFSAbstractPath implements Path {
 		} else {
 			List<String> liste2 = new ArrayList<>();
 			liste2.add(path.get(path.size() - 2));
-			return new TVFSRelativePath(virtualFS, liste2);
+			return createRelativePath(liste2);
 		}
 	}
 
@@ -118,7 +108,7 @@ public abstract class TVFSAbstractPath implements Path {
 		} else {
 			List<String> liste2 = new ArrayList<>();
 			liste2.add(path.get(index));
-			return new TVFSRelativePath(virtualFS, liste2);
+			return createRelativePath(liste2);
 		}
 	}
 
@@ -135,7 +125,7 @@ public abstract class TVFSAbstractPath implements Path {
 			for (int i = beginIndex; i <= endIndex; i++) {
 				liste2.add(path.get(i));
 			}
-			return new TVFSRelativePath(virtualFS, liste2);
+			return createRelativePath(liste2);
 		}
 	}
 
@@ -181,15 +171,23 @@ public abstract class TVFSAbstractPath implements Path {
 	public boolean equals(Object other) {
 		if (other == null)
 			return false;
-		if (!(other instanceof TVFSAbsolutePath))
+		if (!(other instanceof TVFSAbstractPath))
 			return false;
 
-		TVFSAbsolutePath p = (TVFSAbsolutePath) other;
+		TVFSAbstractPath p = (TVFSAbstractPath) other;
 
-		if (!p.virtualFS.getName().equals(this.virtualFS.getName()))
+
+		if (isAbsolute() != p.isAbsolute())
 			return false;
 
-		return getRealPath2().equals(p.getRealPath2());
+		if (isAbsolute()) {
+			if (!p.virtualFS.getName().equals(this.virtualFS.getName()))
+				return false;
+
+			return getRealPath2().equals(p.getRealPath2());
+		} else {
+			return getRealPath2().equals(p.getRealPath2());
+		}
 	}
 
 	public int hashCode() {
@@ -214,7 +212,7 @@ public abstract class TVFSAbstractPath implements Path {
 			if (isAbsolute()) {
 				return new TVFSAbsolutePath(virtualFS, path);
 			} else {
-				return new TVFSRelativePath(virtualFS, path);
+				return createRelativePath(path);
 			}
 		}
 	}
@@ -234,8 +232,15 @@ public abstract class TVFSAbstractPath implements Path {
 		if (isAbsolute()) {
 			return new TVFSAbsolutePath(virtualFS, path);
 		} else {
-			return new TVFSRelativePath(virtualFS, path);
+			return createRelativePath(path);
 		}
 	}
 
+	protected TVFSRelativePath createRelativePath(List<String> path){
+		return new TVFSRelativePath(virtualFS, path);
+	}
+
+	public VirtualFS getVirtualFS() {
+		return virtualFS;
+	}
 }
