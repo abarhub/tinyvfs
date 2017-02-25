@@ -25,13 +25,16 @@ public class TVFSConfig {
 		TVFSTools.checkParamNotNull(rootName, "root is Null");
 		TVFSTools.checkParamNotNull(configParam, "config is Null");
 		TVFSTools.checkParam(!map.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
+		TVFSTools.checkParam(configParam.getName().equals(rootName), "Name '" + rootName.getName() + "' invalid !");
 		map.put(rootName, configParam);
 	}
 
 	public void add(TVFSRootName rootName, TVFSConfigParam configParam, TVFileSystem fileSystem) {
 		TVFSTools.checkParamNotNull(rootName, "root is Null");
 		TVFSTools.checkParamNotNull(configParam, "config is Null");
+		TVFSTools.checkParamNotNull(fileSystem, "root is Null");
 		TVFSTools.checkParam(!map.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
+		TVFSTools.checkParam(configParam.getName().equals(rootName), "Name '" + rootName.getName() + "' invalid !");
 		map.put(rootName, configParam);
 		mapFS.put(rootName, new VirtualFS(fileSystem, rootName, configParam.getPath()));
 	}
