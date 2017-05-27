@@ -1,5 +1,7 @@
 package org.tinyvfs.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tinyvfs.core.fs.TVFileSystem;
 import org.tinyvfs.core.fs.VirtualFSProvider;
 import org.tinyvfs.core.path.TVFSRelativePath;
@@ -13,15 +15,14 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by Alain on 11/12/2016.
  */
 public final class TVFSPaths {
 
-	private static Logger LOGGER = Logger.getLogger(TVFSPaths.class.getName());
+	private final static Logger LOGGER = LoggerFactory.getLogger(TVFSPaths.class);
+
 
 	private static TVFileSystem fs;
 
@@ -34,7 +35,7 @@ public final class TVFSPaths {
 		try {
 			fs2 = getTvFileSystem();
 		} catch (IOException | URISyntaxException e) {
-			LOGGER.log(Level.SEVERE, "File System '" + VirtualFSProvider.SCHEME + "' not found", e);
+			LOGGER.error("File System '" + VirtualFSProvider.SCHEME + "' not found", e);
 			throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' not found");
 		}
 		if (fs2 == null) {
@@ -48,7 +49,7 @@ public final class TVFSPaths {
 		try {
 			fs2 = getTvFileSystem();
 		} catch (IOException | URISyntaxException e) {
-			LOGGER.log(Level.SEVERE, "File System '" + VirtualFSProvider.SCHEME + "' not found", e);
+			LOGGER.error("File System '" + VirtualFSProvider.SCHEME + "' not found", e);
 			throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' not found");
 		}
 		if (fs2 == null) {

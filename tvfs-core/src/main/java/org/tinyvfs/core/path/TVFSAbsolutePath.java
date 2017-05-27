@@ -103,22 +103,22 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 
 	protected Path getRealPath2() {
 		Path root = virtualFS.getRootPath();
-		String s = "";
+		StringBuilder s = new StringBuilder();
 		for (String s2 : path) {
 			if (s.length() > 0)
-				s += getFileSystem().getSeparator();
-			s += s2;
+				s.append(getFileSystem().getSeparator());
+			s.append(s2);
 		}
-		Path p = root.resolve(s);
+		Path p = root.resolve(s.toString());
 		return p;
 	}
 
 	@Override
 	public String toString() {
-		String s = virtualFS.getName().getName() + ":";
+		StringBuilder s = new StringBuilder(virtualFS.getName().getName() + ":");
 		for (String s2 : path) {
-			s += "/" + s2;
+			s.append("/").append(s2);
 		}
-		return s;
+		return s.toString();
 	}
 }

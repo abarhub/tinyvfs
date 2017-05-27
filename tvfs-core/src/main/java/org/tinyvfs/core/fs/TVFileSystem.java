@@ -91,9 +91,10 @@ public class TVFileSystem extends FileSystem {
 	}
 
 	private VirtualFS getFS(TVFSRootName name) {
+		TVFSTools.checkParamNotNull(name, "Param is Null");
 		VirtualFS fs = tvfsConfig.getFS(name, this);
 		if (fs == null) {
-			throw new InvalidParameterException("Erreur");
+			throw new InvalidParameterException("Erreur: no FS for '" + name.getName() + "'");
 		}
 		return fs;
 	}

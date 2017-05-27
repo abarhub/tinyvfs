@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutorService;
  */
 public class VirtualFSProvider extends FileSystemProvider {
 
-	final static Logger LOGGER = LoggerFactory.getLogger(VirtualFSProvider.class);
+	private final static Logger LOGGER = LoggerFactory.getLogger(VirtualFSProvider.class);
 
 	public static String SCHEME = "tvfs";
 
