@@ -11,9 +11,11 @@ import org.tinyvfs.core.config.TVFSRepository;
 import org.tinyvfs.core.fs.VirtualFSProvider;
 
 import java.io.File;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -41,11 +43,43 @@ public class TVFSConfigureTest {
 	@Ignore
 	public void testConfigure1Ok() throws Exception {
 		LOGGER.info("configure");
-		File f = new File(VirtualFSProvider.SCHEME + "://nom1/test1.txt");
+
+		String chemin;
+
+		chemin = "tvfs://nom1/test1.txt";
+		chemin = VirtualFSProvider.SCHEME + "://nom1/test1.txt";
+
+		File f = new File(chemin);
 
 		File f2 = new File("tvfs://test");
 
 		Files.write(f.toPath(), "test".getBytes(StandardCharsets.UTF_8));
+
+		LOGGER.info("configure fini");
+	}
+
+	@Test
+	public void testConfigure01Ok() throws Exception {
+		LOGGER.info("configure 01");
+
+		Path root = Paths.get(URI.create("tvfs://nom1/test01.txt"));
+
+
+		final String message = "test_159";
+		final byte[] messageBytes = getByte(message);
+
+		LOGGER.info("write {}", message);
+
+		Files.write(root, messageBytes);
+
+		byte buf[] = Files.readAllBytes(root);
+
+		assertArrayEquals(messageBytes, buf);
+
+		String messageRes = new String(buf, StandardCharsets.UTF_8);
+		LOGGER.info("read {}", messageRes);
+
+		assertEquals(message, messageRes);
 
 		LOGGER.info("configure fini");
 	}
