@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.tinyvfs.config.TVFSConfigParam;
 import org.tinyvfs.config.TVFSRepository;
-import org.tinyvfs.fs.TVFileSystem;
-import org.tinyvfs.fs.VirtualFSProvider;
 import org.tinyvfs.path.TVFSAbstractPath;
 import org.tinyvfs.path.TVFSRootName;
 

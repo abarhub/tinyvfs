@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 import static org.tinyvfs.TVFSTools.toList;
 import static org.tinyvfs.ToolsTests.assertPath;
 

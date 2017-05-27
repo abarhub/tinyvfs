@@ -6,10 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="tinyvfs" />
+        <module name="org.tinyvfs" />
+        <module name="org.tinyvfs (1)" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="org.tinyvfs" target="1.8" />
+      <module name="org.tinyvfs (1)" target="1.8" />
       <module name="tinyvfs" target="1.8" />
     </bytecodeTargetLevel>
   </component>

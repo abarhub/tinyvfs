@@ -7,8 +7,6 @@ import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinyvfs.Test1;
-import org.tinyvfs.fs.TVFileSystem;
-import org.tinyvfs.fs.VirtualFS;
 import org.tinyvfs.path.TVFSAbsolutePath;
 import org.tinyvfs.path.TVFSRootName;
 
