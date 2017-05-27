@@ -1,12 +1,12 @@
 package org.tinyvfs.config;
 
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
+import org.tinyvfs.TVFSToolsTest;
 import org.tinyvfs.path.TVFSRootName;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -16,18 +16,18 @@ import static org.junit.Assert.assertNotEquals;
  */
 public class TVFSConfigParamTest {
 
-	private static Logger LOGGER = Logger.getLogger(TVFSConfigParamTest.class.getName());
+	private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(TVFSToolsTest.class);
 
 	@Test
 	public void testCreate() throws Exception {
 		TVFSConfigParam tvfsConfigParam = new TVFSConfigParam(getName1(), getPath1(), false);
-		LOGGER.log(Level.INFO, "config=" + tvfsConfigParam);
+		LOGGER.info("config=" + tvfsConfigParam);
 		assertEquals(getName1(), tvfsConfigParam.getName());
 		assertEquals(getPath1(), tvfsConfigParam.getPath());
 		assertEquals(false, tvfsConfigParam.isReadOnly());
 
 		tvfsConfigParam = new TVFSConfigParam(getName2(), getPath2(), true);
-		LOGGER.log(Level.INFO, "config=" + tvfsConfigParam);
+		LOGGER.info("config=" + tvfsConfigParam);
 		assertEquals(getName2(), tvfsConfigParam.getName());
 		assertEquals(getPath2(), tvfsConfigParam.getPath());
 		assertEquals(true, tvfsConfigParam.isReadOnly());
