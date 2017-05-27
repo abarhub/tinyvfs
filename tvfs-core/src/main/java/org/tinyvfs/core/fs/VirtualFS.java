@@ -1,8 +1,8 @@
-package org.tinyvfs.fs;
+package org.tinyvfs.core.fs;
 
-import org.tinyvfs.TVFSTools;
-import org.tinyvfs.path.TVFSAbsolutePath;
-import org.tinyvfs.path.TVFSRootName;
+import org.tinyvfs.core.TVFSTools;
+import org.tinyvfs.core.path.TVFSAbsolutePath;
+import org.tinyvfs.core.path.TVFSRootName;
 
 import java.nio.file.Path;
 import java.util.Arrays;

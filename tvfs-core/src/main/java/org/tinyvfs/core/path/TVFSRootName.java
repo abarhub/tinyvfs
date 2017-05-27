@@ -1,6 +1,6 @@
-package org.tinyvfs.path;
+package org.tinyvfs.core.path;
 
-import org.tinyvfs.TVFSTools;
+import org.tinyvfs.core.TVFSTools;
 
 /**
  * Created by Alain on 01/01/2017.

@@ -1,4 +1,4 @@
-package org.tinyvfs;
+package org.tinyvfs.core;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -6,12 +6,12 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tinyvfs.config.TVFSConfig;
-import org.tinyvfs.config.TVFSConfigParam;
-import org.tinyvfs.config.TVFSRepository;
-import org.tinyvfs.fs.TVFileSystem;
-import org.tinyvfs.fs.VirtualFSProvider;
-import org.tinyvfs.path.TVFSRootName;
+import org.tinyvfs.core.config.TVFSConfig;
+import org.tinyvfs.core.config.TVFSConfigParam;
+import org.tinyvfs.core.config.TVFSRepository;
+import org.tinyvfs.core.fs.TVFileSystem;
+import org.tinyvfs.core.fs.VirtualFSProvider;
+import org.tinyvfs.core.path.TVFSRootName;
 
 import java.io.File;
 import java.io.IOException;

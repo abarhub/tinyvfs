@@ -1,4 +1,4 @@
-package org.tinyvfs.config;
+package org.tinyvfs.core.config;
 
 /**
  * Created by Alain on 01/01/2017.

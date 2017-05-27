@@ -1,14 +1,14 @@
-package org.tinyvfs.fs;
+package org.tinyvfs.core.fs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tinyvfs.TVFSTools;
-import org.tinyvfs.config.TVFSConfig;
-import org.tinyvfs.config.TVFSConfigParam;
-import org.tinyvfs.config.TVFSRepository;
-import org.tinyvfs.path.TVFSAbsolutePath;
-import org.tinyvfs.path.TVFSAbstractPath;
-import org.tinyvfs.path.TVFSRootName;
+import org.tinyvfs.core.TVFSTools;
+import org.tinyvfs.core.config.TVFSConfig;
+import org.tinyvfs.core.config.TVFSConfigParam;
+import org.tinyvfs.core.config.TVFSRepository;
+import org.tinyvfs.core.path.TVFSAbsolutePath;
+import org.tinyvfs.core.path.TVFSAbstractPath;
+import org.tinyvfs.core.path.TVFSRootName;
 
 import java.io.IOException;
 import java.net.URI;

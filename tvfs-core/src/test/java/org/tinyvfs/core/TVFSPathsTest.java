@@ -1,23 +1,22 @@
-package org.tinyvfs;
+package org.tinyvfs.core;
 
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.tinyvfs.config.TVFSConfig;
-import org.tinyvfs.config.TVFSConfigParam;
-import org.tinyvfs.config.TVFSRepository;
-import org.tinyvfs.fs.TVFileSystem;
-import org.tinyvfs.path.TVFSAbsolutePath;
-import org.tinyvfs.path.TVFSRootName;
+import org.tinyvfs.core.config.TVFSConfig;
+import org.tinyvfs.core.config.TVFSConfigParam;
+import org.tinyvfs.core.config.TVFSRepository;
+import org.tinyvfs.core.fs.TVFileSystem;
+import org.tinyvfs.core.path.TVFSAbsolutePath;
+import org.tinyvfs.core.path.TVFSRootName;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
 import static org.junit.Assert.*;
-import static org.tinyvfs.TVFSTools.toList;
-import static org.tinyvfs.ToolsTests.assertPath;
+import static org.tinyvfs.core.TVFSTools.toList;
 
 /**
  * Created by Alain on 19/02/2017.
@@ -49,43 +48,43 @@ public class TVFSPathsTest {
 		assertNotNull(p);
 		assertTrue(p.isAbsolute());
 		assertEquals(3, p.getNameCount());
-		assertPath(toList("aa", "bb", "cc"), p);
+		ToolsTests.assertPath(toList("aa", "bb", "cc"), p);
 
 		p = TVFSPaths.getAbsolutePath("nom1", "/aa/bb/cc");
 
 		assertNotNull(p);
 		assertTrue(p.isAbsolute());
-		assertPath(toList("aa", "bb", "cc"), p);
+		ToolsTests.assertPath(toList("aa", "bb", "cc"), p);
 
 		p = TVFSPaths.getAbsolutePath("nom1", "aa2/bb2/cc2");
 
 		assertNotNull(p);
 		assertTrue(p.isAbsolute());
-		assertPath(toList("aa2", "bb2", "cc2"), p);
+		ToolsTests.assertPath(toList("aa2", "bb2", "cc2"), p);
 
 		p = TVFSPaths.getAbsolutePath("nom1", "aa3");
 
 		assertNotNull(p);
 		assertTrue(p.isAbsolute());
-		assertPath(toList("aa3"), p);
+		ToolsTests.assertPath(toList("aa3"), p);
 
 		p = TVFSPaths.getAbsolutePath("nom1", "aa3", "aa4", "aa5", "aa6");
 
 		assertNotNull(p);
 		assertTrue(p.isAbsolute());
-		assertPath(toList("aa3", "aa4", "aa5", "aa6"), p);
+		ToolsTests.assertPath(toList("aa3", "aa4", "aa5", "aa6"), p);
 
 		p = TVFSPaths.getAbsolutePath("nom1", "");
 
 		assertNotNull(p);
 		assertTrue(p.isAbsolute());
-		assertPath(toList(), p);
+		ToolsTests.assertPath(toList(), p);
 
 		p = TVFSPaths.getAbsolutePath("nom1");
 
 		assertNotNull(p);
 		assertTrue(p.isAbsolute());
-		assertPath(toList(), p);
+		ToolsTests.assertPath(toList(), p);
 	}
 
 	@Test
@@ -109,7 +108,7 @@ public class TVFSPathsTest {
 
 		assertNotNull(p);
 		assertTrue(p.isAbsolute());
-		assertPath(toList("fff", "ggg"), p);
+		ToolsTests.assertPath(toList("fff", "ggg"), p);
 		assertEquals("nom1", ((TVFSAbsolutePath) p).getVirtualFS().getName().getName());
 		assertEquals(name, ((TVFSAbsolutePath) p).getVirtualFS().getName());
 
@@ -117,7 +116,7 @@ public class TVFSPathsTest {
 
 		assertNotNull(p);
 		assertTrue(p.isAbsolute());
-		assertPath(toList("fff", "ggg"), p);
+		ToolsTests.assertPath(toList("fff", "ggg"), p);
 		assertEquals("nom2", ((TVFSAbsolutePath) p).getVirtualFS().getName().getName());
 		assertEquals(name2, ((TVFSAbsolutePath) p).getVirtualFS().getName());
 	}
@@ -129,21 +128,21 @@ public class TVFSPathsTest {
 		assertNotNull(p);
 		assertFalse(p.isAbsolute());
 		assertEquals(3, p.getNameCount());
-		assertPath(toList("aa2", "bb2", "cc2"), p);
+		ToolsTests.assertPath(toList("aa2", "bb2", "cc2"), p);
 
 		p = TVFSPaths.getRelativePath("aa3", "bb3", "cc3");
 
 		assertNotNull(p);
 		assertFalse(p.isAbsolute());
 		assertEquals(3, p.getNameCount());
-		assertPath(toList("aa3", "bb3", "cc3"), p);
+		ToolsTests.assertPath(toList("aa3", "bb3", "cc3"), p);
 
 		p = TVFSPaths.getRelativePath();
 
 		assertNotNull(p);
 		assertFalse(p.isAbsolute());
 		assertEquals(0, p.getNameCount());
-		assertPath(toList(), p);
+		ToolsTests.assertPath(toList(), p);
 	}
 
 	// tools method

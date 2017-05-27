@@ -1,7 +1,7 @@
-package org.tinyvfs.path;
+package org.tinyvfs.core.path;
 
-import org.tinyvfs.TVFSTools;
-import org.tinyvfs.fs.VirtualFS;
+import org.tinyvfs.core.TVFSTools;
+import org.tinyvfs.core.fs.VirtualFS;
 
 import java.nio.file.FileSystem;
 import java.nio.file.Path;

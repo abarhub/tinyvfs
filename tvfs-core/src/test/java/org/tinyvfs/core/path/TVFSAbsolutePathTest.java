@@ -1,4 +1,4 @@
-package org.tinyvfs.path;
+package org.tinyvfs.core.path;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,8 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
-import static org.tinyvfs.TVFSTools.toList;
-import static org.tinyvfs.ToolsTests.assertPath;
+import static org.tinyvfs.core.TVFSTools.toList;
+import static org.tinyvfs.core.ToolsTests.assertPath;
 
 /**
  * Created by Alain on 14/01/2017.

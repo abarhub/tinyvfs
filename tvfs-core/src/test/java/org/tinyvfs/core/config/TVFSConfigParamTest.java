@@ -1,9 +1,10 @@
-package org.tinyvfs.config;
+package org.tinyvfs.core.config;
 
 import org.junit.Test;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tinyvfs.TVFSToolsTest;
-import org.tinyvfs.path.TVFSRootName;
+import org.tinyvfs.core.TVFSToolsTest;
+import org.tinyvfs.core.path.TVFSRootName;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,7 +17,7 @@ import static org.junit.Assert.assertNotEquals;
  */
 public class TVFSConfigParamTest {
 
-	private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(TVFSToolsTest.class);
+	private final static Logger LOGGER = LoggerFactory.getLogger(TVFSToolsTest.class);
 
 	@Test
 	public void testCreate() throws Exception {

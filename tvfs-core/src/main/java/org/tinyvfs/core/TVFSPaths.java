@@ -1,8 +1,8 @@
-package org.tinyvfs;
+package org.tinyvfs.core;
 
-import org.tinyvfs.fs.TVFileSystem;
-import org.tinyvfs.fs.VirtualFSProvider;
-import org.tinyvfs.path.TVFSRelativePath;
+import org.tinyvfs.core.fs.TVFileSystem;
+import org.tinyvfs.core.fs.VirtualFSProvider;
+import org.tinyvfs.core.path.TVFSRelativePath;
 
 import java.io.IOException;
 import java.net.URI;

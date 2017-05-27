@@ -1,4 +1,4 @@
-package org.tinyvfs;
+package org.tinyvfs.core;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

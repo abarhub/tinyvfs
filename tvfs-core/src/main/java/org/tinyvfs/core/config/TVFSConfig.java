@@ -1,9 +1,9 @@
-package org.tinyvfs.config;
+package org.tinyvfs.core.config;
 
-import org.tinyvfs.TVFSTools;
-import org.tinyvfs.fs.TVFileSystem;
-import org.tinyvfs.fs.VirtualFS;
-import org.tinyvfs.path.TVFSRootName;
+import org.tinyvfs.core.TVFSTools;
+import org.tinyvfs.core.fs.TVFileSystem;
+import org.tinyvfs.core.fs.VirtualFS;
+import org.tinyvfs.core.path.TVFSRootName;
 
 import java.util.HashMap;
 import java.util.Map;

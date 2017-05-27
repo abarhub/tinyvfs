@@ -1,4 +1,4 @@
-package org.tinyvfs;
+package org.tinyvfs.core;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;

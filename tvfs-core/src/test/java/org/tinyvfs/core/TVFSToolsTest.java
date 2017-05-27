@@ -1,4 +1,4 @@
-package org.tinyvfs;
+package org.tinyvfs.core;
 
 import org.junit.Test;
 import org.slf4j.Logger;

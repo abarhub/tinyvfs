@@ -1,13 +1,13 @@
-package org.tinyvfs.fs;
+package org.tinyvfs.core.fs;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.tinyvfs.config.TVFSConfigParam;
-import org.tinyvfs.config.TVFSRepository;
-import org.tinyvfs.path.TVFSAbstractPath;
-import org.tinyvfs.path.TVFSRootName;
+import org.tinyvfs.core.config.TVFSConfigParam;
+import org.tinyvfs.core.config.TVFSRepository;
+import org.tinyvfs.core.path.TVFSAbstractPath;
+import org.tinyvfs.core.path.TVFSRootName;
 
 import java.net.URI;
 import java.nio.file.FileSystem;
@@ -16,8 +16,8 @@ import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Path;
 
 import static org.junit.Assert.*;
-import static org.tinyvfs.TVFSTools.toList;
-import static org.tinyvfs.ToolsTests.assertPath;
+import static org.tinyvfs.core.TVFSTools.toList;
+import static org.tinyvfs.core.ToolsTests.assertPath;
 
 /**
  * Created by Alain on 01/01/2017.

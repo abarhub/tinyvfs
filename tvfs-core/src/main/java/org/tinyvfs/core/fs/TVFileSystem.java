@@ -1,11 +1,11 @@
-package org.tinyvfs.fs;
+package org.tinyvfs.core.fs;
 
-import org.tinyvfs.TVFSPaths;
-import org.tinyvfs.TVFSTools;
-import org.tinyvfs.config.TVFSConfig;
-import org.tinyvfs.config.TVFSConfigParam;
-import org.tinyvfs.config.TVFSRepository;
-import org.tinyvfs.path.TVFSRootName;
+import org.tinyvfs.core.TVFSPaths;
+import org.tinyvfs.core.TVFSTools;
+import org.tinyvfs.core.config.TVFSConfig;
+import org.tinyvfs.core.config.TVFSConfigParam;
+import org.tinyvfs.core.config.TVFSRepository;
+import org.tinyvfs.core.path.TVFSRootName;
 
 import java.io.IOException;
 import java.nio.file.*;

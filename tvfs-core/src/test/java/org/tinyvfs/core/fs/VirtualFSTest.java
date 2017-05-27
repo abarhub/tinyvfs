@@ -1,4 +1,4 @@
-package org.tinyvfs.fs;
+package org.tinyvfs.core.fs;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -6,9 +6,9 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tinyvfs.Test1;
-import org.tinyvfs.path.TVFSAbsolutePath;
-import org.tinyvfs.path.TVFSRootName;
+import org.tinyvfs.core.Test1;
+import org.tinyvfs.core.path.TVFSAbsolutePath;
+import org.tinyvfs.core.path.TVFSRootName;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
