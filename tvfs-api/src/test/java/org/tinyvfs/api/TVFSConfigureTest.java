@@ -11,11 +11,13 @@ import org.tinyvfs.core.config.TVFSRepository;
 import org.tinyvfs.core.fs.VirtualFSProvider;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.spi.FileSystemProvider;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -28,15 +30,17 @@ public class TVFSConfigureTest {
 	public final static Logger LOGGER = LoggerFactory.getLogger(TVFSConfigureTest.class);
 
 	@Before
-	public void init() {
+	public void init() throws NoSuchFieldException, IllegalAccessException {
 		LOGGER.info("init TVFSRepository.clearInstance");
 		TVFSRepository.clearInstance();
+		reinitProviders();
 	}
 
 	@After
-	public void terminate() {
+	public void terminate() throws NoSuchFieldException, IllegalAccessException {
 		LOGGER.info("terminate TVFSRepository.clearInstance");
 		TVFSRepository.clearInstance();
+		reinitProviders();
 	}
 
 	@Test
@@ -121,6 +125,16 @@ public class TVFSConfigureTest {
 
 	private byte[] getByte(String s) {
 		return s.getBytes(StandardCharsets.UTF_8);
+	}
+
+	private void reinitProviders() throws NoSuchFieldException, IllegalAccessException {
+		Field f = FileSystemProvider.class.getDeclaredField("installedProviders");
+		f.setAccessible(true);
+		f.set(null, null);
+
+		Field f2 = FileSystemProvider.class.getDeclaredField("loadingProviders");
+		f2.setAccessible(true);
+		f2.setBoolean(null, false);
 	}
 
 }

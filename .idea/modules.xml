@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/tvfs-core/org.tinyvfs.iml" filepath="$PROJECT_DIR$/tvfs-core/org.tinyvfs.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tvfs-api/org.tinyvfs (1).iml" filepath="$PROJECT_DIR$/tvfs-api/org.tinyvfs (1).iml" />
+      <module fileurl="file://$PROJECT_DIR$/tvfs-api/org.tinyvfs.api.iml" filepath="$PROJECT_DIR$/tvfs-api/org.tinyvfs.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tvfs-core/org.tinyvfs.core.iml" filepath="$PROJECT_DIR$/tvfs-core/org.tinyvfs.core.iml" />
       <module fileurl="file://$PROJECT_DIR$/tinyvfs.iml" filepath="$PROJECT_DIR$/tinyvfs.iml" />
     </modules>
   </component>

@@ -26,6 +26,10 @@ public class TVFSConfigure extends TVFSConfigurator {
 	public void configure(TVFSConfig tvfsConfig) {
 		LOGGER.debug("start configure");
 
+		FindConfigFile findConfigFile = new FindConfigFile();
+		Path p = findConfigFile.findFile();
+		LOGGER.info("p={}", p);
+
 		Path folder = null;
 		try {
 			folder = Files.createTempDirectory("temp");

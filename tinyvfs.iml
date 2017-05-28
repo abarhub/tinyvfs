@@ -8,6 +8,10 @@
       <sourceFolder url="file://$MODULE_DIR$/tvfs-core/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tvfs-core/src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/tvfs-core/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/tvfs-api/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tvfs-api/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/tvfs-api/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tvfs-api/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
