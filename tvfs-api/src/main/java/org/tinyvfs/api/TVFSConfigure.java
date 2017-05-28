@@ -2,6 +2,7 @@ package org.tinyvfs.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tinyvfs.api.ast.GlobalConfig;
 import org.tinyvfs.core.config.TVFSConfig;
 import org.tinyvfs.core.config.TVFSConfigParam;
 import org.tinyvfs.core.path.TVFSRootName;
@@ -29,6 +30,15 @@ public class TVFSConfigure extends TVFSConfigurator {
 		FindConfigFile findConfigFile = new FindConfigFile();
 		Path p = findConfigFile.findFile();
 		LOGGER.info("p={}", p);
+		if (p != null) {
+			ParseConfigFile parseConfigFile = new ParseConfigFile();
+			try {
+				GlobalConfig conf = parseConfigFile.parse(p);
+				LOGGER.info("conf={}", conf);
+			} catch (IOException e) {
+				LOGGER.error("Error: {}", e.getMessage(), e);
+			}
+		}
 
 		Path folder = null;
 		try {
