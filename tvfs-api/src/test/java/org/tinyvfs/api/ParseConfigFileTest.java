@@ -3,12 +3,16 @@ package org.tinyvfs.api;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tinyvfs.api.ast.DirectoryConfig;
 import org.tinyvfs.api.ast.GlobalConfig;
 
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Alain on 28/05/2017.
@@ -20,8 +24,8 @@ public class ParseConfigFileTest {
 	private ParseConfigFile parseConfigFile = new ParseConfigFile();
 
 	@Test
-	public void testParseKO() throws Exception {
-		LOGGER.info("testParseKO");
+	public void testParseOK() throws Exception {
+		LOGGER.info("testParseOK");
 
 		Path p = getPath("config1.properties");
 
@@ -29,7 +33,38 @@ public class ParseConfigFileTest {
 		GlobalConfig g = parseConfigFile.parse(p);
 
 		// vérifications
+		assertNotNull(g);
+		assertNotNull(g.getDirectoryConfigs());
+		assertEquals(1, g.getDirectoryConfigs().size());
+		DirectoryConfig dir = g.getDirectoryConfigs().get(0);
+		assertEquals("test1", dir.getName());
+		assertEquals("c:\\temp", dir.getPath());
+		assertEquals(true, dir.isReadOnly());
+	}
 
+	@Test
+	public void testParse2OK() throws Exception {
+		LOGGER.info("testParse2OK");
+
+		Path p = getPath("config2.properties");
+
+		// methode testé
+		GlobalConfig g = parseConfigFile.parse(p);
+
+		// vérifications
+		assertNotNull(g);
+		assertNotNull(g.getDirectoryConfigs());
+		assertEquals(2, g.getDirectoryConfigs().size());
+
+		DirectoryConfig dir = g.getDirectoryConfigs().get(0);
+		assertEquals("test1", dir.getName());
+		assertEquals("c:\\temp1", dir.getPath());
+		assertEquals(false, dir.isReadOnly());
+
+		dir = g.getDirectoryConfigs().get(1);
+		assertEquals("test2", dir.getName());
+		assertEquals("c:\\temp2", dir.getPath());
+		assertEquals(true, dir.isReadOnly());
 	}
 
 	// methodes utilitaires

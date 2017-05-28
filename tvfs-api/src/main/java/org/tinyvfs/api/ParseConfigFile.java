@@ -33,7 +33,7 @@ public class ParseConfigFile {
 		Properties properties = new Properties();
 		properties.load(new FileReader(p.toFile()));
 
-		Map<String, DirectoryConfig> mapDir = new HashMap<>();
+		Map<String, DirectoryConfig> mapDir = new LinkedHashMap<>();
 
 		Map<String, String> map = convertToMap(properties);
 
@@ -101,7 +101,7 @@ public class ParseConfigFile {
 	}
 
 	private Map<String, String> convertToMap(Properties properties) {
-		Map<String, String> map = new HashMap<>();
+		Map<String, String> map = new TreeMap<>();
 		Enumeration<String> pn = (Enumeration<String>) properties.propertyNames();
 		while (pn.hasMoreElements()) {
 			String key = pn.nextElement();
