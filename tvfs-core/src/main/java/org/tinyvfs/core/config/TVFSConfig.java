@@ -89,4 +89,7 @@ public class TVFSConfig {
 		}
 	}
 
+	public boolean containt(TVFSRootName rootName) {
+		return map.containsKey(rootName);
+	}
 }

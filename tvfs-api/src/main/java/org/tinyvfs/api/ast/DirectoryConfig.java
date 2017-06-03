@@ -32,4 +32,13 @@ public class DirectoryConfig {
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 	}
+
+	@Override
+	public String toString() {
+		return "DirectoryConfig{" +
+				"name='" + name + '\'' +
+				", path='" + path + '\'' +
+				", readOnly=" + readOnly +
+				'}';
+	}
 }

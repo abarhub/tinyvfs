@@ -4,12 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinyvfs.api.ast.GlobalConfig;
 import org.tinyvfs.core.config.TVFSConfig;
-import org.tinyvfs.core.config.TVFSConfigParam;
-import org.tinyvfs.core.path.TVFSRootName;
 import org.tinyvfs.core.spi.TVFSConfigurator;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -35,22 +32,29 @@ public class TVFSConfigure extends TVFSConfigurator {
 			try {
 				GlobalConfig conf = parseConfigFile.parse(p);
 				LOGGER.info("conf={}", conf);
+
+				InitConfig initConfig = new InitConfig();
+
+				LOGGER.info("init conf ...");
+				initConfig.init(tvfsConfig, conf);
+
+				LOGGER.info("init conf OK");
 			} catch (IOException e) {
 				LOGGER.error("Error: {}", e.getMessage(), e);
 			}
 		}
 
-		Path folder = null;
-		try {
-			folder = Files.createTempDirectory("temp");
-
-			TVFSRootName name = new TVFSRootName("nom1");
-			TVFSConfigParam param = new TVFSConfigParam(name, folder, false);
-			tvfsConfig.add(name, param);
-
-		} catch (IOException e) {
-			LOGGER.error("Error: {}", e.getMessage(), e);
-		}
+//		Path folder = null;
+//		try {
+//			folder = Files.createTempDirectory("temp");
+//
+//			TVFSRootName name = new TVFSRootName("nom1");
+//			TVFSConfigParam param = new TVFSConfigParam(name, folder, false);
+//			tvfsConfig.add(name, param);
+//
+//		} catch (IOException e) {
+//			LOGGER.error("Error: {}", e.getMessage(), e);
+//		}
 
 		LOGGER.debug("end configure");
 	}

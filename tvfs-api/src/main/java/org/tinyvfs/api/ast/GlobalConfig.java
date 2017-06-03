@@ -17,4 +17,10 @@ public class GlobalConfig {
 		return directoryConfigs;
 	}
 
+	@Override
+	public String toString() {
+		return "GlobalConfig{" +
+				"directoryConfigs=" + directoryConfigs +
+				'}';
+	}
 }

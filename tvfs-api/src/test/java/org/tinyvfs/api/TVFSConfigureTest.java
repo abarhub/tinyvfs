@@ -11,6 +11,7 @@ import org.tinyvfs.core.config.TVFSRepository;
 import org.tinyvfs.core.fs.VirtualFSProvider;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -30,17 +31,30 @@ public class TVFSConfigureTest {
 	public final static Logger LOGGER = LoggerFactory.getLogger(TVFSConfigureTest.class);
 
 	@Before
-	public void init() throws NoSuchFieldException, IllegalAccessException {
-		LOGGER.info("init TVFSRepository.clearInstance");
+	public void init() throws NoSuchFieldException, IllegalAccessException, IOException {
+		LOGGER.info("init TVFSRepository");
 		TVFSRepository.clearInstance();
 		reinitProviders();
+
+		Path p = Files.createTempDirectory("testTVFSConfigureTest");
+		LOGGER.info("p={}", p);
+		String contenu = "tvfs.dir1.name=nom1\n" +
+				"tvfs.dir1.directory=${TEMP}\n" +
+				"tvfs.dir1.readonly=false";
+		Path p2 = p.resolve("conf.properties");
+		LOGGER.info("p2={}", p2);
+		Files.write(p2, contenu.getBytes(StandardCharsets.UTF_8));
+		System.setProperty(FindConfigFile.TVFS_PROPERTIES, p2.toString());
+		LOGGER.info("init TVFSRepository end");
 	}
 
 	@After
 	public void terminate() throws NoSuchFieldException, IllegalAccessException {
-		LOGGER.info("terminate TVFSRepository.clearInstance");
+		LOGGER.info("terminate TVFSRepository");
+		System.setProperty(FindConfigFile.TVFS_PROPERTIES, "");
 		TVFSRepository.clearInstance();
 		reinitProviders();
+		LOGGER.info("terminate TVFSRepository end");
 	}
 
 	@Test
