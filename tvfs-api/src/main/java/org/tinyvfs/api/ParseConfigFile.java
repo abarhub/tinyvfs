@@ -7,6 +7,7 @@ import org.tinyvfs.api.ast.GlobalConfig;
 import org.tinyvfs.api.exception.TVFSParseException;
 import org.tinyvfs.core.TVFSTools;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,7 +29,13 @@ public class ParseConfigFile {
 
 	public GlobalConfig parse(Path p) throws IOException {
 		TVFSTools.checkParamNotNull(p, "Path must not be null");
-		TVFSTools.checkParam(Files.exists(p), "Path '" + p + "' must exists");
+
+		LOGGER.debug("Start read config file : {}", p);
+
+		if (!Files.exists(p)) {
+			LOGGER.error("Path '{}' must exists", p);
+			throw new FileNotFoundException("Path '" + p + "' must exists");
+		}
 
 		Properties properties = new Properties();
 		properties.load(new FileReader(p.toFile()));
@@ -46,7 +53,7 @@ public class ParseConfigFile {
 			}
 			if (name.startsWith(BEGIN_PROPERTIE + "." + PROPERTIES_DIR)) {
 				int pos = name.indexOf('.', BEGIN_PROPERTIE.length() + 2);
-				if (pos > 0) {
+				if (pos > 0 && pos + 1 < name.length()) {
 					String dirName = name.substring(BEGIN_PROPERTIE.length() + 2, pos);
 
 					String suite = name.substring(pos + 1);
@@ -70,16 +77,21 @@ public class ParseConfigFile {
 						} else if ("false".equals(value)) {
 							directoryConfig.setReadOnly(false);
 						} else {
-							LOGGER.debug("key '{}' has bad value ''", name, value);
+							LOGGER.error("key '{}' has bad value '{}'", name, value);
+							throw new TVFSParseException("Value invalid for key '" + entry.getKey() + "' for file : " + p);
 						}
 					} else {
-						LOGGER.debug("key '{}' ignored", name);
+						LOGGER.error("key '{}' invalid : key unknow", name);
+						throw new TVFSParseException("Key invalid '" + entry.getKey() + "' for file : " + p);
 					}
 				} else {
-					LOGGER.debug("key '{}' ignored", name);
+					LOGGER.error("key '{}' invalid : bad format for key name", name);
+					throw new TVFSParseException("Key invalid '" + entry.getKey() + "' for file : " + p);
 				}
 			} else {
-				LOGGER.debug("key '{}' ignored", name);
+				LOGGER.error("key '{}' invalid : must start by '{}'",
+						name, BEGIN_PROPERTIE + "." + PROPERTIES_DIR);
+				throw new TVFSParseException("Key invalid '" + entry.getKey() + "' for file : " + p);
 			}
 		}
 
@@ -93,10 +105,16 @@ public class ParseConfigFile {
 			if (!TVFSTools.isNameValide(dir.getName())) {
 				throw new TVFSParseException("Name is invalid '" + dir.getName() + "'");
 			}
+			if (dir.getPath() == null || dir.getPath().trim().length() == 0) {
+				throw new TVFSParseException("Path is empty for '" + entry.getKey() + "'");
+			}
 			directoryConfigList.add(dir);
 		}
 
 		GlobalConfig globalConfig = new GlobalConfig(directoryConfigList);
+
+		LOGGER.debug("End read config file : {}", p);
+
 		return globalConfig;
 	}
 

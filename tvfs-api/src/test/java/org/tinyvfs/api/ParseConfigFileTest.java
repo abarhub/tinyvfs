@@ -6,13 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.tinyvfs.api.ast.DirectoryConfig;
 import org.tinyvfs.api.ast.GlobalConfig;
 
+import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by Alain on 28/05/2017.
@@ -65,6 +65,24 @@ public class ParseConfigFileTest {
 		assertEquals("test2", dir.getName());
 		assertEquals("c:\\temp2", dir.getPath());
 		assertEquals(true, dir.isReadOnly());
+	}
+
+	@Test
+	public void testParseFileNotExistsOK() throws Exception {
+		LOGGER.info("testParseFileNotExistsOK");
+
+		Path p = getPath("config2.properties")
+				.resolve("abc.properties");
+
+		try {
+			// methode testé
+			GlobalConfig g = parseConfigFile.parse(p);
+
+			fail("Error");
+
+		} catch (FileNotFoundException e) {
+			assertEquals("Path '" + p + "' must exists", e.getMessage());
+		}
 	}
 
 	// methodes utilitaires
