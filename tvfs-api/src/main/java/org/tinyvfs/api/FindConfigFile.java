@@ -23,9 +23,13 @@ public class FindConfigFile {
 
 	public static final String TVFS_PROPERTIES = "TVFS_CONFIG_FILE";
 
-	public static final String TVFS_DIRECTORY = "./conf";
+	public static final String TVFS_DIRECTORY = "conf";
 
-	private List<String> configFileNames = Arrays.asList("tvfsconfig_test.properties", "tvfsconfig.properties");
+	public static final String TVFS_CONFIGFILE_TEST = "tvfsconfig_test.properties";
+
+	public static final String TVFS_CONFIGFILE = "tvfsconfig.properties";
+
+	private List<String> configFileNames = Arrays.asList(TVFS_CONFIGFILE_TEST, TVFS_CONFIGFILE);
 
 	public Path findFile() throws IOException {
 		Path res = null;
@@ -38,12 +42,23 @@ public class FindConfigFile {
 			LOGGER.info("config file from env '{}' = {}", TVFS_PROPERTIES, tvfsEnv);
 			res = Paths.get(tvfsEnv);
 		} else {
-			for (String name : configFileNames) {
-				Path p = Paths.get(TVFS_DIRECTORY + "/" + name);
-				if (Files.exists(p)) {
-					res = p;
-					break;
+			String currentdir = System.getProperty("user.dir", "");
+			Path currentPath;
+			if (currentdir != null && !currentdir.isEmpty()) {
+				currentPath = Paths.get(currentdir);
+
+				for (String name : configFileNames) {
+					Path p = currentPath.resolve(TVFS_DIRECTORY + "/" + name);
+					if (Files.exists(p)) {
+						LOGGER.info("config file from path = {}", p);
+						res = p;
+						break;
+					} else {
+						LOGGER.info("config file from path not exists = {}", p);
+					}
 				}
+			} else {
+				LOGGER.info("no current directory");
 			}
 
 			if (res == null) {

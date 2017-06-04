@@ -6,8 +6,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -133,7 +136,7 @@ public class FindConfigFileTest {
 		LOGGER.info("testFindFilePropertiesNoFileKO");
 
 		String s = System.getProperty(FindConfigFile.TVFS_PROPERTIES);
-		assertNull(s);
+		assertTrue(s == null || s.isEmpty());
 
 		FindConfigFile findConfigFile = new FindConfigFile();
 		// methode testé
@@ -144,4 +147,88 @@ public class FindConfigFileTest {
 		assertNull(p);
 	}
 
+	@Test
+	public void testFindFileFileIsDirectoryKO() throws Exception {
+		LOGGER.info("testFindFileFileIsDirectoryKO");
+
+		Path pRef = Files.createTempDirectory("tvfstemp");
+		System.setProperty(FindConfigFile.TVFS_PROPERTIES, pRef.toString());
+		LOGGER.info("pRef={}", pRef);
+
+		FindConfigFile findConfigFile = new FindConfigFile();
+		try {
+			// methode testé
+			findConfigFile.findFile();
+
+			fail("Error");
+		} catch (IOException e) {
+			assertEquals("File " + pRef + " is directory", e.getMessage());
+		}
+	}
+
+	@Test
+	public void testFindFileFileNotExistKO() throws Exception {
+		LOGGER.info("testFindFileFileNotExistKO");
+
+		Path pRef = Files.createTempDirectory("tvfstemp").resolve("confInexistant.properties");
+		System.setProperty(FindConfigFile.TVFS_PROPERTIES, pRef.toString());
+		LOGGER.info("pRef={}", pRef);
+
+		FindConfigFile findConfigFile = new FindConfigFile();
+		try {
+			// methode testé
+			findConfigFile.findFile();
+
+			fail("Error");
+		} catch (FileNotFoundException e) {
+			assertEquals("File " + pRef + " not exists", e.getMessage());
+		}
+	}
+
+	@Test
+	public void testFindFilePathOK() throws Exception {
+		LOGGER.info("testFindFilePathOK");
+
+		String currentDirBackup = System.getProperty("user.dir");
+		LOGGER.info("currentDirBackup={}", currentDirBackup);
+		try {
+			//Path pRef = ObjectTools.createConfigFile();
+			String contenu = ObjectTools.getConfig1();
+
+			Path p3 = Paths.get(FindConfigFile.TVFS_DIRECTORY, FindConfigFile.TVFS_CONFIGFILE);
+			LOGGER.info("p3_1={}", p3);
+			LOGGER.info("p3_1bis={}", p3.getName(0));
+			assertFalse(p3.isAbsolute());
+			while (p3.getNameCount() > 0 && p3.getName(0).toString().equals(".")) {
+				p3 = p3.subpath(1, p3.getNameCount());
+				LOGGER.info("p3_2={}", p3);
+			}
+			assertFalse(p3.isAbsolute());
+			LOGGER.info("p3_3={}", p3);
+
+			Path temp = Files.createTempDirectory("tvfstest");
+			LOGGER.info("temp={}", temp);
+			Path confDir = temp.resolve(p3);
+			LOGGER.info("confDir={}", confDir);
+			Path p2 = Files.createDirectories(confDir.getParent());
+			LOGGER.info("p2={}", p2);
+			//System.setProperty(FindConfigFile.TVFS_PROPERTIES, pRef.toString());
+			Files.write(confDir, contenu.getBytes(StandardCharsets.UTF_8));
+			LOGGER.info("pRef={}", confDir);
+
+			System.setProperty("user.dir", temp.toString());
+			LOGGER.info("currentDir={}", temp);
+
+			FindConfigFile findConfigFile = new FindConfigFile();
+			// methode testé
+			Path p = findConfigFile.findFile();
+
+			// vérifications
+			LOGGER.info("p={}", p);
+			assertEquals(confDir, p);
+		} finally {
+			System.setProperty("user.dir", currentDirBackup);
+			LOGGER.info("currentDirBackup_end={}", currentDirBackup);
+		}
+	}
 }
