@@ -25,16 +25,24 @@ public class InitConfig {
 		TVFSTools.checkParamNotNull(tvfsConfig, "tvfsConfig must not be null");
 		TVFSTools.checkParamNotNull(conf, "conf must not be null");
 
+		LOGGER.trace("start init");
+
 		if (conf.getDirectoryConfigs() != null && !conf.getDirectoryConfigs().isEmpty()) {
 			try {
 				for (DirectoryConfig directoryConfig : conf.getDirectoryConfigs()) {
+					LOGGER.trace("directoryConfig={}", directoryConfig);
 					String name = directoryConfig.getName();
 					String path = directoryConfig.getPath();
 					boolean isReadOnly = directoryConfig.isReadOnly();
 
+					LOGGER.debug("name={},path={},isReadOnly={}", name, path, isReadOnly);
+
 					TVFSRootName name2 = getName(tvfsConfig, name);
+					LOGGER.trace("name2={}", name2);
 					Path folder = getPath(path);
+					LOGGER.trace("folder={}", folder);
 					TVFSConfigParam param = new TVFSConfigParam(name2, folder, isReadOnly);
+					LOGGER.trace("add param={}", param);
 					tvfsConfig.add(name2, param);
 				}
 
@@ -42,6 +50,7 @@ public class InitConfig {
 				LOGGER.error("Error: {}", e.getMessage(), e);
 			}
 		}
+		LOGGER.trace("end init");
 	}
 
 	private TVFSRootName getName(TVFSConfig tvfsConfig, String name) {
@@ -56,7 +65,7 @@ public class InitConfig {
 			throw new IllegalArgumentException("Name '" + name + "' is invalide");
 		} else {
 			TVFSRootName tvfsRootName = new TVFSRootName(name);
-			if (tvfsConfig.containt(tvfsRootName)) {
+			if (tvfsConfig.contains(tvfsRootName)) {
 				LOGGER.error("Name '" + name + "' already exist");
 				throw new IllegalArgumentException("Name '" + name + "' already exist");
 			}
@@ -71,16 +80,20 @@ public class InitConfig {
 		} else if (path.startsWith("${") && path.endsWith("}")) {
 			String var = path.substring(2, path.length() - 1);
 			if (var.equals("TEMP")) {
-				return Files.createTempDirectory("temptvfs");
+				Path p = Files.createTempDirectory("temptvfs");
+				LOGGER.trace("Var TEMP={}", p);
+				return p;
 			} else {
-				LOGGER.error("Var '" + var + "' not define");
+				LOGGER.error("Var '{}' is not defined", var);
 				throw new IllegalArgumentException("Var '" + var + "' not define");
 			}
 		} else {
 			Path p = Paths.get(path);
 			if (!p.isAbsolute()) {
+				LOGGER.error("Path '{}' is not absolute", p);
 				throw new IllegalArgumentException("Path '" + p + "' is note absolute");
 			} else {
+				LOGGER.trace("p={}", p);
 				return p;
 			}
 		}

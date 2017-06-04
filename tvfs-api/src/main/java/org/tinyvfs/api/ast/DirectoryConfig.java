@@ -9,6 +9,15 @@ public class DirectoryConfig {
 	private String path;
 	private boolean readOnly;
 
+	public DirectoryConfig() {
+	}
+
+	public DirectoryConfig(String name, String path, boolean readOnly) {
+		this.name = name;
+		this.path = path;
+		this.readOnly = readOnly;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -31,6 +40,21 @@ public class DirectoryConfig {
 
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof DirectoryConfig)) return false;
+
+		DirectoryConfig that = (DirectoryConfig) o;
+
+		return name != null ? name.equals(that.name) : that.name == null;
+	}
+
+	@Override
+	public int hashCode() {
+		return name != null ? name.hashCode() : 0;
 	}
 
 	@Override

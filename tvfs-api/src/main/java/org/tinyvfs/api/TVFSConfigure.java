@@ -44,18 +44,6 @@ public class TVFSConfigure extends TVFSConfigurator {
 			}
 		}
 
-//		Path folder = null;
-//		try {
-//			folder = Files.createTempDirectory("temp");
-//
-//			TVFSRootName name = new TVFSRootName("nom1");
-//			TVFSConfigParam param = new TVFSConfigParam(name, folder, false);
-//			tvfsConfig.add(name, param);
-//
-//		} catch (IOException e) {
-//			LOGGER.error("Error: {}", e.getMessage(), e);
-//		}
-
 		LOGGER.debug("end configure");
 	}
 }

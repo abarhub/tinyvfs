@@ -7,21 +7,18 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinyvfs.core.TVFSPaths;
-import org.tinyvfs.core.config.TVFSRepository;
 import org.tinyvfs.core.fs.VirtualFSProvider;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.spi.FileSystemProvider;
+import java.security.InvalidParameterException;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Created by Alain on 27/05/2017.
@@ -33,18 +30,10 @@ public class TVFSConfigureTest {
 	@Before
 	public void init() throws NoSuchFieldException, IllegalAccessException, IOException {
 		LOGGER.info("init TVFSRepository");
-		TVFSRepository.clearInstance();
-		reinitProviders();
+		TVFSTestTools.reinitConfig();
 
-		Path p = Files.createTempDirectory("testTVFSConfigureTest");
-		LOGGER.info("p={}", p);
-		String contenu = "tvfs.dir1.name=nom1\n" +
-				"tvfs.dir1.directory=${TEMP}\n" +
-				"tvfs.dir1.readonly=false";
-		Path p2 = p.resolve("conf.properties");
-		LOGGER.info("p2={}", p2);
-		Files.write(p2, contenu.getBytes(StandardCharsets.UTF_8));
-		System.setProperty(FindConfigFile.TVFS_PROPERTIES, p2.toString());
+		Path p = ObjectTools.createConfigFile();
+		System.setProperty(FindConfigFile.TVFS_PROPERTIES, p.toString());
 		LOGGER.info("init TVFSRepository end");
 	}
 
@@ -52,8 +41,7 @@ public class TVFSConfigureTest {
 	public void terminate() throws NoSuchFieldException, IllegalAccessException {
 		LOGGER.info("terminate TVFSRepository");
 		System.setProperty(FindConfigFile.TVFS_PROPERTIES, "");
-		TVFSRepository.clearInstance();
-		reinitProviders();
+		TVFSTestTools.reinitConfig();
 		LOGGER.info("terminate TVFSRepository end");
 	}
 
@@ -135,20 +123,30 @@ public class TVFSConfigureTest {
 		LOGGER.info("configure fini");
 	}
 
+
+	@Test
+	public void testConfigureNoFileKO() throws Exception {
+		LOGGER.info("testConfigureNoFileKO");
+
+		System.setProperty(FindConfigFile.TVFS_PROPERTIES, "");
+
+		try {
+			Paths.get(URI.create("tvfs://nom1/test01.txt"));
+
+			fail("Error");
+		} catch (InvalidParameterException e) {
+			assertEquals("Erreur: no FS for 'nom1'", e.getMessage());
+		}
+
+
+		LOGGER.info("testConfigureNoFileKO fini");
+	}
+
 	// methodes utilitaires
 
 	private byte[] getByte(String s) {
 		return s.getBytes(StandardCharsets.UTF_8);
 	}
 
-	private void reinitProviders() throws NoSuchFieldException, IllegalAccessException {
-		Field f = FileSystemProvider.class.getDeclaredField("installedProviders");
-		f.setAccessible(true);
-		f.set(null, null);
-
-		Field f2 = FileSystemProvider.class.getDeclaredField("loadingProviders");
-		f2.setAccessible(true);
-		f2.setBoolean(null, false);
-	}
 
 }
