@@ -4,8 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinyvfs.core.TVFSTools;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -20,9 +23,11 @@ public class FindConfigFile {
 
 	public static final String TVFS_PROPERTIES = "TVFS_CONFIG_FILE";
 
+	public static final String TVFS_DIRECTORY = "./conf";
+
 	private List<String> configFileNames = Arrays.asList("tvfsconfig_test.properties", "tvfsconfig.properties");
 
-	public Path findFile() {
+	public Path findFile() throws IOException {
 		Path res = null;
 		String tvfsProperties = getFileFromProperties();
 		String tvfsEnv = getFileFromEnv();
@@ -34,22 +39,42 @@ public class FindConfigFile {
 			res = Paths.get(tvfsEnv);
 		} else {
 			for (String name : configFileNames) {
-				LOGGER.trace("find config file '{}' from resource", name);
-				URL url = FindConfigFile.class.getClassLoader().getResource(name);
-				LOGGER.trace("config file from resource {}", url);
-				if (url != null) {
-					try {
-						Path p = Paths.get(url.toURI());
-						res = p;
+				Path p = Paths.get(TVFS_DIRECTORY + "/" + name);
+				if (Files.exists(p)) {
+					res = p;
+					break;
+				}
+			}
+
+			if (res == null) {
+				for (String name : configFileNames) {
+					LOGGER.trace("find config file '{}' from resource", name);
+					URL url = FindConfigFile.class.getClassLoader().getResource(name);
+					LOGGER.trace("config file from resource {}", url);
+					if (url != null) {
+						try {
+							Path p = Paths.get(url.toURI());
+							res = p;
+						} catch (URISyntaxException e) {
+							LOGGER.error("Error : {}", e.getMessage(), e);
+						}
+					}
+					if (res != null) {
 						break;
-					} catch (URISyntaxException e) {
-						LOGGER.error("Error : {}", e.getMessage(), e);
 					}
 				}
 			}
+
 		}
 		if (res != null) {
 			LOGGER.trace("config file = {}", res);
+			if (!Files.exists(res)) {
+				LOGGER.error("File {} not exists", res);
+				throw new FileNotFoundException("File " + res + " not exists");
+			} else if (Files.isDirectory(res)) {
+				LOGGER.error("File {} is directory", res);
+				throw new IOException("File " + res + " is directory");
+			}
 		} else {
 			LOGGER.error("no config file found");
 		}
