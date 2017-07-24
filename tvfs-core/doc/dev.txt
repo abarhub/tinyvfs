@@ -1,0 +1,10 @@
+
+le scheme est tvfs.
+
+le fs est basé sur un autre FS qui doit déjà exister.
+
+principe de codage :
+-mettre les @Override pour chaque methode dérivé
+-utiliser uniquement les logs du JDK pour rester portable
+-aucune dépendence
+
