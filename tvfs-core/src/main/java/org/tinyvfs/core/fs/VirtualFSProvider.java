@@ -283,9 +283,11 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	@Override
 	public FileStore getFileStore(Path path) throws IOException {
-		unsupportedOperation();
+		//unsupportedOperation();
 		checkVirtualPath(path);
-		return null;
+		Path path2=((TVFSAbsolutePath)path).getRealPath();
+		FileStore fileStore=path2.getFileSystem().provider().getFileStore(path2);
+		return new TVFSFileStore(fileStore,isPathReadOnly(path));
 	}
 
 	@Override
