@@ -19,83 +19,100 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 		super(virtualFS, liste);
 	}
 
+	@Override
 	public boolean isAbsolute() {
 		return true;
 	}
 
+	@Override
 	public Path getRoot() {
 		return new TVFSAbsolutePath(virtualFS, new ArrayList<>());
 	}
 
+	@Override
 	public boolean startsWith(Path other) {
 		unsupportedOperation();
 		return false;
 	}
 
+	@Override
 	public boolean startsWith(String other) {
 		unsupportedOperation();
 		return false;
 	}
 
+	@Override
 	public boolean endsWith(Path other) {
 		unsupportedOperation();
 		return false;
 	}
 
+	@Override
 	public boolean endsWith(String other) {
 		unsupportedOperation();
 		return false;
 	}
 
+	@Override
 	public Path normalize() {
 		unsupportedOperation();
 		return null;
 	}
 
+	@Override
 	public Path resolveSibling(Path other) {
 		unsupportedOperation();
 		return null;
 	}
 
+	@Override
 	public Path resolveSibling(String other) {
 		unsupportedOperation();
 		return null;
 	}
 
+	@Override
 	public Path relativize(Path other) {
 		unsupportedOperation();
 		return null;
 	}
 
+	@Override
 	public URI toUri() {
 		unsupportedOperation();
 		return null;
 	}
 
+	@Override
 	public Path toAbsolutePath() {
 		return this;
 	}
 
+	@Override
 	public Path toRealPath(LinkOption... options) throws IOException {
 		unsupportedOperation();
 		return null;
 	}
 
+	@Override
 	public File toFile() {
 		unsupportedOperation();
 		return null;
 	}
 
+	@Override
 	public WatchKey register(WatchService watcher, WatchEvent.Kind<?>[] events, WatchEvent.Modifier... modifiers) throws IOException {
 		unsupportedOperation();
 		return null;
 	}
 
+	@Override
 	public WatchKey register(WatchService watcher, WatchEvent.Kind<?>[] events) throws IOException {
 		unsupportedOperation();
 		return null;
 	}
 
+	@Override
 	public Iterator<Path> iterator() {
 		unsupportedOperation();
 		return null;

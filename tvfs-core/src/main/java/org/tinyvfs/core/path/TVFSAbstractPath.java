@@ -141,6 +141,7 @@ public abstract class TVFSAbstractPath implements Path {
 		TVFSTools.checkParam(p.getFileSystem().provider() == this.getFileSystem().provider(), "le FS est invalide");
 	}
 
+	@Override
 	public int compareTo(Path other) {
 		if (other == null)
 			throw new NullPointerException("other must not be null");
@@ -168,6 +169,7 @@ public abstract class TVFSAbstractPath implements Path {
 		return s1.compareTo(s2);
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (other == null)
 			return false;
@@ -190,6 +192,7 @@ public abstract class TVFSAbstractPath implements Path {
 		}
 	}
 
+	@Override
 	public int hashCode() {
 		return getRealPath2().hashCode();
 	}

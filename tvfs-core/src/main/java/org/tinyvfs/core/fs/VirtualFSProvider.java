@@ -69,10 +69,12 @@ public class VirtualFSProvider extends FileSystemProvider {
 		tvFileSystem = null;
 	}
 
+	@Override
 	public String getScheme() {
 		return SCHEME;
 	}
 
+	@Override
 	public FileSystem newFileSystem(URI uri, Map<String, ?> env) throws IOException {
 		checkUri(uri);
 		if (tvFileSystem != null) {
@@ -81,6 +83,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return createFileSystem(uri);
 	}
 
+	@Override
 	public FileSystem getFileSystem(URI uri) {
 		checkUri(uri);
 		if (tvFileSystem == null) {
@@ -105,6 +108,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return TVFSRepository.getInstance();
 	}
 
+	@Override
 	public Path getPath(URI uri) {
 		TVFSTools.checkParamNotNull(uri, "uri null");
 		if (tvFileSystem == null) {
@@ -164,6 +168,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		TVFSTools.unsupportedOperation();
 	}
 
+	@Override
 	public SeekableByteChannel newByteChannel(Path path, Set<? extends OpenOption> options, FileAttribute<?>[] attrs) throws IOException {
 		checkVirtualPath(path);
 		TVFSTools.checkParam(path instanceof TVFSAbsolutePath, "le path n'est pas valide");
@@ -203,6 +208,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return fs2.getDefautFileSystem();
 	}
 
+	@Override
 	public DirectoryStream<Path> newDirectoryStream(Path dir, DirectoryStream.Filter<? super Path> filter) throws IOException {
 		checkVirtualPath(dir);
 		Path p2 = getRealPath(dir);
@@ -210,6 +216,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return fs3.provider().newDirectoryStream(p2, filter);
 	}
 
+	@Override
 	public void createDirectory(Path dir, FileAttribute<?>[] attrs) throws IOException {
 		checkVirtualPath(dir);
 		checkPathReadOnly(dir);
@@ -219,6 +226,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		fs3.provider().createDirectory(p2, attrs);
 	}
 
+	@Override
 	public void delete(Path path) throws IOException {
 		checkVirtualPath(path);
 		checkPathReadOnly(path);
@@ -228,6 +236,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		fs3.provider().delete(p2);
 	}
 
+	@Override
 	public void copy(Path source, Path target, CopyOption... options) throws IOException {
 		checkVirtualPath(source);
 		checkVirtualPath(target);
@@ -239,6 +248,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		fs3.provider().copy(p2, p3, options);
 	}
 
+	@Override
 	public void move(Path source, Path target, CopyOption... options) throws IOException {
 		checkVirtualPath(source);
 		checkVirtualPath(target);
@@ -251,6 +261,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		fs3.provider().move(p2, p3, options);
 	}
 
+	@Override
 	public boolean isSameFile(Path path, Path path2) throws IOException {
 		checkVirtualPath(path);
 		checkVirtualPath(path2);
@@ -261,6 +272,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return fs3.provider().isSameFile(p2, p3);
 	}
 
+	@Override
 	public boolean isHidden(Path path) throws IOException {
 		checkVirtualPath(path);
 
@@ -269,12 +281,14 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return fs3.provider().isHidden(p2);
 	}
 
+	@Override
 	public FileStore getFileStore(Path path) throws IOException {
 		unsupportedOperation();
 		checkVirtualPath(path);
 		return null;
 	}
 
+	@Override
 	public void checkAccess(Path path, AccessMode... modes) throws IOException {
 		checkVirtualPath(path);
 		TVFSTools.checkParam(path instanceof TVFSAbsolutePath, "le path n'est pas valide");
@@ -285,6 +299,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		fs.provider().checkAccess(p2, modes);
 	}
 
+	@Override
 	public <V extends FileAttributeView> V getFileAttributeView(Path path, Class<V> type, LinkOption... options) {
 		checkVirtualPath(path);
 
@@ -293,6 +308,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return fs.provider().getFileAttributeView(p2, type, options);
 	}
 
+	@Override
 	public <A extends BasicFileAttributes> A readAttributes(Path path, Class<A> type, LinkOption... options) throws IOException {
 		checkVirtualPath(path);
 
@@ -301,6 +317,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return fs.provider().readAttributes(p2, type, options);
 	}
 
+	@Override
 	public Map<String, Object> readAttributes(Path path, String attributes, LinkOption... options) throws IOException {
 		checkVirtualPath(path);
 
@@ -309,6 +326,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return fs.provider().readAttributes(p2, attributes, options);
 	}
 
+	@Override
 	public void setAttribute(Path path, String attribute, Object value, LinkOption... options) throws IOException {
 		checkVirtualPath(path);
 		checkPathReadOnly(path);
@@ -318,6 +336,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		fs.provider().setAttribute(p2, attribute, value, options);
 	}
 
+	@Override
 	public Path readSymbolicLink(Path link) throws IOException {
 		checkVirtualPath(link);
 
@@ -326,6 +345,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return fs.provider().readSymbolicLink(p2);
 	}
 
+	@Override
 	public void createLink(Path link, Path existing) throws IOException {
 		checkVirtualPath(link);
 		checkVirtualPath(existing);
@@ -337,6 +357,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		fs.provider().createLink(p2, p3);
 	}
 
+	@Override
 	public void createSymbolicLink(Path link, Path target, FileAttribute<?>... attrs)
 			throws IOException {
 		checkVirtualPath(link);
@@ -349,6 +370,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		fs.provider().createSymbolicLink(p2, p3, attrs);
 	}
 
+	@Override
 	public AsynchronousFileChannel newAsynchronousFileChannel(Path path,
 	                                                          Set<? extends OpenOption> options,
 	                                                          ExecutorService executor,
@@ -362,6 +384,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return fs.provider().newAsynchronousFileChannel(p2, options, executor, attrs);
 	}
 
+	@Override
 	public FileChannel newFileChannel(Path path,
 	                                  Set<? extends OpenOption> options,
 	                                  FileAttribute<?>... attrs)
