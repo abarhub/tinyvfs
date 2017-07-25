@@ -10,5 +10,6 @@ principe de codage :
 
 todo :
 -voir comment gérer la casse pour les startWith et endWith
-
+-gerer le directorystream
+-gérer le watch
 
