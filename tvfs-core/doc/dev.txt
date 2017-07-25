@@ -8,3 +8,7 @@ principe de codage :
 -utiliser uniquement les logs du JDK pour rester portable
 -aucune dépendence
 
+todo :
+-voir comment gérer la casse pour les startWith et endWith
+
+
