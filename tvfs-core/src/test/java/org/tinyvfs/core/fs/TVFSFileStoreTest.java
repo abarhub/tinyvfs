@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 
 import java.nio.file.FileStore;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.FileStoreAttributeView;
 
 import static org.junit.Assert.*;
 
@@ -20,9 +22,7 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class TVFSFileStoreTest {
 
-
     private final static Logger LOGGER = LoggerFactory.getLogger(VirtualFSProvider.class);
-
 
     private FileStore fileStore= Mockito.mock(FileStore.class);
 
@@ -66,7 +66,33 @@ public class TVFSFileStoreTest {
     }
 
     @Test
-    public void isReadOnly() throws Exception {
+    public void testIsReadOnlyOK() throws Exception {
+
+        LOGGER.info("testIsReadOnlyOK");
+        final boolean readonlyRef=true;
+        tvfsFileStore=new TVFSFileStore(fileStore,readonlyRef);
+
+        //methode testé
+        final boolean readonly=tvfsFileStore.isReadOnly();
+
+        //vérifications
+        assertEquals(readonlyRef,readonly);
+        verifyNoMoreInteractions(fileStore);
+    }
+
+    @Test
+    public void testIsReadOnly2OK() throws Exception {
+
+        LOGGER.info("testIsReadOnly2OK");
+        final boolean readonlyRef=false;
+        tvfsFileStore=new TVFSFileStore(fileStore,readonlyRef);
+
+        //methode testé
+        final boolean readonly=tvfsFileStore.isReadOnly();
+
+        //vérifications
+        assertEquals(readonlyRef,readonly);
+        verifyNoMoreInteractions(fileStore);
     }
 
     @Test
@@ -118,19 +144,68 @@ public class TVFSFileStoreTest {
     }
 
     @Test
-    public void supportsFileAttributeView() throws Exception {
+    public void testSupportsFileAttributeViewOK() throws Exception {
+
+        LOGGER.info("testSupportsFileAttributeViewOK");
+
+        // methode testé
+        tvfsFileStore.supportsFileAttributeView(BasicFileAttributeView.class);
+
+        // vérifications
+        verify(fileStore).supportsFileAttributeView(eq(BasicFileAttributeView.class));
+        verifyNoMoreInteractions(fileStore);
     }
 
     @Test
-    public void supportsFileAttributeView1() throws Exception {
+    public void testSupportsFileAttributeView1OK() throws Exception {
+        LOGGER.info("testSupportsFileAttributeView1OK");
+
+        final String attr="attr1";
+
+        // methode testé
+        tvfsFileStore.supportsFileAttributeView(attr);
+
+        // vérifications
+        verify(fileStore).supportsFileAttributeView(eq(attr));
+        verifyNoMoreInteractions(fileStore);
     }
 
     @Test
-    public void getFileStoreAttributeView() throws Exception {
+    public void testGetFileStoreAttributeViewOK() throws Exception {
+
+        LOGGER.info("testGetFileStoreAttributeViewOK");
+        final FileStoreAttributeView valRef=new FileStoreAttributeView(){
+            @Override
+            public String name() {
+                return "attr456";
+            }
+        };
+        when(fileStore.getFileStoreAttributeView(FileStoreAttributeView.class)).thenReturn(valRef);
+
+        // methode testé
+        final FileStoreAttributeView val=tvfsFileStore.getFileStoreAttributeView(FileStoreAttributeView.class);
+
+        // vérifications
+        assertEquals(valRef,val);
+        verify(fileStore).getFileStoreAttributeView(eq(FileStoreAttributeView.class));
+        verifyNoMoreInteractions(fileStore);
     }
 
     @Test
-    public void getAttribute() throws Exception {
+    public void testGetAttributeOK() throws Exception {
+
+        LOGGER.info("testGetAttributeOK");
+        final Integer valRef=8 ;
+        final String nomAttr="attr789";
+        when(fileStore.getAttribute(nomAttr)).thenReturn(valRef);
+
+        // methode testé
+        final Object val=tvfsFileStore.getAttribute(nomAttr);
+
+        // vérifications
+        assertEquals(valRef,val);
+        verify(fileStore).getAttribute(eq(nomAttr));
+        verifyNoMoreInteractions(fileStore);
     }
 
 }
