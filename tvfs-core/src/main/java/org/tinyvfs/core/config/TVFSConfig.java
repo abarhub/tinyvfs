@@ -9,10 +9,7 @@ import org.tinyvfs.core.fs.VirtualFS;
 import org.tinyvfs.core.path.TVFSRootName;
 import org.tinyvfs.core.spi.TVFSConfigurator;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -91,5 +88,22 @@ public class TVFSConfig {
 
 	public boolean contains(TVFSRootName rootName) {
 		return map.containsKey(rootName);
+	}
+
+	public List<TVFSRootName> getRootsName(){
+		Set<TVFSRootName> set=mapFS.keySet();
+		List<TVFSRootName> list=new ArrayList<>();
+		if(set!=null){
+			list.addAll(set);
+		}
+		return list;
+	}
+
+	public VirtualFS getVFS(TVFSRootName rootName){
+		if(mapFS.containsKey(rootName)) {
+			return mapFS.get(rootName);
+		} else {
+			return null;
+		}
 	}
 }

@@ -186,7 +186,8 @@ public class VirtualFSProvider extends FileSystemProvider {
 		TVFSTools.checkParam(p.getFileSystem().provider() == this, "le FS est invalide");
 	}
 
-	private Path getRealPath(Path path) {
+	// TODO: voir s'il faut le mettre en privae ou protected
+	protected Path getRealPath(Path path) {
 		checkVirtualPath(path);
 		TVFSAbsolutePath p2 = (TVFSAbsolutePath) path;
 		Path p3 = p2.getRealPath();

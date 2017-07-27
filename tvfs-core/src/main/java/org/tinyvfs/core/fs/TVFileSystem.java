@@ -1,5 +1,7 @@
 package org.tinyvfs.core.fs;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tinyvfs.core.TVFSPaths;
 import org.tinyvfs.core.TVFSTools;
 import org.tinyvfs.core.config.TVFSConfig;
@@ -12,12 +14,16 @@ import java.nio.file.*;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.spi.FileSystemProvider;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by Alain on 11/12/2016.
  */
 public class TVFileSystem extends FileSystem {
+
+	public final static Logger LOGGER = LoggerFactory.getLogger(TVFSConfig.class);
 
 	private final VirtualFSProvider virtualFSProvider;
 	private final FileSystem defautFileSystem;
@@ -71,14 +77,32 @@ public class TVFileSystem extends FileSystem {
 
 	@Override
 	public Iterable<Path> getRootDirectories() {
-		unsupportedOperation();
-		return null;
+		//unsupportedOperation();
+		List<Path> list=new ArrayList<>();
+		List<TVFSRootName> list2=tvfsConfig.getRootsName();
+		if(list2!=null){
+			for(TVFSRootName root:list2){
+				list.add(TVFSPaths.getAbsolutePath(root.getName()));
+			}
+		}
+		return list;
 	}
 
 	@Override
 	public Iterable<FileStore> getFileStores() {
-		unsupportedOperation();
-		return null;
+		//unsupportedOperation();
+		List<FileStore> list=new ArrayList<>();
+		List<TVFSRootName> list2=tvfsConfig.getRootsName();
+		if(list2!=null){
+			for(TVFSRootName root:list2){
+				try {
+					list.add(provider().getFileStore(TVFSPaths.getAbsolutePath(root.getName())));
+				}catch(IOException e){
+					LOGGER.debug("Error : {}",e.getMessage(),e);
+				}
+			}
+		}
+		return list;
 	}
 
 	@Override
@@ -118,14 +142,17 @@ public class TVFileSystem extends FileSystem {
 
 	@Override
 	public PathMatcher getPathMatcher(String syntaxAndPattern) {
-		unsupportedOperation();
-		return null;
+		//unsupportedOperation();
+		return (x) -> {
+			Path p=virtualFSProvider.getRealPath(x);
+			return defautFileSystem.getPathMatcher(syntaxAndPattern).matches(p);
+		};
 	}
 
 	@Override
 	public UserPrincipalLookupService getUserPrincipalLookupService() {
-		unsupportedOperation();
-		return null;
+		//unsupportedOperation();
+		return defautFileSystem.getUserPrincipalLookupService();
 	}
 
 	@Override

@@ -12,4 +12,10 @@ todo :
 -voir comment gérer la casse pour les startWith et endWith
 -gerer le directorystream
 -gérer le watch
+-voir comment mieux gérer le RealPath (une seule methode, interdire l'accès, etc..)
+-enlever tous les unsupportedOperation()
+-faire tu et TI pour chaque classe avec couverture à 100%
+-vérifier qu'il n'y a pas de problème sous windows et sous linux
+-vérifier que les / et\ sont bien géré sous windows et qu'il n'y a pas d'effet de bord sous linux
+-faire des tests complet avec les différents mode de configuration (cad un sous module par test)
 
