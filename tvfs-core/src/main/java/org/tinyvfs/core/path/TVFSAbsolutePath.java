@@ -1,5 +1,6 @@
 package org.tinyvfs.core.path;
 
+import org.tinyvfs.core.TVFSPaths;
 import org.tinyvfs.core.fs.VirtualFS;
 
 import java.io.File;
@@ -37,18 +38,6 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 
 	@Override
 	public boolean startsWith(String other) {
-		unsupportedOperation();
-		return false;
-	}
-
-	@Override
-	public boolean endsWith(Path other) {
-		unsupportedOperation();
-		return false;
-	}
-
-	@Override
-	public boolean endsWith(String other) {
 		unsupportedOperation();
 		return false;
 	}
@@ -108,12 +97,6 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 
 	@Override
 	public WatchKey register(WatchService watcher, WatchEvent.Kind<?>[] events) throws IOException {
-		unsupportedOperation();
-		return null;
-	}
-
-	@Override
-	public Iterator<Path> iterator() {
 		unsupportedOperation();
 		return null;
 	}

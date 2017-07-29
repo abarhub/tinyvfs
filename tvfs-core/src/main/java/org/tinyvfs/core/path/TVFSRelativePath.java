@@ -39,16 +39,6 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 	}
 
 	@Override
-	public boolean endsWith(Path other) {
-		return false;
-	}
-
-	@Override
-	public boolean endsWith(String other) {
-		return false;
-	}
-
-	@Override
 	public Path normalize() {
 		return null;
 	}
@@ -100,12 +90,6 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 
 	@Override
 	public WatchKey register(WatchService watcher, WatchEvent.Kind<?>[] events) throws IOException {
-		unsupportedOperation();
-		return null;
-	}
-
-	@Override
-	public Iterator<Path> iterator() {
 		unsupportedOperation();
 		return null;
 	}

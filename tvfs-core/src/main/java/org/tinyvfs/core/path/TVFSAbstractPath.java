@@ -1,14 +1,12 @@
 package org.tinyvfs.core.path;
 
+import org.tinyvfs.core.TVFSPaths;
 import org.tinyvfs.core.TVFSTools;
 import org.tinyvfs.core.fs.VirtualFS;
 
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by Alain on 01/01/2017.
@@ -246,4 +244,47 @@ public abstract class TVFSAbstractPath implements Path {
 	public VirtualFS getVirtualFS() {
 		return virtualFS;
 	}
+
+	@Override
+	public Iterator<Path> iterator() {
+		List<Path> list=new ArrayList<>();
+		for (String s2 : path) {
+			list.add(TVFSPaths.getRelativePath(s2));
+		}
+		return list.iterator();
+	}
+
+
+	// TODO: voir comment gérer la casse
+	@Override
+	public boolean endsWith(Path other) {
+		//unsupportedOperation();
+		if(other==null){
+			throw new NullPointerException("other must not be null");
+		}
+		if(other.getFileSystem()!=getFileSystem()){
+			return false;
+		}
+		if(!isAbsolute()&&other.isAbsolute()) {
+			return false;
+		}
+		if(getNameCount()==0)
+			return false;
+		int j=getNameCount();
+		for(int i=other.getNameCount();i>=0;i--,j--){
+			if(j<0){
+				return false;
+			}
+			if(!other.getName(i).equals(getName(j))){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean endsWith(String other) {
+		return endsWith(TVFSPaths.getRelativePath(other));
+	}
+
 }
