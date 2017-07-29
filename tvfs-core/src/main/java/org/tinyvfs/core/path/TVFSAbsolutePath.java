@@ -30,17 +30,6 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 		return new TVFSAbsolutePath(virtualFS, new ArrayList<>());
 	}
 
-	@Override
-	public boolean startsWith(Path other) {
-		unsupportedOperation();
-		return false;
-	}
-
-	@Override
-	public boolean startsWith(String other) {
-		unsupportedOperation();
-		return false;
-	}
 
 	@Override
 	public Path normalize() {

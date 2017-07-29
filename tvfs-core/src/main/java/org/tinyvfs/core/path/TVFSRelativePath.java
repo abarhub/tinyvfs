@@ -29,16 +29,6 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 	}
 
 	@Override
-	public boolean startsWith(Path other) {
-		return false;
-	}
-
-	@Override
-	public boolean startsWith(String other) {
-		return false;
-	}
-
-	@Override
 	public Path normalize() {
 		return null;
 	}

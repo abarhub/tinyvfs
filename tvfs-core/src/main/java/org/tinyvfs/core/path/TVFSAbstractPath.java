@@ -287,4 +287,37 @@ public abstract class TVFSAbstractPath implements Path {
 		return endsWith(TVFSPaths.getRelativePath(other));
 	}
 
+
+	// TODO: gérer la casse
+	@Override
+	public boolean startsWith(Path other) {
+
+		if(other==null){
+			throw new NullPointerException("other must not be null");
+		}
+		if(other.getFileSystem()!=getFileSystem()){
+			return false;
+		}
+		if(isAbsolute()!=other.isAbsolute()) {
+			return false;
+		}
+		if(getNameCount()==0)
+			return false;
+
+		for(int i=;i<other.getNameCount();i++){
+			if(i>=getNameCount()){
+				return false;
+			}
+			if(!other.getName(i).equals(getName(i))){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean startsWith(String other) {
+		return startsWith(TVFSPaths.getRelativePath(other));
+	}
+
 }
