@@ -33,21 +33,10 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 
 	@Override
 	public Path normalize() {
-		unsupportedOperation();
-		return null;
+	    List<String> list=normalizePath();
+		return new TVFSAbsolutePath(virtualFS,list);
 	}
 
-	@Override
-	public Path resolveSibling(Path other) {
-		unsupportedOperation();
-		return null;
-	}
-
-	@Override
-	public Path resolveSibling(String other) {
-		unsupportedOperation();
-		return null;
-	}
 
 	@Override
 	public Path relativize(Path other) {

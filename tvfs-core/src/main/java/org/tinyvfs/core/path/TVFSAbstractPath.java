@@ -270,8 +270,8 @@ public abstract class TVFSAbstractPath implements Path {
 		}
 		if(getNameCount()==0)
 			return false;
-		int j=getNameCount();
-		for(int i=other.getNameCount();i>=0;i--,j--){
+		int j=getNameCount()-1;
+		for(int i=other.getNameCount()-1;i>=0;i--,j--){
 			if(j<0){
 				return false;
 			}
@@ -304,7 +304,7 @@ public abstract class TVFSAbstractPath implements Path {
 		if(getNameCount()==0)
 			return false;
 
-		for(int i=;i<other.getNameCount();i++){
+		for(int i=0;i<other.getNameCount();i++){
 			if(i>=getNameCount()){
 				return false;
 			}
@@ -318,6 +318,53 @@ public abstract class TVFSAbstractPath implements Path {
 	@Override
 	public boolean startsWith(String other) {
 		return startsWith(TVFSPaths.getRelativePath(other));
+	}
+
+
+	protected List<String> normalizePath() {
+		List<String> list=new ArrayList<>();
+		for(String s:path){
+			if(s.equals(".")){
+				// on ignore l'element
+			} else if(s.equals("..")){
+				if(list.size()>1){
+					list.remove(list.size()-1);
+				}
+			} else {
+				list.add(s);
+			}
+		}
+		return list;
+	}
+
+
+	@Override
+	public Path resolveSibling(Path other) {
+		if (other == null) {
+			throw new IllegalArgumentException("param must not be null");
+		}
+		if (!(other instanceof TVFSAbstractPath)) {
+			throw new IllegalArgumentException("param is invalid");
+		}
+
+		if (other instanceof TVFSAbsolutePath) {
+			return other;
+		} else {
+			List<String> path = new ArrayList<>();
+			path.addAll(this.path);
+			path.remove(path.size()-1);
+			path.addAll(((TVFSAbstractPath) other).path);
+			if (isAbsolute()) {
+				return new TVFSAbsolutePath(virtualFS, path);
+			} else {
+				return createRelativePath(path);
+			}
+		}
+	}
+
+	@Override
+	public Path resolveSibling(String other) {
+		return resolveSibling(TVFSPaths.getRelativePath(other));
 	}
 
 }
