@@ -79,4 +79,12 @@ public final class TVFSTools {
 			return list;
 		}
 	}
+
+	public static String[] toArray(List<String> list){
+		if(list==null){
+			return new String[0];
+		} else {
+			return list.toArray(new String[0]);
+		}
+	}
 }

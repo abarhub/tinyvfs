@@ -37,11 +37,6 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 	}
 
 	@Override
-	public Path relativize(Path other) {
-		return null;
-	}
-
-	@Override
 	public URI toUri() {
 		unsupportedOperation();
 		return null;
@@ -49,12 +44,6 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 
 	@Override
 	public Path toAbsolutePath() {
-		unsupportedOperation();
-		return null;
-	}
-
-	@Override
-	public Path toRealPath(LinkOption... options) throws IOException {
 		unsupportedOperation();
 		return null;
 	}

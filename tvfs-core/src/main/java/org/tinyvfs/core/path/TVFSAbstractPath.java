@@ -4,7 +4,9 @@ import org.tinyvfs.core.TVFSPaths;
 import org.tinyvfs.core.TVFSTools;
 import org.tinyvfs.core.fs.VirtualFS;
 
+import java.io.IOException;
 import java.nio.file.FileSystem;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -390,4 +392,57 @@ public abstract class TVFSAbstractPath implements Path {
         }
         return p;
     }
+
+    @Override
+    public Path toRealPath(LinkOption... options) throws IOException {
+        //unsupportedOperation();
+        return getRealPath2().toRealPath(options);
+    }
+
+    // TODO: a ameliorer pour gérer les chemins avec ..
+    @Override
+    public Path relativize(Path other) {
+        //unsupportedOperation();
+
+        if (other == null) {
+            throw new IllegalArgumentException("param must not be null");
+        }
+        if (!(other instanceof TVFSAbstractPath)) {
+            throw new IllegalArgumentException("param is invalid");
+        }
+        if (((TVFSAbstractPath)other).getVirtualFS()!=getVirtualFS()) {
+            throw new IllegalArgumentException("param is invalid");
+        }
+        if (other.isAbsolute()!=isAbsolute()) {
+            if(isAbsolute()) {
+                throw new IllegalArgumentException("param is not absolute");
+            } else {
+                throw new IllegalArgumentException("param is not relative");
+            }
+        }
+        if(!other.startsWith(this)){
+            throw new IllegalArgumentException("param does not start with this");
+        }
+
+        List<String> p=new ArrayList<>();
+        List<String> p2=new ArrayList<>();
+
+        p.addAll(path);
+        p2.addAll(((TVFSAbstractPath) other).path);
+
+        if(p.isEmpty()){
+            return other;
+        } else {
+            while(!p.isEmpty()&&p2.isEmpty()&&p.get(0).equals(p2.get(0))){
+                p.remove(0);
+                p2.remove(0);
+            }
+            if(isAbsolute()){
+                return TVFSPaths.getAbsolutePath(virtualFS.getName().getName(), TVFSTools.toArray(p2));
+            } else {
+                return TVFSPaths.getRelativePath(TVFSTools.toArray(p2));
+            }
+        }
+    }
+
 }

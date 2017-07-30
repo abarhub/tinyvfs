@@ -1,6 +1,7 @@
 package org.tinyvfs.core.path;
 
 import org.tinyvfs.core.TVFSPaths;
+import org.tinyvfs.core.TVFSTools;
 import org.tinyvfs.core.fs.VirtualFS;
 
 import java.io.File;
@@ -39,12 +40,6 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 
 
 	@Override
-	public Path relativize(Path other) {
-		unsupportedOperation();
-		return null;
-	}
-
-	@Override
 	public URI toUri() {
 		unsupportedOperation();
 		return null;
@@ -55,11 +50,6 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 		return this;
 	}
 
-	@Override
-	public Path toRealPath(LinkOption... options) throws IOException {
-		unsupportedOperation();
-		return null;
-	}
 
 	@Override
 	public File toFile() {

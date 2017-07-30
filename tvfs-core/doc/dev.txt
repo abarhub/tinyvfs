@@ -18,4 +18,6 @@ todo :
 -vérifier qu'il n'y a pas de problème sous windows et sous linux
 -vérifier que les / et\ sont bien géré sous windows et qu'il n'y a pas d'effet de bord sous linux
 -faire des tests complet avec les différents mode de configuration (cad un sous module par test)
+-améliorer relativize pour mieux gérer les chemin avec .. (c-a-d 2 chemins relativ=f par un ou plusieurs ..)
+-gérer dans relativize la casse
 
