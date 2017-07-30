@@ -28,7 +28,7 @@ public class TVFSConfig {
 		mapFS = new HashMap<>();
 	}
 
-	public void add(TVFSRootName rootName, TVFSConfigParam configParam) {
+	public synchronized void add(TVFSRootName rootName, TVFSConfigParam configParam) {
 		TVFSTools.checkParamNotNull(rootName, "root is Null");
 		TVFSTools.checkParamNotNull(configParam, "config is Null");
 		TVFSTools.checkParam(!map.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
@@ -37,7 +37,7 @@ public class TVFSConfig {
 		LOGGER.info("add {}", rootName);
 	}
 
-	public void add(TVFSRootName rootName, TVFSConfigParam configParam, TVFileSystem fileSystem) {
+	public synchronized void add(TVFSRootName rootName, TVFSConfigParam configParam, TVFileSystem fileSystem) {
 		TVFSTools.checkParamNotNull(rootName, "root is Null");
 		TVFSTools.checkParamNotNull(configParam, "config is Null");
 		TVFSTools.checkParamNotNull(fileSystem, "root is Null");
@@ -52,7 +52,7 @@ public class TVFSConfig {
 		return map.get(rootName);
 	}
 
-	public VirtualFS getFS(TVFSRootName name, TVFileSystem fileSystem) {
+	public synchronized VirtualFS getFS(TVFSRootName name, TVFileSystem fileSystem) {
 		TVFSTools.checkParamNotNull(name, "Param is Null");
 		TVFSTools.checkParamNotNull(fileSystem, "Param is Null");
 		init();
@@ -67,19 +67,21 @@ public class TVFSConfig {
 		}
 	}
 
-	public void init() {
+	public synchronized void init() {
 		if (isInit.compareAndSet(false, true)) {
 			LOGGER.debug("start init");
 			ServiceLoader<TVFSConfigurator> configuratorServiceLoader = ServiceLoader.load(TVFSConfigurator.class);
 
-			Iterator<TVFSConfigurator> iter = configuratorServiceLoader.iterator();
-			while (iter.hasNext()) {
-				TVFSConfigurator tvfsConfigurator = iter.next();
-				try {
-					tvfsConfigurator.configure(this);
-				} catch (Exception e) {
-					LOGGER.error("Error : {}", e.getMessage(), e);
-					throw new TVFSInitializeException("Error in TVFS initialisation : " + e.getMessage(), e);
+			if(configuratorServiceLoader!=null) {
+				Iterator<TVFSConfigurator> iter = configuratorServiceLoader.iterator();
+				while (iter.hasNext()) {
+					TVFSConfigurator tvfsConfigurator = iter.next();
+					try {
+						tvfsConfigurator.configure(this);
+					} catch (Exception e) {
+						LOGGER.error("Error : {}", e.getMessage(), e);
+						throw new TVFSInitializeException("Error in TVFS initialisation : " + e.getMessage(), e);
+					}
 				}
 			}
 			LOGGER.debug("end init");

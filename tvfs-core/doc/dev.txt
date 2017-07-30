@@ -20,4 +20,10 @@ todo :
 -faire des tests complet avec les différents mode de configuration (cad un sous module par test)
 -améliorer relativize pour mieux gérer les chemin avec .. (c-a-d 2 chemins relativ=f par un ou plusieurs ..)
 -gérer dans relativize la casse
+-vérifier et tester que les operations sur path sont bien bloqués si le root name est différent (suivant la methode)
+-ajouter une methode dans tools pour avoir le nom du root name
+-pour la configuration gérer un mode (readonly, writeonly, readwrite)
+-pour la configuration, permettre de bloquer la modification de la configuration
+-pour la configuration, pouvoir indiquer le filesystem parent
+
 
