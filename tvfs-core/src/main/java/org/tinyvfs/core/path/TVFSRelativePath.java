@@ -94,6 +94,7 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 		return p;
 	}
 
+	//TODO: a implementer
 	@Override
 	public int compareTo(Path other) {
 		return 0;
