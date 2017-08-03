@@ -1,5 +1,8 @@
 package org.tinyvfs.core;
 
+import org.tinyvfs.core.fs.VirtualFS;
+
+import java.nio.file.Path;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,5 +89,27 @@ public final class TVFSTools {
 		} else {
 			return list.toArray(new String[0]);
 		}
+	}
+
+	public static String[] toArray(Path p){
+		if(p==null){
+			return new String[0];
+		} else {
+			String tab[]=new String[p.getNameCount()];
+			for(int i=0;i<p.getNameCount();i++){
+				tab[i]=p.getName(i).toString();
+			}
+			return tab;
+		}
+	}
+
+	public Path convert(VirtualFS virtualFS,Path p){
+		Path root=virtualFS.getRootPath();
+		if(!root.startsWith(p)){
+			throw new IllegalArgumentException("p is invalide");
+		}
+		Path p2=root.relativize(p);
+		String tab[]=toArray(p2);
+		return virtualFS.get(tab);
 	}
 }

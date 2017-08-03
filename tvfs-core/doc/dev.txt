@@ -25,5 +25,12 @@ todo :
 -pour la configuration gérer un mode (readonly, writeonly, readwrite)
 -pour la configuration, permettre de bloquer la modification de la configuration
 -pour la configuration, pouvoir indiquer le filesystem parent
-
+-finir directoryStream
+-finir watch
+-bien tester les methodes non testé (directorystream, watch, mesthodes de path)
+-ajouter une vérification pour toutes les methodes qui retourne un path
+-vérifier tous les paramètres d'entrés
+-ajouter des logs pour mieux auditer les traitements
+-permettre d'ajouter des listenner pour auditer les operations (peut être les bloquer)
+-permetre de retourner un fichier généré par du code
 

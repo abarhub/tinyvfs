@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinyvfs.core.fs.TVFileSystem;
 import org.tinyvfs.core.fs.VirtualFSProvider;
+import org.tinyvfs.core.path.TVFSAbstractPath;
 import org.tinyvfs.core.path.TVFSRelativePath;
 
 import java.io.IOException;
@@ -84,5 +85,19 @@ public final class TVFSPaths {
 
 	public static void clear() {
 		fs = null;
+	}
+
+	public boolean isTVFSPath(Path p){
+		return p!=null&&p instanceof TVFSAbstractPath;
+	}
+
+	public String getRootName(TVFSAbstractPath p){
+		if(p==null){
+			throw new NullPointerException("param null");
+		}
+		if(!p.isAbsolute()){
+			throw new IllegalArgumentException("Param is not absolute");
+		}
+		return p.getVirtualFS().getName().getName();
 	}
 }
