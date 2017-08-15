@@ -33,4 +33,8 @@ todo :
 -ajouter des logs pour mieux auditer les traitements
 -permettre d'ajouter des listenner pour auditer les operations (peut être les bloquer)
 -permetre de retourner un fichier généré par du code
+-faire des vérification que l'on ne peut pas sortir du repertoire virtuel
+-prévoir un mode sécuriser et un mode qui respecte la spec
+-réflechir pour pouvoir faire des tests avec des paramètres du FS différents
+(peut être par exemple avec un autre projet equivalent à au module api, mais spécifique aux tests)
 

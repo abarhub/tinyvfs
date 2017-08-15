@@ -186,7 +186,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		TVFSTools.checkParam(p.getFileSystem().provider() == this, "le FS est invalide");
 	}
 
-	// TODO: voir s'il faut le mettre en privae ou protected
+	// TODO: voir s'il faut le mettre en private ou protected
 	protected Path getRealPath(Path path) {
 		checkVirtualPath(path);
 		TVFSAbsolutePath p2 = (TVFSAbsolutePath) path;
@@ -209,6 +209,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return fs2.getDefautFileSystem();
 	}
 
+	// TODO: a revoir pour isoler le directoryStream
 	@Override
 	public DirectoryStream<Path> newDirectoryStream(Path dir, DirectoryStream.Filter<? super Path> filter) throws IOException {
 		checkVirtualPath(dir);
