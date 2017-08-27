@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -33,7 +31,7 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 	public Path normalize() {
 
 		List<String> list = normalizePath();
-		return new TVFSRelativePath(virtualFS,list);
+		return new TVFSRelativePath(virtualFS, list);
 	}
 
 	@Override

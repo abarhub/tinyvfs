@@ -87,15 +87,15 @@ public final class TVFSPaths {
 		fs = null;
 	}
 
-	public boolean isTVFSPath(Path p){
-		return p!=null&&p instanceof TVFSAbstractPath;
+	public boolean isTVFSPath(Path p) {
+		return p != null && p instanceof TVFSAbstractPath;
 	}
 
-	public String getRootName(TVFSAbstractPath p){
-		if(p==null){
+	public String getRootName(TVFSAbstractPath p) {
+		if (p == null) {
 			throw new NullPointerException("param null");
 		}
-		if(!p.isAbsolute()){
+		if (!p.isAbsolute()) {
 			throw new IllegalArgumentException("Param is not absolute");
 		}
 		return p.getVirtualFS().getName().getName();

@@ -1,15 +1,15 @@
 package org.tinyvfs.core.path;
 
-import org.tinyvfs.core.TVFSPaths;
-import org.tinyvfs.core.TVFSTools;
 import org.tinyvfs.core.fs.VirtualFS;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.*;
+import java.nio.file.Path;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -34,8 +34,8 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 
 	@Override
 	public Path normalize() {
-	    List<String> list=normalizePath();
-		return new TVFSAbsolutePath(virtualFS,list);
+		List<String> list = normalizePath();
+		return new TVFSAbsolutePath(virtualFS, list);
 	}
 
 

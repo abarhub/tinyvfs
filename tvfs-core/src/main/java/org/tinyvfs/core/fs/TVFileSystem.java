@@ -78,10 +78,10 @@ public class TVFileSystem extends FileSystem {
 	@Override
 	public Iterable<Path> getRootDirectories() {
 		//unsupportedOperation();
-		List<Path> list=new ArrayList<>();
-		List<TVFSRootName> list2=tvfsConfig.getRootsName();
-		if(list2!=null){
-			for(TVFSRootName root:list2){
+		List<Path> list = new ArrayList<>();
+		List<TVFSRootName> list2 = tvfsConfig.getRootsName();
+		if (list2 != null) {
+			for (TVFSRootName root : list2) {
 				list.add(TVFSPaths.getAbsolutePath(root.getName()));
 			}
 		}
@@ -91,14 +91,14 @@ public class TVFileSystem extends FileSystem {
 	@Override
 	public Iterable<FileStore> getFileStores() {
 		//unsupportedOperation();
-		List<FileStore> list=new ArrayList<>();
-		List<TVFSRootName> list2=tvfsConfig.getRootsName();
-		if(list2!=null){
-			for(TVFSRootName root:list2){
+		List<FileStore> list = new ArrayList<>();
+		List<TVFSRootName> list2 = tvfsConfig.getRootsName();
+		if (list2 != null) {
+			for (TVFSRootName root : list2) {
 				try {
 					list.add(provider().getFileStore(TVFSPaths.getAbsolutePath(root.getName())));
-				}catch(IOException e){
-					LOGGER.debug("Error : {}",e.getMessage(),e);
+				} catch (IOException e) {
+					LOGGER.debug("Error : {}", e.getMessage(), e);
 				}
 			}
 		}
@@ -144,7 +144,7 @@ public class TVFileSystem extends FileSystem {
 	public PathMatcher getPathMatcher(String syntaxAndPattern) {
 		//unsupportedOperation();
 		return (x) -> {
-			Path p=virtualFSProvider.getRealPath(x);
+			Path p = virtualFSProvider.getRealPath(x);
 			return defautFileSystem.getPathMatcher(syntaxAndPattern).matches(p);
 		};
 	}

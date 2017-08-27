@@ -72,7 +72,7 @@ public class TVFSConfig {
 			LOGGER.debug("start init");
 			ServiceLoader<TVFSConfigurator> configuratorServiceLoader = ServiceLoader.load(TVFSConfigurator.class);
 
-			if(configuratorServiceLoader!=null) {
+			if (configuratorServiceLoader != null) {
 				Iterator<TVFSConfigurator> iter = configuratorServiceLoader.iterator();
 				while (iter.hasNext()) {
 					TVFSConfigurator tvfsConfigurator = iter.next();
@@ -92,17 +92,17 @@ public class TVFSConfig {
 		return map.containsKey(rootName);
 	}
 
-	public List<TVFSRootName> getRootsName(){
-		Set<TVFSRootName> set=mapFS.keySet();
-		List<TVFSRootName> list=new ArrayList<>();
-		if(set!=null){
+	public List<TVFSRootName> getRootsName() {
+		Set<TVFSRootName> set = mapFS.keySet();
+		List<TVFSRootName> list = new ArrayList<>();
+		if (set != null) {
 			list.addAll(set);
 		}
 		return list;
 	}
 
-	public VirtualFS getVFS(TVFSRootName rootName){
-		if(mapFS.containsKey(rootName)) {
+	public VirtualFS getVFS(TVFSRootName rootName) {
+		if (mapFS.containsKey(rootName)) {
 			return mapFS.get(rootName);
 		} else {
 			return null;
