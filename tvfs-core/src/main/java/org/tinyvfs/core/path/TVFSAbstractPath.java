@@ -157,14 +157,8 @@ public abstract class TVFSAbstractPath implements Path {
 		Optional<String> p2 = p.path.stream().reduce((x, y) -> x + y);
 		String s1, s2;
 
-		if (p1.isPresent())
-			s1 = p1.get();
-		else
-			s1 = "";
-		if (p2.isPresent())
-			s2 = p2.get();
-		else
-			s2 = "";
+		s1 = p1.orElse("");
+		s2 = p2.orElse("");
 
 		return s1.compareTo(s2);
 	}
@@ -433,7 +427,7 @@ public abstract class TVFSAbstractPath implements Path {
 		if (p.isEmpty()) {
 			return other;
 		} else {
-			while (!p.isEmpty() && p2.isEmpty() && p.get(0).equals(p2.get(0))) {
+			while (!p.isEmpty() && !p2.isEmpty() && p.get(0).equals(p2.get(0))) {
 				p.remove(0);
 				p2.remove(0);
 			}

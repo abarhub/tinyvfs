@@ -77,8 +77,7 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 				s.append(getFileSystem().getSeparator());
 			s.append(s2);
 		}
-		Path p = root.resolve(s.toString());
-		return p;
+		return root.resolve(s.toString());
 	}
 
 	@Override

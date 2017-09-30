@@ -89,13 +89,13 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 
 	@Override
 	public String toString() {
-		String s = "";
+		StringBuilder s = new StringBuilder();
 		for (String s2 : path) {
 			if (s.length() > 0)
-				s += "/" + s2;
+				s.append("/").append(s2);
 			else
-				s += s2;
+				s.append(s2);
 		}
-		return s;
+		return s.toString();
 	}
 }
