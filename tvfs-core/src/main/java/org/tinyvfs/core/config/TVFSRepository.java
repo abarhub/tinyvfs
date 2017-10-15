@@ -10,13 +10,9 @@ public class TVFSRepository {
 	private static TVFSConfig instance = new TVFSConfig();
 	private static AtomicBoolean isInit = new AtomicBoolean(false);
 
-	// TODO: a ameliorer la synchronisation
 	public static TVFSConfig getInstance() {
-		if (!isInit.get()) {
-			synchronized (TVFSRepository.class) {
-				instance.init();
-				isInit.set(true);
-			}
+		if (!isInit.compareAndSet(false, true)) {
+			instance.init();
 		}
 		return instance;
 	}
