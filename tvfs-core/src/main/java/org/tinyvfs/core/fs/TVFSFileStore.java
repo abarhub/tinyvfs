@@ -12,8 +12,8 @@ import java.nio.file.attribute.FileStoreAttributeView;
  */
 public class TVFSFileStore extends FileStore {
 
-	final FileStore fileStore;
-	final boolean readOnly;
+	final private FileStore fileStore;
+	final private boolean readOnly;
 
 	public TVFSFileStore(FileStore fileStore, boolean readOnly) {
 		TVFSTools.checkParamNotNull(fileStore, "Param null");

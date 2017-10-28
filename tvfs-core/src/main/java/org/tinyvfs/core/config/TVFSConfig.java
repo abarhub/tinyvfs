@@ -33,8 +33,9 @@ public class TVFSConfig {
 		TVFSTools.checkParamNotNull(configParam, "config is Null");
 		TVFSTools.checkParam(!map.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
 		TVFSTools.checkParam(configParam.getName().equals(rootName), "Name '" + rootName.getName() + "' invalid !");
+		TVFSTools.checkParam(!mapFS.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
 		map.put(rootName, configParam);
-		LOGGER.info("add {}", rootName);
+		LOGGER.debug("add {}", rootName);
 	}
 
 	public synchronized void add(TVFSRootName rootName, TVFSConfigParam configParam, TVFileSystem fileSystem) {
@@ -43,9 +44,10 @@ public class TVFSConfig {
 		TVFSTools.checkParamNotNull(fileSystem, "fileSystem is Null");
 		TVFSTools.checkParam(!map.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
 		TVFSTools.checkParam(configParam.getName().equals(rootName), "Name '" + rootName.getName() + "' invalid !");
+		TVFSTools.checkParam(!mapFS.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
 		map.put(rootName, configParam);
 		mapFS.put(rootName, new VirtualFS(fileSystem, rootName, configParam.getPath()));
-		LOGGER.info("add {}", rootName);
+		LOGGER.debug("add {}", rootName);
 	}
 
 	public TVFSConfigParam get(TVFSRootName rootName) {

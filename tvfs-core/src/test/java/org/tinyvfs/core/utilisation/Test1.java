@@ -1,4 +1,4 @@
-package org.tinyvfs.core;
+package org.tinyvfs.core.utilisation;
 
 import org.junit.Before;
 import org.junit.Rule;

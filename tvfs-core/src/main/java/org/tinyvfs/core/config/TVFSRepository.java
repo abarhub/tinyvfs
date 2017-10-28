@@ -11,7 +11,7 @@ public class TVFSRepository {
 	private static AtomicBoolean isInit = new AtomicBoolean(false);
 
 	public static TVFSConfig getInstance() {
-		if (!isInit.compareAndSet(false, true)) {
+		if (isInit.compareAndSet(false, true)) {
 			instance.init();
 		}
 		return instance;
@@ -19,6 +19,7 @@ public class TVFSRepository {
 
 	public static void clearInstance() {
 		instance = new TVFSConfig();
+		isInit.set(false);
 	}
 
 }

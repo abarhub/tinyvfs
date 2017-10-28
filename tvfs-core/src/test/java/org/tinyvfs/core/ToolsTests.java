@@ -3,6 +3,7 @@ package org.tinyvfs.core;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -11,6 +12,9 @@ import static org.junit.Assert.assertNotNull;
  * Created by Alain on 15/01/2017.
  */
 public final class ToolsTests {
+
+	private static final AtomicInteger compteur = new AtomicInteger(0);
+
 
 	private ToolsTests() {
 	}
@@ -27,5 +31,9 @@ public final class ToolsTests {
 			liste2.add(s);
 		}
 		assertEquals(liste, liste2);
+	}
+
+	public static int getCompteur() {
+		return compteur.getAndIncrement();
 	}
 }

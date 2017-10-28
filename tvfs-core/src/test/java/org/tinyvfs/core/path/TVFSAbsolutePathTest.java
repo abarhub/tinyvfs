@@ -1,6 +1,7 @@
 package org.tinyvfs.core.path;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -74,7 +75,8 @@ public class TVFSAbsolutePathTest extends TVFSCommonPathTest {
 	@Test
 	public void testGetParent() {
 		TVFSAbsolutePath p1 = getPath();
-		assertNull(p1.getParent());
+		assertNotNull(p1.getParent());
+		assertPath(toList(), p1.getParent());
 
 		p1 = getPath("/aaaa", "bbb", "cccc");
 		assertPath(toList("bbb"), p1.getParent());
@@ -83,7 +85,8 @@ public class TVFSAbsolutePathTest extends TVFSCommonPathTest {
 		assertPath(toList("aaaa"), p1.getParent());
 
 		p1 = getPath("/aaaa");
-		assertNull(p1.getParent());
+		assertNotNull(p1.getParent());
+		assertPath(toList(), p1.getParent());
 	}
 
 	@Test
@@ -353,4 +356,14 @@ public class TVFSAbsolutePathTest extends TVFSCommonPathTest {
 		assertFalse(p2.equals(p1));
 	}
 
+	@Test
+	@Ignore
+	public void testRelativizeOK() {
+		Path p1, p2, res;
+
+		p1 = getPath("/aaa");
+		p2 = getPath("/aaa", "bbb", "ccc");
+		res = p1.relativize(p2);
+		assertTrue(res.equals(getPathRelative("bbb", "ccc")));
+	}
 }

@@ -81,6 +81,17 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 	}
 
 	@Override
+	public Path getParent() {
+		if (path.size() < 2) {
+			return getRoot();
+		} else {
+			List<String> liste2 = new ArrayList<>();
+			liste2.add(path.get(path.size() - 2));
+			return new TVFSAbsolutePath(virtualFS, liste2);
+		}
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder s = new StringBuilder(virtualFS.getName().getName() + ":");
 		for (String s2 : path) {

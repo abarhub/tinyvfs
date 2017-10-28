@@ -189,9 +189,10 @@ public class VirtualFSProvider extends FileSystemProvider {
 	// TODO: voir s'il faut le mettre en private ou protected
 	protected Path getRealPath(Path path) {
 		checkVirtualPath(path);
+		TVFSTools.checkParam(path instanceof TVFSAbsolutePath, "le chemin est relatif :" + path);
 		TVFSAbsolutePath p2 = (TVFSAbsolutePath) path;
 		Path p3 = p2.getRealPath();
-		LOGGER.info(path + "->" + p3);
+		LOGGER.debug(path + "->" + p3);
 		return p3;
 	}
 

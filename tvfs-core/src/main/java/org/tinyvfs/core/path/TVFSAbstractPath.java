@@ -9,6 +9,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alain on 01/01/2017.
@@ -288,7 +289,7 @@ public abstract class TVFSAbstractPath implements Path {
 			throw new NullPointerException("other must not be null");
 		}
 		if (!(other instanceof TVFSAbstractPath)) {
-			throw new IllegalArgumentException("param is invalid");
+			throw new IllegalArgumentException("param is not valid");
 		}
 		if (other.getFileSystem() != getFileSystem()) {
 			return false;
@@ -364,25 +365,27 @@ public abstract class TVFSAbstractPath implements Path {
 		}
 		Path p;
 		if (list.isEmpty()) {
-			p = virtualFS.getTvFileSystem().getPath("");
+			//p = virtualFS.getTvFileSystem().getPath(virtualFS.getName().getName());
+			p = virtualFS.getRootPath();
 		} else {
 			String first = "";
 			String others[] = null;
-			if (list.size() >= 1) {
-				first = list.get(0);
-			}
-			if (list.size() > 1) {
-				others = new String[list.size() - 1];
-
-				for (int i = 1; i < list.size(); i++) {
-					others[i - 1] = list.get(i);
-				}
-			}
-			if (others == null) {
-				p = virtualFS.getTvFileSystem().getPath(first);
-			} else {
-				p = virtualFS.getTvFileSystem().getPath(first, others);
-			}
+//			if (list.size() >= 1) {
+//				first = list.get(0);
+//			}
+//			if (list.size() > 1) {
+//				others = new String[list.size() - 1];
+//
+//				for (int i = 1; i < list.size(); i++) {
+//					others[i - 1] = list.get(i);
+//				}
+//			}
+			//if (others == null) {
+			p = virtualFS.getRootPath().resolve(list.stream().collect(Collectors.joining(virtualFS.getTvFileSystem().getSeparator())));
+			//p = virtualFS.getTvFileSystem().getPath(virtualFS.getName().getName(),first);
+//			} else {
+//				p = virtualFS.getTvFileSystem().getPath(first, others);
+//			}
 		}
 		return p;
 	}
