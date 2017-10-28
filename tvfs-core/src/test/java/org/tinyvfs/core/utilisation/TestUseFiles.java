@@ -23,6 +23,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -36,6 +38,9 @@ public class TestUseFiles {
 	public TemporaryFolder folder = new TemporaryFolder();
 	@Rule
 	public TestName name = new TestName();
+
+	private Map<String, Path> mapRootPath = new HashMap<>();
+
 
 	@Before
 	public void init() throws NoSuchFieldException, IllegalAccessException {
@@ -101,6 +106,15 @@ public class TestUseFiles {
 
 		configFS();
 
+		final Path pRef1 = getRootPath(TEST_NAME).resolve("fichier1.txt");
+		final Path pRef2 = getRootPath(TEST_NAME).resolve("fichier1.txt");
+
+		LOGGER.info("pRef1={}", pRef1);
+		LOGGER.info("pRef2={}", pRef2);
+
+		assertFalse(Files.exists(pRef1));
+		assertFalse(Files.exists(pRef2));
+
 		Path p = TVFSPaths.getAbsolutePath(TEST_NAME, "fichier1.txt");
 
 		assertNotNull(p);
@@ -139,6 +153,8 @@ public class TestUseFiles {
 
 		assertEquals(buf0, s);
 
+		assertTrue(Files.exists(pRef1));
+		assertTrue(Files.exists(pRef2));
 	}
 
 	@Test
@@ -146,6 +162,12 @@ public class TestUseFiles {
 		LOGGER.info("testCreateFile");
 
 		configFS();
+
+		final Path pRef = getRootPath(TEST_NAME).resolve("fichier01.txt");
+
+		LOGGER.info("pRef={}", pRef);
+
+		assertFalse(Files.exists(pRef));
 
 		Path p = TVFSPaths.getAbsolutePath(TEST_NAME, "fichier01.txt");
 
@@ -164,6 +186,8 @@ public class TestUseFiles {
 		// vérifications
 		assertTrue(Files.exists(p));
 		assertFalse(Files.isDirectory(p));
+		assertTrue(Files.exists(pRef));
+		assertFalse(Files.isDirectory(pRef));
 	}
 
 	@Test
@@ -171,6 +195,12 @@ public class TestUseFiles {
 		LOGGER.info("testCreateDirectory");
 
 		configFS();
+
+		final Path pRef = getRootPath(TEST_NAME).resolve("myrep");
+
+		LOGGER.info("pRef={}", pRef);
+
+		assertFalse(Files.exists(pRef));
 
 		Path p = TVFSPaths.getAbsolutePath(TEST_NAME, "myrep");
 
@@ -188,6 +218,7 @@ public class TestUseFiles {
 		// vérifications
 		assertTrue(Files.exists(p));
 		assertTrue(Files.isDirectory(p));
+		assertTrue(Files.exists(pRef));
 	}
 
 	@Test
@@ -196,6 +227,12 @@ public class TestUseFiles {
 		LOGGER.info("testCreateMultipeDirectories");
 
 		configFS();
+
+		final Path pRef = getRootPath(TEST_NAME).resolve("myrep/myrep2");
+
+		LOGGER.info("pRef={}", pRef);
+
+		assertFalse(Files.exists(pRef));
 
 		Path p = TVFSPaths.getAbsolutePath(TEST_NAME, "myrep/myrep2");
 
@@ -213,6 +250,8 @@ public class TestUseFiles {
 		// vérifications
 		assertTrue(Files.exists(p));
 		assertTrue(Files.isDirectory(p));
+		assertTrue(Files.exists(pRef));
+		assertTrue(Files.isDirectory(pRef));
 	}
 
 	@Test
@@ -220,6 +259,10 @@ public class TestUseFiles {
 		LOGGER.info("testRootExists");
 
 		configFS();
+
+		final Path pRef = getRootPath(TEST_NAME);
+
+		LOGGER.info("pRef={}", pRef);
 
 		Path p = TVFSPaths.getAbsolutePath(TEST_NAME);
 
@@ -234,6 +277,7 @@ public class TestUseFiles {
 
 		// vérifications
 		assertTrue(exists);
+		assertTrue(Files.exists(pRef));
 	}
 
 	@Test
@@ -270,6 +314,7 @@ public class TestUseFiles {
 		LOGGER.debug("tempdir={}", tempdir);
 		boolean exists = Files.exists(tempdir);
 		LOGGER.debug("exists={}", exists);
+		mapRootPath.put(name, tempdir);
 		TVFSConfigParam configParam = new TVFSConfigParam(test1, tempdir, false);
 
 		TVFSRepository.getInstance().add(test1, configParam);
@@ -279,4 +324,9 @@ public class TestUseFiles {
 		File f = folder.newFolder();
 		return f.toPath();
 	}
+
+	private Path getRootPath(String nom) {
+		return mapRootPath.get(nom);
+	}
+
 }
