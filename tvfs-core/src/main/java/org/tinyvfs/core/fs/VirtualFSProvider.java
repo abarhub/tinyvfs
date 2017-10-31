@@ -31,6 +31,8 @@ import java.util.concurrent.ExecutorService;
 public class VirtualFSProvider extends FileSystemProvider {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(VirtualFSProvider.class);
+	public static final String ROOT_PATH = "ROOT_PATH";
+	public static final String READ_ONLY = "READ_ONLY";
 
 	public static String SCHEME = "tvfs";
 
@@ -102,7 +104,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		if (mapFS.containsKey(name)) {
 			throw new FileSystemAlreadyExistsException("Le FS existe déjà");
 		} else {
-			Path path = getRootPath(tvfsuri);
+			//Path path = getRootPath(tvfsuri);
 			TVFSConfigParam configParam = convert(name, tvfsuri, env);
 			TVFileSystem tvFileSystem = new TVFileSystem(this, configParam);
 			mapFS.put(name, tvFileSystem);
@@ -116,11 +118,11 @@ public class VirtualFSProvider extends FileSystemProvider {
 		TVFSTools.checkParamNotNull(env, "env is null");
 		String path = "";
 		boolean readOnly = false;
-		Object value = env.getOrDefault("ROOT_PATH", null);
+		Object value = env.getOrDefault(ROOT_PATH, null);
 		if (value != null && value instanceof String) {
 			path = (String) value;
 		}
-		value = env.getOrDefault("READ_ONLY", null);
+		value = env.getOrDefault(READ_ONLY, null);
 		if (value != null && value instanceof String && ((String) value).equalsIgnoreCase("true")) {
 			readOnly = true;
 		}
@@ -461,5 +463,9 @@ public class VirtualFSProvider extends FileSystemProvider {
 		if (isPathReadOnly(path)) {
 			throw new ReadOnlyFileSystemException();
 		}
+	}
+
+	public void add(TVFSConfigParam tvfsConfigParam) {
+		tvfsConfig.add(tvfsConfigParam.getName(), tvfsConfigParam);
 	}
 }

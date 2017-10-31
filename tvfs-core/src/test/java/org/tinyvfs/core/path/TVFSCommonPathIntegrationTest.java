@@ -66,13 +66,13 @@ public class TVFSCommonPathIntegrationTest {
 
 	protected TVFSAbsolutePath getAbsoluePath(String... paths) {
 		if (paths == null || paths.length == 0) {
-			return new TVFSAbsolutePath(virtualFS, new ArrayList<>());
+			return new TVFSAbsolutePath(tvFileSystem, new ArrayList<>());
 		} else {
 			List<String> liste = new ArrayList<>();
 			for (String p : paths) {
 				liste.add(p);
 			}
-			return new TVFSAbsolutePath(virtualFS, liste);
+			return new TVFSAbsolutePath(tvFileSystem, liste);
 		}
 	}
 

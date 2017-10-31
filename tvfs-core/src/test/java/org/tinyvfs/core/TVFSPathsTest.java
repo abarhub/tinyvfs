@@ -8,7 +8,6 @@ import org.tinyvfs.core.config.TVFSConfig;
 import org.tinyvfs.core.config.TVFSConfigParam;
 import org.tinyvfs.core.config.TVFSRepository;
 import org.tinyvfs.core.fs.TVFileSystem;
-import org.tinyvfs.core.path.TVFSAbsolutePath;
 import org.tinyvfs.core.path.TVFSRootName;
 
 import java.io.File;
@@ -109,16 +108,16 @@ public class TVFSPathsTest {
 		assertNotNull(p);
 		assertTrue(p.isAbsolute());
 		ToolsTests.assertPath(toList("fff", "ggg"), p);
-		assertEquals("nom1", ((TVFSAbsolutePath) p).getVirtualFS().getName().getName());
-		assertEquals(name, ((TVFSAbsolutePath) p).getVirtualFS().getName());
+		assertEquals("nom1", ((TVFileSystem) p.getFileSystem()).getName().getName());
+		assertEquals(name, ((TVFileSystem) p.getFileSystem()).getName());
 
 		p = TVFSPaths.getAbsolutePath("nom2", "fff/ggg");
 
 		assertNotNull(p);
 		assertTrue(p.isAbsolute());
 		ToolsTests.assertPath(toList("fff", "ggg"), p);
-		assertEquals("nom2", ((TVFSAbsolutePath) p).getVirtualFS().getName().getName());
-		assertEquals(name2, ((TVFSAbsolutePath) p).getVirtualFS().getName());
+		assertEquals("nom2", ((TVFileSystem) p.getFileSystem()).getName().getName());
+		assertEquals(name2, ((TVFileSystem) p.getFileSystem()).getName());
 	}
 
 	@Test

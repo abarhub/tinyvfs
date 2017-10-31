@@ -51,25 +51,25 @@ public class TVFSCommonPathTest {
 
 	protected TVFSAbsolutePath getPath(String... paths) {
 		if (paths == null || paths.length == 0) {
-			return new TVFSAbsolutePath(virtualFS, new ArrayList<>());
+			return new TVFSAbsolutePath(tvFileSystem, new ArrayList<>());
 		} else {
 			List<String> liste = new ArrayList<>();
 			for (String p : paths) {
 				liste.add(p);
 			}
-			return new TVFSAbsolutePath(virtualFS, liste);
+			return new TVFSAbsolutePath(tvFileSystem, liste);
 		}
 	}
 
 	protected TVFSRelativePath getPathRelative(String... paths) {
 		if (paths == null || paths.length == 0) {
-			return new TVFSRelativePath(virtualFSRelative, new ArrayList<>());
+			return new TVFSRelativePath(tvFileSystem, new ArrayList<>());
 		} else {
 			List<String> liste = new ArrayList<>();
 			for (String p : paths) {
 				liste.add(p);
 			}
-			return new TVFSRelativePath(virtualFSRelative, liste);
+			return new TVFSRelativePath(tvFileSystem, liste);
 		}
 	}
 }

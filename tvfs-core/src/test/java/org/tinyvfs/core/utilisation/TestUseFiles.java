@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.tinyvfs.core.fs.VirtualFSProvider.ROOT_PATH;
 
 public class TestUseFiles {
 
@@ -63,9 +64,9 @@ public class TestUseFiles {
 		virtualFSProvider = new VirtualFSProvider();
 
 		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
-		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("tvfs://test"), null);
+		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("tvfs:test1:"), createEnv());
 
-		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
+		//virtualFSProvider.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 
 		Path p = tvFileSystem.getPath("test1", "/toto2.txt");
 
@@ -329,4 +330,9 @@ public class TestUseFiles {
 		return mapRootPath.get(nom);
 	}
 
+	private Map<String, String> createEnv() throws IOException {
+		Map<String, String> map = new HashMap<>();
+		map.put(ROOT_PATH, newTemp().toString());
+		return map;
+	}
 }

@@ -97,7 +97,7 @@ public class VirtualFSProviderTest {
 		assertNotNull(fs);
 		assertTrue(fs instanceof TVFileSystem);
 		TVFileSystem fs2 = (TVFileSystem) fs;
-		fs2.add(new TVFSConfigParam(new TVFSRootName("test1"), folder.newFolder().toPath(), true));
+		virtualFSProvider.add(new TVFSConfigParam(new TVFSRootName("test1"), folder.newFolder().toPath(), true));
 		Path path = virtualFSProvider.getPath(uri);
 		assertNotNull(path);
 		assertTrue(path instanceof TVFSAbstractPath);
@@ -121,7 +121,7 @@ public class VirtualFSProviderTest {
 		assertNotNull(fs);
 		assertTrue(fs instanceof TVFileSystem);
 		TVFileSystem fs2 = (TVFileSystem) fs;
-		fs2.add(new TVFSConfigParam(new TVFSRootName("test1"), folder.newFolder().toPath(), true));
+		virtualFSProvider.add(new TVFSConfigParam(new TVFSRootName("test1"), folder.newFolder().toPath(), true));
 		Path path = virtualFSProvider.getPath(uri);
 		assertNotNull(path);
 		assertTrue(path instanceof TVFSAbstractPath);
@@ -146,7 +146,7 @@ public class VirtualFSProviderTest {
 		assertNotNull(fs);
 		assertTrue(fs instanceof TVFileSystem);
 		TVFileSystem fs2 = (TVFileSystem) fs;
-		fs2.add(new TVFSConfigParam(new TVFSRootName("test1"), folder.newFolder().toPath(), true));
+		virtualFSProvider.add(new TVFSConfigParam(new TVFSRootName("test1"), folder.newFolder().toPath(), true));
 		Path path = virtualFSProvider.getPath(uri);
 		assertNotNull(path);
 		assertTrue(path instanceof TVFSAbstractPath);

@@ -71,7 +71,7 @@ public class Test1 {
 		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
 		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("tvfs://test"), null);
 
-		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
+		virtualFSProvider.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 
 		Path p = tvFileSystem.getPath("test1", "/toto2.txt");
 
@@ -105,7 +105,7 @@ public class Test1 {
 		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
 		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("tvfs://test"), null);
 
-		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
+		virtualFSProvider.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 
 		Path p = tvFileSystem.getPath("test1", "/toto2.txt");
 
