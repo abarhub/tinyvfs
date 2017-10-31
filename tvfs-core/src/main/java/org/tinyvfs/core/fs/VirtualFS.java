@@ -1,11 +1,9 @@
 package org.tinyvfs.core.fs;
 
 import org.tinyvfs.core.TVFSTools;
-import org.tinyvfs.core.path.TVFSAbsolutePath;
 import org.tinyvfs.core.path.TVFSRootName;
 
 import java.nio.file.Path;
-import java.util.Arrays;
 
 /**
  * Created by Alain on 11/12/2016.
@@ -38,15 +36,15 @@ public class VirtualFS {
 		return new VirtualFS(tvFileSystem);
 	}
 
-	public Path get(String... paths) {
-		if (paths == null || paths.length == 0) {
-			return new TVFSAbsolutePath(this, null);
-		} else if (paths.length == 1) {
-			return new TVFSAbsolutePath(this, Arrays.asList(paths));
-		} else {
-			return new TVFSAbsolutePath(this, Arrays.asList(paths));
-		}
-	}
+//	public Path get(String... paths) {
+//		if (paths == null || paths.length == 0) {
+//			return new TVFSAbsolutePath(this, null);
+//		} else if (paths.length == 1) {
+//			return new TVFSAbsolutePath(this, Arrays.asList(paths));
+//		} else {
+//			return new TVFSAbsolutePath(this, Arrays.asList(paths));
+//		}
+//	}
 
 	public TVFileSystem getTvFileSystem() {
 		return tvFileSystem;

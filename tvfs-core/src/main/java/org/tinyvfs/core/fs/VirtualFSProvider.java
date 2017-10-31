@@ -35,8 +35,9 @@ public class VirtualFSProvider extends FileSystemProvider {
 	public static String SCHEME = "tvfs";
 
 	protected FileSystem defautFileSystem;
-	private TVFileSystem tvFileSystem;
+	//private TVFileSystem tvFileSystem;
 	private TVFSConfig tvfsConfig;
+	private Map<TVFSRootName, TVFileSystem> mapFS;
 
 	public VirtualFSProvider() {
 		this(FileSystems.getDefault(), null);
@@ -48,6 +49,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	public VirtualFSProvider(FileSystem defautFileSystem, TVFSConfig tvfsConfig) {
 		super();
+		mapFS = new HashMap<>();
 		this.defautFileSystem = defautFileSystem;
 		if (tvfsConfig != null) {
 			this.tvfsConfig = tvfsConfig;
@@ -68,7 +70,8 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	private void clear() {
 		LOGGER.info("VFS clear");
-		tvFileSystem = null;
+		//tvFileSystem = null;
+		mapFS.clear();
 	}
 
 	@Override
@@ -78,32 +81,64 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	@Override
 	public FileSystem newFileSystem(URI uri, Map<String, ?> env) throws IOException {
-		checkUri(uri);
-		if (tvFileSystem != null) {
-			throw new FileSystemAlreadyExistsException("Le FS existe déjà");
-		}
 		return createFileSystem(uri, env);
 	}
 
 	@Override
 	public FileSystem getFileSystem(URI uri) {
-		checkUri(uri);
-		if (tvFileSystem == null) {
+		TVFSURI tvfsuri = checkUri(uri);
+		final TVFSRootName name = tvfsuri.getName();
+		if (!mapFS.containsKey(name)) {
 			throw new FileSystemNotFoundException("Le FS n'existe pas");
 		}
-		return tvFileSystem;
+		return mapFS.get(name);
 	}
 
 	private TVFileSystem createFileSystem(URI uri, Map<String, ?> env) {
-		checkUri(uri);
+		TVFSTools.checkParamNotNull(env, "env is null");
+		TVFSURI tvfsuri = checkUri(uri);
 		LOGGER.info("new VFS");
-		tvFileSystem = new TVFileSystem(this, tvfsConfig, defautFileSystem, null, null);
-		return tvFileSystem;
+		TVFSRootName name = tvfsuri.getName();
+		if (mapFS.containsKey(name)) {
+			throw new FileSystemAlreadyExistsException("Le FS existe déjà");
+		} else {
+			Path path = getRootPath(tvfsuri);
+			TVFSConfigParam configParam = convert(name, tvfsuri, env);
+			TVFileSystem tvFileSystem = new TVFileSystem(this, configParam);
+			mapFS.put(name, tvFileSystem);
+			return tvFileSystem;
+		}
 	}
 
-	private void checkUri(URI uri) {
+	private TVFSConfigParam convert(TVFSRootName name, TVFSURI tvfsuri, Map<String, ?> env) {
+		TVFSTools.checkParamNotNull(name, "name is null");
+		TVFSTools.checkParamNotNull(tvfsuri, "tvfsuri is null");
+		TVFSTools.checkParamNotNull(env, "env is null");
+		String path = "";
+		boolean readOnly = false;
+		Object value = env.getOrDefault("ROOT_PATH", null);
+		if (value != null && value instanceof String) {
+			path = (String) value;
+		}
+		value = env.getOrDefault("READ_ONLY", null);
+		if (value != null && value instanceof String && ((String) value).equalsIgnoreCase("true")) {
+			readOnly = true;
+		}
+		return new TVFSConfigParam(name, Paths.get(path), readOnly);
+	}
+
+	private Path getRootPath(TVFSURI tvfsuri) {
 		try {
-			TVFSURI tvfsuri = new TVFSURI(uri);
+			FileSystem fs = FileSystems.getFileSystem(URI.create(tvfsuri.getPath()));
+			return fs.getPath(tvfsuri.getPath());
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Bad uri", e);
+		}
+	}
+
+	private TVFSURI checkUri(URI uri) {
+		try {
+			return new TVFSURI(uri);
 		} catch (TVFSInvalideURIException e) {
 			throw new IllegalArgumentException("URI invalid", e);
 		}
@@ -116,19 +151,22 @@ public class VirtualFSProvider extends FileSystemProvider {
 	@Override
 	public Path getPath(URI uri) {
 		TVFSTools.checkParamNotNull(uri, "uri null");
-		if (tvFileSystem == null) {
+		LOGGER.info("uri={}", uri);
+		TVFSURI tvfsuri = checkUri(uri);
+		if (!mapFS.containsKey(tvfsuri.getName())) {
 			LOGGER.info("creation du FS");
 			createFileSystem(uri, null);
 		}
-		LOGGER.info("uri=" + uri);
-		if (uri.getScheme() == null || !uri.getScheme().equals(SCHEME)) {
-			throw new IllegalArgumentException("scheme invalide");
+		TVFileSystem fs = mapFS.get(tvfsuri.getName());
+		if (fs == null) {
+			throw new FileSystemNotFoundException("FileSystem not found");
 		}
-		String path = uri.getPath();
+		LOGGER.info("tvfsuri={}", tvfsuri);
+		String path = tvfsuri.getPath();
 		if (path == null || path.length() == 0) {
 			throw new IllegalArgumentException("path empty");
 		}
-		LOGGER.info("path=" + path);
+		LOGGER.info("path={}", path);
 		char separator = '/';
 		List<String> liste = new ArrayList<>();
 		StringBuilder buf = new StringBuilder();
@@ -150,23 +188,25 @@ public class VirtualFSProvider extends FileSystemProvider {
 		if (buf.length() > 0) {
 			liste.add(buf.toString());
 		}
-		LOGGER.info("liste=" + liste);
+		LOGGER.info("liste={}", liste);
 		/*if (liste.isEmpty()) {
 			throw new IllegalArgumentException("no Root path");
 		}*/
-		String root = uri.getAuthority();
-		LOGGER.info("root=" + root);
-		if (root.isEmpty() || !TVFSTools.isNameValide(root)) {
-			throw new IllegalArgumentException("Root path invalide");
-		}
+//		String root = uri.getAuthority();
+//		LOGGER.info("root={}", root);
+//		if (root.isEmpty() || !TVFSTools.isNameValide(root)) {
+//			throw new IllegalArgumentException("Root path invalide");
+//		}
 		String[] tab = null;
+		String first = "" + separator;
 		if (liste.size() > 0) {
 			//liste = liste.subList(1, liste.size() - 1);
-			liste.add(0, "" + separator);
+			//first=liste.get(0);
+			//liste.add(0, "" + separator);
 			tab = liste.toArray(new String[liste.size()]);
-			LOGGER.info("tab=" + Arrays.toString(tab));
+			LOGGER.info("tab={}", Arrays.toString(tab));
 		}
-		return tvFileSystem.getPath(root, tab);
+		return fs.getPath(first, tab);
 	}
 
 	private void unsupportedOperation() {
@@ -410,7 +450,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 	private boolean isPathReadOnly(Path path) {
 		checkVirtualPath(path);
 		TVFSAbstractPath p = (TVFSAbstractPath) path;
-		TVFSRootName name = p.getVirtualFS().getName();
+		TVFSRootName name = ((TVFileSystem) p.getFileSystem()).getName();
 		TVFSConfigParam conf = tvfsConfig.get(name);
 		TVFSTools.checkParamNotNull(conf, "conf null");
 		return conf.isReadOnly();

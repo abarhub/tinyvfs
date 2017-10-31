@@ -62,7 +62,7 @@ public final class TVFSPaths {
 				liste.add(p);
 			}
 		}
-		TVFSRelativePath relative = new TVFSRelativePath(fs2.getRelativeFS(), liste);
+		TVFSRelativePath relative = new TVFSRelativePath(fs2, liste);
 		return relative;
 	}
 
@@ -98,6 +98,6 @@ public final class TVFSPaths {
 		if (!p.isAbsolute()) {
 			throw new IllegalArgumentException("Param is not absolute");
 		}
-		return p.getVirtualFS().getName().getName();
+		return ((TVFileSystem) p.getFileSystem()).getName().getName();
 	}
 }

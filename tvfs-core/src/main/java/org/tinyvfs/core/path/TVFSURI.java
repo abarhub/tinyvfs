@@ -10,7 +10,7 @@ import static org.tinyvfs.core.fs.VirtualFSProvider.SCHEME;
 
 public class TVFSURI {
 
-	private String name;
+	private TVFSRootName name;
 	private String path;
 
 	public TVFSURI(URI uri) throws TVFSInvalideURIException {
@@ -28,7 +28,7 @@ public class TVFSURI {
 			TVFSTools.checkParam(pos > 0, "URI invalide");
 			String name = s.substring(0, pos);
 			TVFSTools.checkParam(TVFSTools.isNameValide(name), "URI name invalide");
-			this.name = name;
+			this.name = new TVFSRootName(name);
 			String path = "";
 			if (s.length() > pos) {
 				path = s.substring(pos + 1);
@@ -39,11 +39,19 @@ public class TVFSURI {
 		}
 	}
 
-	public String getName() {
+	public TVFSRootName getName() {
 		return name;
 	}
 
 	public String getPath() {
 		return path;
+	}
+
+	@Override
+	public String toString() {
+		return "TVFSURI{" +
+				"name=" + name +
+				", path='" + path + '\'' +
+				'}';
 	}
 }
