@@ -16,7 +16,7 @@ public class VirtualFS {
 	private final TVFSRootName name;
 	private final Path rootPath;
 
-	public VirtualFS(TVFileSystem tvFileSystem, TVFSRootName name, Path rootPath) {
+	private VirtualFS(TVFileSystem tvFileSystem, TVFSRootName name, Path rootPath) {
 		TVFSTools.checkParamNotNull(tvFileSystem, "Param null");
 		TVFSTools.checkParamNotNull(name, "Name invalide");
 		TVFSTools.checkParamNotNull(rootPath, "Param null");

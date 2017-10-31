@@ -6,9 +6,11 @@ import org.tinyvfs.core.TVFSTools;
 import org.tinyvfs.core.config.TVFSConfig;
 import org.tinyvfs.core.config.TVFSConfigParam;
 import org.tinyvfs.core.config.TVFSRepository;
+import org.tinyvfs.core.exception.TVFSInvalideURIException;
 import org.tinyvfs.core.path.TVFSAbsolutePath;
 import org.tinyvfs.core.path.TVFSAbstractPath;
 import org.tinyvfs.core.path.TVFSRootName;
+import org.tinyvfs.core.path.TVFSURI;
 
 import java.io.IOException;
 import java.net.URI;
@@ -80,7 +82,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		if (tvFileSystem != null) {
 			throw new FileSystemAlreadyExistsException("Le FS existe déjà");
 		}
-		return createFileSystem(uri);
+		return createFileSystem(uri, env);
 	}
 
 	@Override
@@ -92,16 +94,19 @@ public class VirtualFSProvider extends FileSystemProvider {
 		return tvFileSystem;
 	}
 
-	private TVFileSystem createFileSystem(URI uri) {
+	private TVFileSystem createFileSystem(URI uri, Map<String, ?> env) {
 		checkUri(uri);
 		LOGGER.info("new VFS");
-		tvFileSystem = new TVFileSystem(this, tvfsConfig, defautFileSystem);
+		tvFileSystem = new TVFileSystem(this, tvfsConfig, defautFileSystem, null, null);
 		return tvFileSystem;
 	}
 
 	private void checkUri(URI uri) {
-		TVFSTools.checkParamNotNull(uri, "uri null");
-		TVFSTools.checkParam(uri.getScheme().equals(SCHEME), "uri scheme invalide : " + uri.getScheme());
+		try {
+			TVFSURI tvfsuri = new TVFSURI(uri);
+		} catch (TVFSInvalideURIException e) {
+			throw new IllegalArgumentException("URI invalid", e);
+		}
 	}
 
 	protected TVFSConfig getConfig() {
@@ -113,7 +118,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		TVFSTools.checkParamNotNull(uri, "uri null");
 		if (tvFileSystem == null) {
 			LOGGER.info("creation du FS");
-			createFileSystem(uri);
+			createFileSystem(uri, null);
 		}
 		LOGGER.info("uri=" + uri);
 		if (uri.getScheme() == null || !uri.getScheme().equals(SCHEME)) {

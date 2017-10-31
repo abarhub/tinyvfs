@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tinyvfs.core.config.TVFSConfig;
 import org.tinyvfs.core.config.TVFSConfigParam;
 import org.tinyvfs.core.config.TVFSRepository;
 import org.tinyvfs.core.fs.TVFileSystem;
@@ -17,14 +16,16 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.channels.SeekableByteChannel;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileAttribute;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 /**
  * Created by Alain on 11/12/2016.
@@ -41,22 +42,22 @@ public class Test1 {
 		TVFSRepository.clearInstance();
 	}
 
-	@Test
-	public void test1() throws IOException {
-		TVFileSystem tvFileSystem;
-
-		LOGGER.info("Test 1");
-
-		VirtualFSProvider virtualFSProvider = mock(VirtualFSProvider.class);
-		TVFSConfig tvfsConfig = new TVFSConfig();
-		tvFileSystem = new TVFileSystem(virtualFSProvider, tvfsConfig, FileSystems.getDefault());
-
-		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
-
-		Path p = tvFileSystem.getPath("test1", "/toto.txt");
-
-		LOGGER.info("p=" + p);
-	}
+//	@Test
+//	public void test1() throws IOException {
+//		TVFileSystem tvFileSystem;
+//
+//		LOGGER.info("Test 1");
+//
+//		VirtualFSProvider virtualFSProvider = mock(VirtualFSProvider.class);
+//		TVFSConfig tvfsConfig = new TVFSConfig();
+//		tvFileSystem = new TVFileSystem(virtualFSProvider, tvfsConfig, FileSystems.getDefault());
+//
+//		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
+//
+//		Path p = tvFileSystem.getPath("test1", "/toto.txt");
+//
+//		LOGGER.info("p=" + p);
+//	}
 
 	@Test
 	public void test2() throws IOException {

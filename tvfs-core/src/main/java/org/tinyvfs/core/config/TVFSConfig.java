@@ -20,12 +20,12 @@ public class TVFSConfig {
 	public final static Logger LOGGER = LoggerFactory.getLogger(TVFSConfig.class);
 
 	private final Map<TVFSRootName, TVFSConfigParam> map;
-	private final Map<TVFSRootName, VirtualFS> mapFS;
+	//private final Map<TVFSRootName, VirtualFS> mapFS;
 	private final AtomicBoolean isInit = new AtomicBoolean(false);
 
 	public TVFSConfig() {
 		map = new HashMap<>();
-		mapFS = new HashMap<>();
+		//mapFS = new HashMap<>();
 	}
 
 	public synchronized void add(TVFSRootName rootName, TVFSConfigParam configParam) {
@@ -33,22 +33,22 @@ public class TVFSConfig {
 		TVFSTools.checkParamNotNull(configParam, "config is Null");
 		TVFSTools.checkParam(!map.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
 		TVFSTools.checkParam(configParam.getName().equals(rootName), "Name '" + rootName.getName() + "' invalid !");
-		TVFSTools.checkParam(!mapFS.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
+		//TVFSTools.checkParam(!mapFS.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
 		map.put(rootName, configParam);
 		LOGGER.debug("add {}", rootName);
 	}
 
-	public synchronized void add(TVFSRootName rootName, TVFSConfigParam configParam, TVFileSystem fileSystem) {
-		TVFSTools.checkParamNotNull(rootName, "root is Null");
-		TVFSTools.checkParamNotNull(configParam, "config is Null");
-		TVFSTools.checkParamNotNull(fileSystem, "fileSystem is Null");
-		TVFSTools.checkParam(!map.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
-		TVFSTools.checkParam(configParam.getName().equals(rootName), "Name '" + rootName.getName() + "' invalid !");
-		TVFSTools.checkParam(!mapFS.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
-		map.put(rootName, configParam);
-		mapFS.put(rootName, new VirtualFS(fileSystem, rootName, configParam.getPath()));
-		LOGGER.debug("add {}", rootName);
-	}
+//	public synchronized void add(TVFSRootName rootName, TVFSConfigParam configParam, TVFileSystem fileSystem) {
+//		TVFSTools.checkParamNotNull(rootName, "root is Null");
+//		TVFSTools.checkParamNotNull(configParam, "config is Null");
+//		TVFSTools.checkParamNotNull(fileSystem, "fileSystem is Null");
+//		TVFSTools.checkParam(!map.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
+//		TVFSTools.checkParam(configParam.getName().equals(rootName), "Name '" + rootName.getName() + "' invalid !");
+//		TVFSTools.checkParam(!mapFS.containsKey(rootName), "Name '" + rootName.getName() + "' existe déjà !");
+//		map.put(rootName, configParam);
+//		mapFS.put(rootName, new VirtualFS(fileSystem, rootName, configParam.getPath()));
+//		LOGGER.debug("add {}", rootName);
+//	}
 
 	public TVFSConfigParam get(TVFSRootName rootName) {
 		return map.get(rootName);
@@ -58,15 +58,15 @@ public class TVFSConfig {
 		TVFSTools.checkParamNotNull(name, "Param is Null");
 		TVFSTools.checkParamNotNull(fileSystem, "fileSystem is Null");
 		init();
-		if (mapFS.containsKey(name)) {
-			return mapFS.get(name);
-		} else if (map.containsKey(name)) {
-			TVFSConfigParam conf = map.get(name);
-			mapFS.put(name, new VirtualFS(fileSystem, name, conf.getPath()));
-			return mapFS.get(name);
-		} else {
+//		if (mapFS.containsKey(name)) {
+//			return mapFS.get(name);
+//		} else if (map.containsKey(name)) {
+//			TVFSConfigParam conf = map.get(name);
+//			mapFS.put(name, new VirtualFS(fileSystem, name, conf.getPath()));
+//			return mapFS.get(name);
+//		} else {
 			return null;
-		}
+//		}
 	}
 
 	public synchronized void init() {
@@ -95,19 +95,19 @@ public class TVFSConfig {
 	}
 
 	public List<TVFSRootName> getRootsName() {
-		Set<TVFSRootName> set = mapFS.keySet();
+//		Set<TVFSRootName> set = mapFS.keySet();
 		List<TVFSRootName> list = new ArrayList<>();
-		if (set != null) {
-			list.addAll(set);
-		}
+//		if (set != null) {
+//			list.addAll(set);
+//		}
 		return list;
 	}
 
 	public VirtualFS getVFS(TVFSRootName rootName) {
-		if (mapFS.containsKey(rootName)) {
-			return mapFS.get(rootName);
-		} else {
+//		if (mapFS.containsKey(rootName)) {
+//			return mapFS.get(rootName);
+//		} else {
 			return null;
-		}
+//		}
 	}
 }

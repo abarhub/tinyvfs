@@ -30,17 +30,24 @@ public class TVFileSystem extends FileSystem {
 	private final TVFSConfig tvfsConfig;
 	private final VirtualFS relativeFS;
 	private boolean open;
+	private final TVFSRootName name;
+	private final Path rootPath;
 
-	public TVFileSystem(VirtualFSProvider virtualFSProvider, TVFSConfig tvfsConfig, FileSystem defautFileSystem) {
+	public TVFileSystem(VirtualFSProvider virtualFSProvider, TVFSConfig tvfsConfig,
+	                    FileSystem defautFileSystem, TVFSRootName name, Path rootPath) {
 		super();
-		TVFSTools.checkParamNotNull(virtualFSProvider, "Param null");
-		TVFSTools.checkParamNotNull(tvfsConfig, "Param null");
-		TVFSTools.checkParamNotNull(defautFileSystem, "Param null");
+		TVFSTools.checkParamNotNull(virtualFSProvider, "Param virtualFSProvider null");
+		TVFSTools.checkParamNotNull(tvfsConfig, "Param tvfsConfig null");
+		TVFSTools.checkParamNotNull(defautFileSystem, "Param defautFileSystem null");
+		TVFSTools.checkParamNotNull(defautFileSystem, "Param name null");
+		TVFSTools.checkParamNotNull(defautFileSystem, "Param rootPath null");
 		this.virtualFSProvider = virtualFSProvider;
 		open = true;
 		this.tvfsConfig = tvfsConfig;
 		this.defautFileSystem = defautFileSystem;
 		relativeFS = VirtualFS.getRelativeVFS(this);
+		this.name = name;
+		this.rootPath = rootPath;
 	}
 
 	public static void deconnect() {
