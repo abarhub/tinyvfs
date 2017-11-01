@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.tinyvfs.core.fs.VirtualFSProvider.SCHEME;
+import static org.tinyvfs.core.path.TVFSRootName.DEFAULT;
 
 /**
  * Created by Alain on 11/12/2016.
@@ -20,6 +21,10 @@ public final class TVFSTools {
 	public static boolean isNameValide(String name) {
 		if (name == null || name.trim().length() == 0) {
 			return false;
+		}
+
+		if (name.equals(DEFAULT)) {
+			return true;
 		}
 
 		for (int i = 0; i < name.length(); i++) {

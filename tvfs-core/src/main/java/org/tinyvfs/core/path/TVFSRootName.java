@@ -7,12 +7,17 @@ import org.tinyvfs.core.TVFSTools;
  */
 public class TVFSRootName {
 
+	public static final String DEFAULT = "$default";
 	private final String name;
 
 	public TVFSRootName(String name) {
 		TVFSTools.checkIsNotEmpty(name, "Param is Null");
 		TVFSTools.checkParam(TVFSTools.isNameValide(name), "Name is invalid");
 		this.name = name;
+	}
+
+	public TVFSRootName() {
+		this.name = DEFAULT;
 	}
 
 	public String getName() {
@@ -39,5 +44,9 @@ public class TVFSRootName {
 		return "TVFSRootName{" +
 				"name='" + name + '\'' +
 				'}';
+	}
+
+	public static TVFSRootName getDefaultName() {
+		return new TVFSRootName();
 	}
 }

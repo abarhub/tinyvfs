@@ -34,7 +34,8 @@ public class VirtualFSProvider extends FileSystemProvider {
 	public static final String READ_ONLY = "READ_ONLY";
 	private final static Logger LOGGER = LoggerFactory.getLogger(VirtualFSProvider.class);
 	public static String SCHEME = "tvfs";
-
+	private final TVFSRootName defaultName = TVFSRootName.getDefaultName();
+	private final TVFileSystem tvFileSystemDefault;
 	protected FileSystem defautFileSystem;
 	//private TVFileSystem tvFileSystem;
 	private TVFSConfig tvfsConfig;
@@ -57,6 +58,8 @@ public class VirtualFSProvider extends FileSystemProvider {
 		} else {
 			this.tvfsConfig = getConfig();
 		}
+		tvFileSystemDefault = new TVFileSystem(this,
+				new TVFSConfigParam(defaultName, defautFileSystem.getPath(""), false));
 		LOGGER.info("VFS démarré");
 	}
 
@@ -100,7 +103,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 	}
 
 	private TVFileSystem createFileSystem(URI uri, Map<String, ?> env) {
-		TVFSTools.checkParamNotNull(env, "env is null");
+		//TVFSTools.checkParamNotNull(env, "env is null");
 		LOGGER.debug("create FS : {}", uri);
 		TVFSURI tvfsuri = checkUri(uri);
 		LOGGER.info("new VFS : {}", tvfsuri.getName().getName());
@@ -109,13 +112,22 @@ public class VirtualFSProvider extends FileSystemProvider {
 			throw new FileSystemAlreadyExistsException("Le FS existe déjà");
 		} else {
 			//Path path = getRootPath(tvfsuri);
-			TVFSConfigParam configParam = convert(name, tvfsuri, env);
-			tvfsConfig.add(name, configParam);
+			TVFSConfigParam configParam = null;
+			if (env != null) {
+				TVFSTools.checkParam(!tvfsConfig.contains(name), "name is already define");
+				configParam = convert(name, tvfsuri, env);
+				tvfsConfig.add(name, configParam);
+			} else if (tvfsConfig.contains(name)) {
+				configParam = tvfsConfig.get(name);
+			} else {
+				TVFSTools.checkParamNotNull(env, "env is null");
+			}
 			return createFS(name, configParam);
 		}
 	}
 
 	private TVFileSystem createFS(TVFSRootName name, TVFSConfigParam configParam) {
+		TVFSTools.checkParamNotNull(configParam, "configParam is null");
 		TVFileSystem tvFileSystem = new TVFileSystem(this, configParam);
 		mapFS.put(name, tvFileSystem);
 		return tvFileSystem;
@@ -151,7 +163,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		try {
 			return new TVFSURI(uri);
 		} catch (TVFSInvalideURIException e) {
-			throw new IllegalArgumentException("URI invalid", e);
+			throw new IllegalArgumentException("URI invalid : " + uri, e);
 		}
 	}
 
@@ -486,5 +498,9 @@ public class VirtualFSProvider extends FileSystemProvider {
 		} else {
 			return null;
 		}
+	}
+
+	public TVFileSystem getDefaultFileSystem() {
+		return tvFileSystemDefault;
 	}
 }

@@ -111,13 +111,15 @@ public class TVFileSystem extends FileSystem {
 	@Override
 	public Path getPath(String first, String... more) {
 		TVFSTools.checkParam(isOpen(), "FS closed");
-		TVFSTools.checkIsNotEmpty(first, "Param null");
+		//TVFSTools.checkIsNotEmpty(first, "Param null");
 		//TVFSTools.checkParam(first.startsWith("$"), "Root invalide (must start with $)");
 		//TVFSTools.checkParam(TVFSTools.isNameValide(first), "Root invalide (name invalid)");
 
 		String[] paths;
 
-		if (more == null || more.length == 0) {
+		if ((first == null || first.length() == 0) && (more == null || more.length == 0)) {
+			paths = null;
+		} else if (more == null || more.length == 0) {
 			paths = new String[]{first};
 		} else {
 			paths = new String[more.length + 1];

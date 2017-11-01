@@ -14,8 +14,10 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.spi.FileSystemProvider;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Alain on 11/12/2016.
@@ -55,12 +57,14 @@ public final class TVFSPaths {
 
 	public static Path getRelativePath(String... paths) {
 		TVFileSystem fs2;
-		try {
-			fs2 = getTvFileSystem();
-		} catch (IOException | URISyntaxException e) {
-			LOGGER.error("File System '" + VirtualFSProvider.SCHEME + "' not found", e);
-			throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' not found");
-		}
+		//try {
+		VirtualFSProvider virtualFSProvider = getFileSystemProvider();
+		fs2 = virtualFSProvider.getDefaultFileSystem();
+		//fs2 = getTvFileSystem();
+//		} catch (IOException | URISyntaxException e) {
+//			LOGGER.error("File System '" + VirtualFSProvider.SCHEME + "' not found", e);
+//			throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' not found");
+//		}
 		if (fs2 == null) {
 			throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' not found");
 		}
@@ -72,6 +76,21 @@ public final class TVFSPaths {
 		}
 		TVFSRelativePath relative = new TVFSRelativePath(fs2, liste);
 		return relative;
+	}
+
+	public static VirtualFSProvider getFileSystemProvider() {
+		VirtualFSProvider virtualFSProvider = null;
+		List<FileSystemProvider> list = FileSystemProvider.installedProviders();
+		if (list != null) {
+			Optional<VirtualFSProvider> optFs = list.stream()
+					.filter(x -> x instanceof VirtualFSProvider)
+					.map(x -> (VirtualFSProvider) x)
+					.findAny();
+			if (optFs.isPresent()) {
+				virtualFSProvider = optFs.get();
+			}
+		}
+		return virtualFSProvider;
 	}
 
 	private static TVFileSystem getTvFileSystem() throws URISyntaxException, IOException {
