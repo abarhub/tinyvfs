@@ -30,10 +30,9 @@ import java.util.concurrent.ExecutorService;
  */
 public class VirtualFSProvider extends FileSystemProvider {
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(VirtualFSProvider.class);
 	public static final String ROOT_PATH = "ROOT_PATH";
 	public static final String READ_ONLY = "READ_ONLY";
-
+	private final static Logger LOGGER = LoggerFactory.getLogger(VirtualFSProvider.class);
 	public static String SCHEME = "tvfs";
 
 	protected FileSystem defautFileSystem;
@@ -98,14 +97,16 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	private TVFileSystem createFileSystem(URI uri, Map<String, ?> env) {
 		TVFSTools.checkParamNotNull(env, "env is null");
+		LOGGER.debug("create FS : {}", uri);
 		TVFSURI tvfsuri = checkUri(uri);
-		LOGGER.info("new VFS");
+		LOGGER.info("new VFS : {}", tvfsuri.getName().getName());
 		TVFSRootName name = tvfsuri.getName();
 		if (mapFS.containsKey(name)) {
 			throw new FileSystemAlreadyExistsException("Le FS existe déjà");
 		} else {
 			//Path path = getRootPath(tvfsuri);
 			TVFSConfigParam configParam = convert(name, tvfsuri, env);
+			tvfsConfig.add(name, configParam);
 			TVFileSystem tvFileSystem = new TVFileSystem(this, configParam);
 			mapFS.put(name, tvFileSystem);
 			return tvFileSystem;
@@ -454,7 +455,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		TVFSAbstractPath p = (TVFSAbstractPath) path;
 		TVFSRootName name = ((TVFileSystem) p.getFileSystem()).getName();
 		TVFSConfigParam conf = tvfsConfig.get(name);
-		TVFSTools.checkParamNotNull(conf, "conf null");
+		TVFSTools.checkParamNotNull(conf, "conf null for " + name);
 		return conf.isReadOnly();
 	}
 

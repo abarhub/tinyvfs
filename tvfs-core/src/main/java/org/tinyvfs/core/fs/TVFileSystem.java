@@ -113,7 +113,7 @@ public class TVFileSystem extends FileSystem {
 		TVFSTools.checkParam(isOpen(), "FS closed");
 		TVFSTools.checkIsNotEmpty(first, "Param null");
 		//TVFSTools.checkParam(first.startsWith("$"), "Root invalide (must start with $)");
-		TVFSTools.checkParam(TVFSTools.isNameValide(first), "Root invalide (name invalid)");
+		//TVFSTools.checkParam(TVFSTools.isNameValide(first), "Root invalide (name invalid)");
 
 		String[] paths;
 

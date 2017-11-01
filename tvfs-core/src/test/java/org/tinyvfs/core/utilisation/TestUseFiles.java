@@ -68,12 +68,12 @@ public class TestUseFiles {
 
 		//virtualFSProvider.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 
-		Path p = tvFileSystem.getPath("test1", "/toto2.txt");
+		Path p = tvFileSystem.getPath("/toto2.txt");
 
 		LOGGER.info("p=" + p);
 
 
-		Path p2 = tvFileSystem.getPath("test1", "/toto3.txt");
+		Path p2 = tvFileSystem.getPath("/toto3.txt");
 
 		LOGGER.info("p2=" + p2);
 
