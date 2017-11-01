@@ -3,7 +3,6 @@ package org.tinyvfs.core.path;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.tinyvfs.core.fs.TVFileSystem;
-import org.tinyvfs.core.fs.VirtualFS;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,27 +23,19 @@ public class TVFSCommonPathTest {
 	protected static final String SEPARATOR = "/";
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
-	protected VirtualFS virtualFS;
 	protected Path rootPath;
 	protected TVFileSystem tvFileSystem;
-	protected VirtualFS virtualFSRelative;
 
 	public void init() throws IOException {
-		virtualFS = mock(VirtualFS.class);
 
 		TVFSRootName name = new TVFSRootName(NAME);
-		when(virtualFS.getName()).thenReturn(name);
 
 		File f = folder.newFolder();
 		rootPath = f.toPath();
-		when(virtualFS.getRootPath()).thenReturn(rootPath);
 
 		tvFileSystem = mock(TVFileSystem.class);
 		when(tvFileSystem.getSeparator()).thenReturn(SEPARATOR);
 		when(tvFileSystem.getDefautFileSystem()).thenReturn(FileSystems.getDefault());
-		when(virtualFS.getTvFileSystem()).thenReturn(tvFileSystem);
-
-		virtualFSRelative=VirtualFS.getRelativeVFS(tvFileSystem);
 	}
 
 	// tools method

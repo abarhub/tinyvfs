@@ -27,10 +27,6 @@ public final class TVFSPaths {
 
 	private static TVFileSystem fs;
 
-	/*public static Path getAbsolutePath(VirtualFS virtualFS, String... paths) {
-		return virtualFS.get(paths);
-	}*/
-
 	public static Path getAbsolutePath(String name, String... paths) {
 		TVFileSystem fs2;
 		try {

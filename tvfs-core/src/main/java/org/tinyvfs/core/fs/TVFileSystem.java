@@ -28,7 +28,6 @@ public class TVFileSystem extends FileSystem {
 
 	private final VirtualFSProvider virtualFSProvider;
 	private final FileSystem defautFileSystem;
-	private final VirtualFS relativeFS;
 	private final TVFSConfigParam configParam;
 	private boolean open;
 
@@ -39,7 +38,6 @@ public class TVFileSystem extends FileSystem {
 		this.virtualFSProvider = virtualFSProvider;
 		open = true;
 		this.defautFileSystem = configParam.getPath().getFileSystem();
-		relativeFS = VirtualFS.getRelativeVFS(this);
 		this.configParam = configParam;
 	}
 
@@ -117,9 +115,6 @@ public class TVFileSystem extends FileSystem {
 		//TVFSTools.checkParam(first.startsWith("$"), "Root invalide (must start with $)");
 		TVFSTools.checkParam(TVFSTools.isNameValide(first), "Root invalide (name invalid)");
 
-		//TVFSRootName tvfsRoot = new TVFSRootName(first);
-		//VirtualFS fs = getFS(tvfsRoot);
-
 		String[] paths;
 
 		if (more == null || more.length == 0) {
@@ -132,15 +127,6 @@ public class TVFileSystem extends FileSystem {
 
 		return get(paths);
 	}
-
-//	private VirtualFS getFS(TVFSRootName name) {
-//		TVFSTools.checkParamNotNull(name, "Param is Null");
-//		VirtualFS fs = tvfsConfig.getFS(name, this);
-//		if (fs == null) {
-//			throw new InvalidParameterException("Erreur: no FS for '" + name.getName() + "'");
-//		}
-//		return fs;
-//	}
 
 	public Path get(String... paths) {
 		if (paths == null || paths.length == 0) {
@@ -179,16 +165,6 @@ public class TVFileSystem extends FileSystem {
 	public WatchService newWatchService() throws IOException {
 		unsupportedOperation();
 		return null;
-	}
-
-//	public void add(TVFSConfigParam tvfsConfigParam) {
-//		TVFSTools.checkParam(isOpen(), "FS closed");
-//		//tvfsConfig.add(tvfsConfigParam);
-//		tvfsConfig.add(tvfsConfigParam.getName(), tvfsConfigParam);
-//	}
-
-	public VirtualFS getRelativeFS() {
-		return relativeFS;
 	}
 
 	public TVFSRootName getName() {

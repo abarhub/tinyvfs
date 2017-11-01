@@ -8,7 +8,6 @@ import org.tinyvfs.core.TVFSTestTools;
 import org.tinyvfs.core.config.TVFSConfigParam;
 import org.tinyvfs.core.config.TVFSRepository;
 import org.tinyvfs.core.fs.TVFileSystem;
-import org.tinyvfs.core.fs.VirtualFS;
 import org.tinyvfs.core.fs.VirtualFSProvider;
 
 import java.io.File;
@@ -23,10 +22,8 @@ public class TVFSCommonPathIntegrationTest {
 	protected static final String SEPARATOR = "/";
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
-	protected VirtualFS virtualFS;
 	protected Path rootPath;
 	protected TVFileSystem tvFileSystem;
-	protected VirtualFS virtualFSRelative;
 	protected VirtualFSProvider virtualFSProvider;
 
 	public void setUp() throws Exception {
@@ -43,14 +40,6 @@ public class TVFSCommonPathIntegrationTest {
 		virtualFSProvider = new VirtualFSProvider();
 
 		tvFileSystem = (TVFileSystem) virtualFSProvider.getFileSystem(URI.create(VirtualFSProvider.SCHEME + "://localhost"));
-
-		//tvFileSystem.
-
-//		tvFileSystem = new TVFileSystem()
-//
-//		virtualFS = new VirtualFS()
-//		when(virtualFS.getName()).thenReturn(name);
-
 	}
 
 

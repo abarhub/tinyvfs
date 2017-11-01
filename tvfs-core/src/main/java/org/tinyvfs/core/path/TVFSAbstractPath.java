@@ -238,10 +238,6 @@ public abstract class TVFSAbstractPath implements Path {
 		return new TVFSRelativePath(fileSystem, path);
 	}
 
-//	public VirtualFS getVirtualFS() {
-//		return virtualFS;
-//	}
-
 	@Override
 	public Iterator<Path> iterator() {
 		List<Path> list = new ArrayList<>();

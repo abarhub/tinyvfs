@@ -101,13 +101,4 @@ public final class TVFSTools {
 		}
 	}
 
-//	public Path convert(VirtualFS virtualFS, Path p) {
-//		Path root = virtualFS.getRootPath();
-//		if (!root.startsWith(p)) {
-//			throw new IllegalArgumentException("p is invalide");
-//		}
-//		Path p2 = root.relativize(p);
-//		String tab[] = toArray(p2);
-//		return virtualFS.get(tab);
-//	}
 }
