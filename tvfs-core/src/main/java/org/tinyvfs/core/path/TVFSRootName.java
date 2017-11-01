@@ -20,6 +20,10 @@ public class TVFSRootName {
 		this.name = DEFAULT;
 	}
 
+	public static TVFSRootName getDefaultName() {
+		return new TVFSRootName();
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -41,12 +45,6 @@ public class TVFSRootName {
 
 	@Override
 	public String toString() {
-		return "TVFSRootName{" +
-				"name='" + name + '\'' +
-				'}';
-	}
-
-	public static TVFSRootName getDefaultName() {
-		return new TVFSRootName();
+		return name;
 	}
 }

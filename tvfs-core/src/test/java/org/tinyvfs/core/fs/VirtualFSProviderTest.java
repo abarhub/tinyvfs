@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.tinyvfs.core.TVFSTools;
+import org.tinyvfs.core.TestFixture;
 import org.tinyvfs.core.config.TVFSRepository;
 import org.tinyvfs.core.path.TVFSAbstractPath;
 
@@ -14,7 +14,6 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystemAlreadyExistsException;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -187,26 +186,23 @@ public class VirtualFSProviderTest {
 	// methodes utilitaires
 
 	private URI createUri(String name) {
-		return TVFSTools.createURI(name, null);
+		return TestFixture.createUri(name);
 	}
 
 	private URI createUri(String name, String path) {
-		return TVFSTools.createURI(name, path);
+		return TestFixture.createUri(name, path);
 	}
 
 	private FileSystem createFileSystem(String name, String path) throws IOException {
-		return createFileSystem(createUri(name, path));
+		return TestFixture.createFileSystem(virtualFSProvider, name, path, createEnv());
 	}
 
 	private FileSystem createFileSystem(URI uri) throws IOException {
-		return virtualFSProvider.newFileSystem(uri, createEnv());
+		return TestFixture.createFileSystem(virtualFSProvider, uri, createEnv());
 	}
 
 	private Map<String, String> createEnv(Path rootPath) {
-		Map<String, String> map = new HashMap<>();
-		map.put(VirtualFSProvider.ROOT_PATH, rootPath.toString());
-		map.put(VirtualFSProvider.READ_ONLY, "false");
-		return map;
+		return TestFixture.createEnv(rootPath);
 	}
 
 	private Map<String, String> createEnv() throws IOException {

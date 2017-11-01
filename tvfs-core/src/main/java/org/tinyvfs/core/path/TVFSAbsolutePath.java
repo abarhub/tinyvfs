@@ -93,7 +93,8 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 
 	@Override
 	public String toString() {
-		StringBuilder s = new StringBuilder(fileSystem.getName().getName() + ":");
+		StringBuilder s = new StringBuilder(fileSystem.getName().getName());
+		s.append(':');
 		for (String s2 : path) {
 			s.append("/").append(s2);
 		}

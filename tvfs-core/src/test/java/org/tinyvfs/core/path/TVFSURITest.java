@@ -21,7 +21,7 @@ public class TVFSURITest {
 		assertNotNull(uri);
 		TVFSURI tvfsuri = new TVFSURI(uri);
 
-		assertEquals("nom1", tvfsuri.getName());
+		assertEquals("nom1", tvfsuri.getName().getName());
 		assertEquals("/test", tvfsuri.getPath());
 	}
 
@@ -32,7 +32,7 @@ public class TVFSURITest {
 		assertNotNull(uri);
 		TVFSURI tvfsuri = new TVFSURI(uri);
 
-		assertEquals("nom2", tvfsuri.getName());
+		assertEquals("nom2", tvfsuri.getName().getName());
 		assertEquals("/test2", tvfsuri.getPath());
 	}
 }
