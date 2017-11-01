@@ -1,8 +1,9 @@
 package org.tinyvfs.core.path;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,6 +17,8 @@ import static org.tinyvfs.core.ToolsTests.assertPath;
  * Created by Alain on 14/01/2017.
  */
 public class TVFSAbsolutePathTest extends TVFSCommonPathTest {
+
+	public final static Logger LOGGER = LoggerFactory.getLogger(TVFSAbsolutePathTest.class);
 
 	@Before
 	public void init() throws IOException {
@@ -323,6 +326,7 @@ public class TVFSAbsolutePathTest extends TVFSCommonPathTest {
 
 	@Test
 	public void testEqualsOK() {
+		LOGGER.info("testEqualsOK");
 		Path p1, p2;
 
 		p1 = getPath("/aaa", "bbb", "ccc");
@@ -357,13 +361,19 @@ public class TVFSAbsolutePathTest extends TVFSCommonPathTest {
 	}
 
 	@Test
-	@Ignore
 	public void testRelativizeOK() {
+		LOGGER.info("testRelativizeOK");
 		Path p1, p2, res;
 
 		p1 = getPath("/aaa");
 		p2 = getPath("/aaa", "bbb", "ccc");
+		// methode testée
 		res = p1.relativize(p2);
-		assertTrue(res.equals(getPathRelative("bbb", "ccc")));
+
+		// vérifications
+		Path ref = getPathRelative("bbb", "ccc");
+		LOGGER.info("res={}", res);
+		LOGGER.info("ref={}", ref);
+		assertTrue("res=" + res + ",ref=" + ref, res.equals(ref));
 	}
 }

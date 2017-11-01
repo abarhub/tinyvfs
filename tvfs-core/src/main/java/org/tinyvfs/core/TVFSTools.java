@@ -1,11 +1,13 @@
 package org.tinyvfs.core;
 
-import org.tinyvfs.core.fs.VirtualFS;
-
+import java.net.URI;
 import java.nio.file.Path;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.tinyvfs.core.fs.VirtualFSProvider.SCHEME;
+import static org.tinyvfs.core.path.TVFSRootName.DEFAULT;
 
 /**
  * Created by Alain on 11/12/2016.
@@ -19,6 +21,10 @@ public final class TVFSTools {
 	public static boolean isNameValide(String name) {
 		if (name == null || name.trim().length() == 0) {
 			return false;
+		}
+
+		if (name.equals(DEFAULT)) {
+			return true;
 		}
 
 		for (int i = 0; i < name.length(); i++) {
@@ -103,13 +109,15 @@ public final class TVFSTools {
 		}
 	}
 
-	public Path convert(VirtualFS virtualFS, Path p) {
-		Path root = virtualFS.getRootPath();
-		if (!root.startsWith(p)) {
-			throw new IllegalArgumentException("p is invalide");
+	public static URI createURI(String name) {
+		return createURI(name, null);
+	}
+
+	public static URI createURI(String name, String path) {
+		if (path == null || path.length() == 0) {
+			return URI.create(SCHEME + ":" + name + ":");
+		} else {
+			return URI.create(SCHEME + ":" + name + ":" + path);
 		}
-		Path p2 = root.relativize(p);
-		String tab[] = toArray(p2);
-		return virtualFS.get(tab);
 	}
 }

@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.tinyvfs.core.fs.VirtualFSProvider.ROOT_PATH;
 
 public class TestUseFiles {
 
@@ -44,7 +45,6 @@ public class TestUseFiles {
 
 	@Before
 	public void init() throws NoSuchFieldException, IllegalAccessException {
-		//TVFSRepository.clearInstance();
 		TVFSTestTools.reinitConfig();
 	}
 
@@ -62,17 +62,14 @@ public class TestUseFiles {
 
 		virtualFSProvider = new VirtualFSProvider();
 
-		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
-		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("tvfs://test"), null);
+		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("tvfs:test1:"), createEnv());
 
-		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
-
-		Path p = tvFileSystem.getPath("test1", "/toto2.txt");
+		Path p = tvFileSystem.getPath("/toto2.txt");
 
 		LOGGER.info("p=" + p);
 
 
-		Path p2 = tvFileSystem.getPath("test1", "/toto3.txt");
+		Path p2 = tvFileSystem.getPath("/toto3.txt");
 
 		LOGGER.info("p2=" + p2);
 
@@ -329,4 +326,9 @@ public class TestUseFiles {
 		return mapRootPath.get(nom);
 	}
 
+	private Map<String, String> createEnv() throws IOException {
+		Map<String, String> map = new HashMap<>();
+		map.put(ROOT_PATH, newTemp().toString());
+		return map;
+	}
 }

@@ -1,6 +1,6 @@
 package org.tinyvfs.core.path;
 
-import org.tinyvfs.core.fs.VirtualFS;
+import org.tinyvfs.core.fs.TVFileSystem;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class TVFSRelativePath extends TVFSAbstractPath {
 
-	public TVFSRelativePath(VirtualFS virtualFS, List<String> liste) {
-		super(virtualFS, liste);
+	public TVFSRelativePath(TVFileSystem fileSystem, List<String> liste) {
+		super(fileSystem, liste);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 	public Path normalize() {
 
 		List<String> list = normalizePath();
-		return new TVFSRelativePath(virtualFS, list);
+		return new TVFSRelativePath(fileSystem, list);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class TVFSRelativePath extends TVFSAbstractPath {
 	}
 
 	protected Path getRealPath2() {
-		FileSystem fs = virtualFS.getTvFileSystem().getDefautFileSystem();
+		FileSystem fs = fileSystem.getDefautFileSystem();
 		Path p;
 		if (path == null || path.isEmpty()) {
 			p = fs.getPath("");

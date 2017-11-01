@@ -2,7 +2,7 @@ package org.tinyvfs.core.path;
 
 import org.tinyvfs.core.TVFSPaths;
 import org.tinyvfs.core.TVFSTools;
-import org.tinyvfs.core.fs.VirtualFS;
+import org.tinyvfs.core.fs.TVFileSystem;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 public abstract class TVFSAbstractPath implements Path {
 
 	protected final List<String> path;
-	protected final VirtualFS virtualFS;
+	protected final TVFileSystem fileSystem;
 
-	public TVFSAbstractPath(VirtualFS virtualFS, List<String> liste) {
-		TVFSTools.checkParamNotNull(virtualFS, "Param null");
-		this.virtualFS = virtualFS;
+	public TVFSAbstractPath(TVFileSystem fileSystem, List<String> liste) {
+		TVFSTools.checkParamNotNull(fileSystem, "Param fileSystem null");
+		this.fileSystem = fileSystem;
 		this.path = Collections.unmodifiableList(splitPath(liste));
 	}
 
@@ -66,7 +66,7 @@ public abstract class TVFSAbstractPath implements Path {
 
 	@Override
 	public FileSystem getFileSystem() {
-		return virtualFS.getTvFileSystem();
+		return fileSystem;
 	}
 
 	public Path getRealPath() {
@@ -151,7 +151,7 @@ public abstract class TVFSAbstractPath implements Path {
 
 		TVFSAbsolutePath p = (TVFSAbsolutePath) other;
 
-		if (!p.virtualFS.getName().equals(this.virtualFS.getName()))
+		if (!p.fileSystem.getName().equals(this.fileSystem.getName()))
 			throw new IllegalArgumentException("Path with other root");
 
 		Optional<String> p1 = path.stream().reduce((x, y) -> x + y);
@@ -178,7 +178,7 @@ public abstract class TVFSAbstractPath implements Path {
 			return false;
 
 		if (isAbsolute()) {
-			if (!p.virtualFS.getName().equals(this.virtualFS.getName()))
+			if (!p.fileSystem.getName().equals(this.fileSystem.getName()))
 				return false;
 
 			return getRealPath2().equals(p.getRealPath2());
@@ -208,7 +208,7 @@ public abstract class TVFSAbstractPath implements Path {
 			path.addAll(this.path);
 			path.addAll(((TVFSAbstractPath) other).path);
 			if (isAbsolute()) {
-				return new TVFSAbsolutePath(virtualFS, path);
+				return new TVFSAbsolutePath(fileSystem, path);
 			} else {
 				return createRelativePath(path);
 			}
@@ -228,18 +228,14 @@ public abstract class TVFSAbstractPath implements Path {
 		path.addAll(this.path);
 		path.add(other);
 		if (isAbsolute()) {
-			return new TVFSAbsolutePath(virtualFS, path);
+			return new TVFSAbsolutePath(fileSystem, path);
 		} else {
 			return createRelativePath(path);
 		}
 	}
 
 	protected TVFSRelativePath createRelativePath(List<String> path) {
-		return new TVFSRelativePath(virtualFS, path);
-	}
-
-	public VirtualFS getVirtualFS() {
-		return virtualFS;
+		return new TVFSRelativePath(fileSystem, path);
 	}
 
 	@Override
@@ -345,7 +341,7 @@ public abstract class TVFSAbstractPath implements Path {
 			path.remove(path.size() - 1);
 			path.addAll(((TVFSAbstractPath) other).path);
 			if (isAbsolute()) {
-				return new TVFSAbsolutePath(virtualFS, path);
+				return new TVFSAbsolutePath(fileSystem, path);
 			} else {
 				return createRelativePath(path);
 			}
@@ -366,7 +362,7 @@ public abstract class TVFSAbstractPath implements Path {
 		Path p;
 		if (list.isEmpty()) {
 			//p = virtualFS.getTvFileSystem().getPath(virtualFS.getName().getName());
-			p = virtualFS.getRootPath();
+			p = fileSystem.getRootPath();
 		} else {
 			String first = "";
 			String others[] = null;
@@ -381,7 +377,7 @@ public abstract class TVFSAbstractPath implements Path {
 //				}
 //			}
 			//if (others == null) {
-			p = virtualFS.getRootPath().resolve(list.stream().collect(Collectors.joining(virtualFS.getTvFileSystem().getSeparator())));
+			p = fileSystem.getRootPath().resolve(list.stream().collect(Collectors.joining(fileSystem.getSeparator())));
 			//p = virtualFS.getTvFileSystem().getPath(virtualFS.getName().getName(),first);
 //			} else {
 //				p = virtualFS.getTvFileSystem().getPath(first, others);
@@ -407,7 +403,7 @@ public abstract class TVFSAbstractPath implements Path {
 		if (!(other instanceof TVFSAbstractPath)) {
 			throw new IllegalArgumentException("param is invalid");
 		}
-		if (((TVFSAbstractPath) other).getVirtualFS() != getVirtualFS()) {
+		if (other.getFileSystem() != getFileSystem()) {
 			throw new IllegalArgumentException("param is invalid");
 		}
 		if (other.isAbsolute() != isAbsolute()) {
@@ -434,11 +430,7 @@ public abstract class TVFSAbstractPath implements Path {
 				p.remove(0);
 				p2.remove(0);
 			}
-			if (isAbsolute()) {
-				return TVFSPaths.getAbsolutePath(virtualFS.getName().getName(), TVFSTools.toArray(p2));
-			} else {
-				return TVFSPaths.getRelativePath(TVFSTools.toArray(p2));
-			}
+			return new TVFSRelativePath(fileSystem, p2);
 		}
 	}
 

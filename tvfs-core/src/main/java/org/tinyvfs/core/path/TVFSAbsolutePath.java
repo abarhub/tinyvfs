@@ -1,6 +1,6 @@
 package org.tinyvfs.core.path;
 
-import org.tinyvfs.core.fs.VirtualFS;
+import org.tinyvfs.core.fs.TVFileSystem;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class TVFSAbsolutePath extends TVFSAbstractPath {
 
-	public TVFSAbsolutePath(VirtualFS virtualFS, List<String> liste) {
-		super(virtualFS, liste);
+	public TVFSAbsolutePath(TVFileSystem fileSystem, List<String> liste) {
+		super(fileSystem, liste);
 	}
 
 	@Override
@@ -28,14 +28,14 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 
 	@Override
 	public Path getRoot() {
-		return new TVFSAbsolutePath(virtualFS, new ArrayList<>());
+		return new TVFSAbsolutePath(fileSystem, new ArrayList<>());
 	}
 
 
 	@Override
 	public Path normalize() {
 		List<String> list = normalizePath();
-		return new TVFSAbsolutePath(virtualFS, list);
+		return new TVFSAbsolutePath(fileSystem, list);
 	}
 
 
@@ -70,7 +70,7 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 	}
 
 	protected Path getRealPath2() {
-		Path root = virtualFS.getRootPath();
+		Path root = fileSystem.getRootPath();
 		StringBuilder s = new StringBuilder();
 		for (String s2 : path) {
 			if (s.length() > 0)
@@ -87,13 +87,14 @@ public class TVFSAbsolutePath extends TVFSAbstractPath {
 		} else {
 			List<String> liste2 = new ArrayList<>();
 			liste2.add(path.get(path.size() - 2));
-			return new TVFSAbsolutePath(virtualFS, liste2);
+			return new TVFSAbsolutePath(fileSystem, liste2);
 		}
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder s = new StringBuilder(virtualFS.getName().getName() + ":");
+		StringBuilder s = new StringBuilder(fileSystem.getName().getName());
+		s.append(':');
 		for (String s2 : path) {
 			s.append("/").append(s2);
 		}

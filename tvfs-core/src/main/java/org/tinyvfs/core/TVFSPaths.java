@@ -14,8 +14,10 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.spi.FileSystemProvider;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Alain on 11/12/2016.
@@ -24,17 +26,12 @@ public final class TVFSPaths {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(TVFSPaths.class);
 
-
 	private static TVFileSystem fs;
-
-	/*public static Path getAbsolutePath(VirtualFS virtualFS, String... paths) {
-		return virtualFS.get(paths);
-	}*/
 
 	public static Path getAbsolutePath(String name, String... paths) {
 		TVFileSystem fs2;
 		try {
-			fs2 = getTvFileSystem();
+			fs2 = getTvFileSystem(name);
 		} catch (IOException | URISyntaxException e) {
 			LOGGER.error("File System '" + VirtualFSProvider.SCHEME + "' not found", e);
 			throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' not found");
@@ -42,17 +39,32 @@ public final class TVFSPaths {
 		if (fs2 == null) {
 			throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' not found");
 		}
-		return fs2.getPath(name, paths);
+		String first = null;
+		String[] more = null;
+		if (paths == null || paths.length == 0) {
+			first = null;
+			more = null;
+		} else if (paths.length == 1) {
+			first = paths[0];
+			more = null;
+		} else {
+			first = paths[0];
+			more = new String[paths.length - 1];
+			System.arraycopy(paths, 1, more, 0, more.length);
+		}
+		return fs2.getPath(first, more);
 	}
 
 	public static Path getRelativePath(String... paths) {
 		TVFileSystem fs2;
-		try {
-			fs2 = getTvFileSystem();
-		} catch (IOException | URISyntaxException e) {
-			LOGGER.error("File System '" + VirtualFSProvider.SCHEME + "' not found", e);
-			throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' not found");
-		}
+		//try {
+		VirtualFSProvider virtualFSProvider = getFileSystemProvider();
+		fs2 = virtualFSProvider.getDefaultFileSystem();
+		//fs2 = getTvFileSystem();
+//		} catch (IOException | URISyntaxException e) {
+//			LOGGER.error("File System '" + VirtualFSProvider.SCHEME + "' not found", e);
+//			throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' not found");
+//		}
 		if (fs2 == null) {
 			throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' not found");
 		}
@@ -62,8 +74,23 @@ public final class TVFSPaths {
 				liste.add(p);
 			}
 		}
-		TVFSRelativePath relative = new TVFSRelativePath(fs2.getRelativeFS(), liste);
+		TVFSRelativePath relative = new TVFSRelativePath(fs2, liste);
 		return relative;
+	}
+
+	public static VirtualFSProvider getFileSystemProvider() {
+		VirtualFSProvider virtualFSProvider = null;
+		List<FileSystemProvider> list = FileSystemProvider.installedProviders();
+		if (list != null) {
+			Optional<VirtualFSProvider> optFs = list.stream()
+					.filter(x -> x instanceof VirtualFSProvider)
+					.map(x -> (VirtualFSProvider) x)
+					.findAny();
+			if (optFs.isPresent()) {
+				virtualFSProvider = optFs.get();
+			}
+		}
+		return virtualFSProvider;
 	}
 
 	private static TVFileSystem getTvFileSystem() throws URISyntaxException, IOException {
@@ -83,6 +110,10 @@ public final class TVFSPaths {
 		return fs;
 	}
 
+	private static TVFileSystem getTvFileSystem(String name) throws URISyntaxException, IOException {
+		return (TVFileSystem) FileSystems.getFileSystem(TVFSTools.createURI(name));
+	}
+
 	public static void clear() {
 		fs = null;
 	}
@@ -98,6 +129,6 @@ public final class TVFSPaths {
 		if (!p.isAbsolute()) {
 			throw new IllegalArgumentException("Param is not absolute");
 		}
-		return p.getVirtualFS().getName().getName();
+		return ((TVFileSystem) p.getFileSystem()).getName().getName();
 	}
 }
