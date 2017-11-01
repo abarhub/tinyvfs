@@ -1,9 +1,12 @@
 package org.tinyvfs.core;
 
+import java.net.URI;
 import java.nio.file.Path;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.tinyvfs.core.fs.VirtualFSProvider.SCHEME;
 
 /**
  * Created by Alain on 11/12/2016.
@@ -101,4 +104,11 @@ public final class TVFSTools {
 		}
 	}
 
+	public static URI createURI(String name, String path) {
+		if (path == null || path.length() == 0) {
+			return URI.create(SCHEME + ":" + name + ":");
+		} else {
+			return URI.create(SCHEME + ":" + name + ":" + path);
+		}
+	}
 }

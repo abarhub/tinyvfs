@@ -89,8 +89,12 @@ public class VirtualFSProvider extends FileSystemProvider {
 	public FileSystem getFileSystem(URI uri) {
 		TVFSURI tvfsuri = checkUri(uri);
 		final TVFSRootName name = tvfsuri.getName();
+		if (!mapFS.containsKey(name) && tvfsConfig.contains(name)) {
+			TVFSConfigParam configParam = tvfsConfig.get(name);
+			return createFS(name, configParam);
+		}
 		if (!mapFS.containsKey(name)) {
-			throw new FileSystemNotFoundException("Le FS n'existe pas");
+			throw new FileSystemNotFoundException("Le FS '" + name.getName() + "' n'existe pas");
 		}
 		return mapFS.get(name);
 	}
@@ -107,10 +111,14 @@ public class VirtualFSProvider extends FileSystemProvider {
 			//Path path = getRootPath(tvfsuri);
 			TVFSConfigParam configParam = convert(name, tvfsuri, env);
 			tvfsConfig.add(name, configParam);
-			TVFileSystem tvFileSystem = new TVFileSystem(this, configParam);
-			mapFS.put(name, tvFileSystem);
-			return tvFileSystem;
+			return createFS(name, configParam);
 		}
+	}
+
+	private TVFileSystem createFS(TVFSRootName name, TVFSConfigParam configParam) {
+		TVFileSystem tvFileSystem = new TVFileSystem(this, configParam);
+		mapFS.put(name, tvFileSystem);
+		return tvFileSystem;
 	}
 
 	private TVFSConfigParam convert(TVFSRootName name, TVFSURI tvfsuri, Map<String, ?> env) {
@@ -468,5 +476,15 @@ public class VirtualFSProvider extends FileSystemProvider {
 
 	public void add(TVFSConfigParam tvfsConfigParam) {
 		tvfsConfig.add(tvfsConfigParam.getName(), tvfsConfigParam);
+	}
+
+	public TVFileSystem getFileSystem(String name) {
+		TVFSTools.checkParam(TVFSTools.isNameValide(name), "name is invalid");
+		TVFSRootName rootName = new TVFSRootName(name);
+		if (mapFS.containsKey(rootName)) {
+			return mapFS.get(rootName);
+		} else {
+			return null;
+		}
 	}
 }
