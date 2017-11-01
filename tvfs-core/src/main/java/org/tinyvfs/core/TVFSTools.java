@@ -109,6 +109,10 @@ public final class TVFSTools {
 		}
 	}
 
+	public static URI createURI(String name) {
+		return createURI(name, null);
+	}
+
 	public static URI createURI(String name, String path) {
 		if (path == null || path.length() == 0) {
 			return URI.create(SCHEME + ":" + name + ":");

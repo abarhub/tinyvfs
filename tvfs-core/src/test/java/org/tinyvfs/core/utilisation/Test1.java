@@ -44,22 +44,25 @@ public class Test1 {
 		virtualFSProvider = new VirtualFSProvider();
 	}
 
-//	@Test
-//	public void test1() throws IOException {
-//		TVFileSystem tvFileSystem;
-//
-//		LOGGER.info("Test 1");
-//
+	@Test
+	public void test1() throws IOException {
+		TVFileSystem tvFileSystem;
+
+		LOGGER.info("Test 1");
+
 //		VirtualFSProvider virtualFSProvider = mock(VirtualFSProvider.class);
 //		TVFSConfig tvfsConfig = new TVFSConfig();
 //		tvFileSystem = new TVFileSystem(virtualFSProvider, tvfsConfig, FileSystems.getDefault());
-//
-//		tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
-//
-//		Path p = tvFileSystem.getPath("test1", "/toto.txt");
-//
-//		LOGGER.info("p=" + p);
-//	}
+
+		//tvFileSystem.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
+		tvFileSystem = (TVFileSystem) createFileSystem("test1", null);
+
+		Path p = tvFileSystem.getPath("test1", "/toto.txt");
+
+		LOGGER.info("p=" + p);
+
+		assertNotNull(p);
+	}
 
 	@Test
 	public void test2() throws IOException {
@@ -67,7 +70,7 @@ public class Test1 {
 
 		LOGGER.info("Test 2");
 
-		virtualFSProvider = new VirtualFSProvider();
+		//virtualFSProvider = new VirtualFSProvider();
 
 		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
 		tvFileSystem = (TVFileSystem) createFileSystem("test", null);
@@ -98,7 +101,7 @@ public class Test1 {
 	public void test3() throws IOException {
 		TVFileSystem tvFileSystem;
 
-		LOGGER.info("Test 2");
+		LOGGER.info("Test 3");
 
 		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
 		tvFileSystem = (TVFileSystem) createFileSystem("test", null);
@@ -119,7 +122,6 @@ public class Test1 {
 		assertNotNull(p.getFileSystem().provider());
 		assertTrue(p.getFileSystem().provider() == virtualFSProvider);
 
-		//Files.createFile(p);
 		Files.createFile(p);
 
 		String buf0 = "test 5";

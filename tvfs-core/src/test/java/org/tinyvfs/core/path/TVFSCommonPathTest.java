@@ -36,7 +36,7 @@ public class TVFSCommonPathTest {
 		tvFileSystem = mock(TVFileSystem.class);
 		when(tvFileSystem.getSeparator()).thenReturn(SEPARATOR);
 		when(tvFileSystem.getDefautFileSystem()).thenReturn(FileSystems.getDefault());
-		when(tvFileSystem.getName()).thenReturn(new TVFSRootName(NAME));
+		when(tvFileSystem.getName()).thenReturn(name);
 		when(tvFileSystem.getRootPath()).thenReturn(rootPath);
 	}
 

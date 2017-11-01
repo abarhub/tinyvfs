@@ -92,12 +92,13 @@ public class VirtualFSProvider extends FileSystemProvider {
 	public FileSystem getFileSystem(URI uri) {
 		TVFSURI tvfsuri = checkUri(uri);
 		final TVFSRootName name = tvfsuri.getName();
-		if (!mapFS.containsKey(name) && tvfsConfig.contains(name)) {
-			TVFSConfigParam configParam = tvfsConfig.get(name);
-			return createFS(name, configParam);
-		}
 		if (!mapFS.containsKey(name)) {
-			throw new FileSystemNotFoundException("Le FS '" + name.getName() + "' n'existe pas");
+			if (tvfsConfig.contains(name)) {
+				TVFSConfigParam configParam = tvfsConfig.get(name);
+				return createFS(name, configParam);
+			} else {
+				throw new FileSystemNotFoundException("Le FS '" + name.getName() + "' n'existe pas");
+			}
 		}
 		return mapFS.get(name);
 	}

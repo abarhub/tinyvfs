@@ -430,11 +430,7 @@ public abstract class TVFSAbstractPath implements Path {
 				p.remove(0);
 				p2.remove(0);
 			}
-			if (isAbsolute()) {
-				return TVFSPaths.getAbsolutePath(fileSystem.getName().getName(), TVFSTools.toArray(p2));
-			} else {
-				return TVFSPaths.getRelativePath(TVFSTools.toArray(p2));
-			}
+			return new TVFSRelativePath(fileSystem, p2);
 		}
 	}
 

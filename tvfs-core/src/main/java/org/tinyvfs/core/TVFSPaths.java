@@ -111,21 +111,7 @@ public final class TVFSPaths {
 	}
 
 	private static TVFileSystem getTvFileSystem(String name) throws URISyntaxException, IOException {
-		return (TVFileSystem) FileSystems.getFileSystem(TVFSTools.createURI(name, null));
-//		if (fs == null) {
-//			URI uri;
-//			uri = URI.create(VirtualFSProvider.SCHEME + "://localhost/");
-//			FileSystem fs2 = FileSystems.newFileSystem(uri, null);
-//			if (fs2 == null) {
-//				throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' not found");
-//			}
-//			if (fs2 instanceof TVFileSystem) {
-//				fs = (TVFileSystem) fs2;
-//			} else {
-//				throw new FileSystemNotFoundException("File System '" + VirtualFSProvider.SCHEME + "' invalid");
-//			}
-//		}
-//		return fs;
+		return (TVFileSystem) FileSystems.getFileSystem(TVFSTools.createURI(name));
 	}
 
 	public static void clear() {

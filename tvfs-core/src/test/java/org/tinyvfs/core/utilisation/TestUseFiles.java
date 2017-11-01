@@ -45,7 +45,6 @@ public class TestUseFiles {
 
 	@Before
 	public void init() throws NoSuchFieldException, IllegalAccessException {
-		//TVFSRepository.clearInstance();
 		TVFSTestTools.reinitConfig();
 	}
 
@@ -63,10 +62,7 @@ public class TestUseFiles {
 
 		virtualFSProvider = new VirtualFSProvider();
 
-		//tvFileSystem=new TVFileSystem(null,null, FileSystems.getDefault());
 		tvFileSystem = (TVFileSystem) virtualFSProvider.newFileSystem(URI.create("tvfs:test1:"), createEnv());
-
-		//virtualFSProvider.add(new TVFSConfigParam(new TVFSRootName("test1"), newTemp(), false));
 
 		Path p = tvFileSystem.getPath("/toto2.txt");
 
