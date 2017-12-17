@@ -7,6 +7,7 @@
         <artifactId>org.tinyvfs.parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
     <artifactId>org.tinyvfs.api</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>

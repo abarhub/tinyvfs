@@ -17,6 +17,12 @@ public class TVFSURI {
 		parse(uri);
 	}
 
+	/**
+	 * format is SCHEME:name:rep/rep2/toto.txt
+	 *
+	 * @param uri
+	 * @throws TVFSInvalideURIException
+	 */
 	private void parse(URI uri) throws TVFSInvalideURIException {
 		try {
 			TVFSTools.checkParamNotNull(uri, "uri null");
@@ -27,7 +33,7 @@ public class TVFSURI {
 			int pos = s.indexOf(":");
 			TVFSTools.checkParam(pos > 0, "URI invalide");
 			String name = s.substring(0, pos);
-			TVFSTools.checkParam(TVFSTools.isNameValide(name), "URI name invalide");
+			TVFSTools.checkParam(TVFSTools.isNameValide(name), "URI name invalide : " + name);
 			this.name = new TVFSRootName(name);
 			String path = "";
 			if (s.length() > pos) {
