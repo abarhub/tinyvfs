@@ -1,3 +1,3 @@
 # tinyvfs
 
-[![Build Status](https://travis-ci.org/abarhub/tinyvfs.png?branch=master)](https://travis-ci.org/abarhub/tinyvfs)
+[![Build Status](https://travis-ci.org/abarhub/tinyvfs.png?branch=develop)](https://travis-ci.org/abarhub/tinyvfs)
