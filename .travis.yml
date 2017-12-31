@@ -1,8 +1,8 @@
 language: java
 sudo: false
 jdk:
- - openjdk8
+  - openjdk8
 #script: mvn clean verify
 script: "mvn -Ptravis clean verify"
 after_success:
-- bash <(curl -s https://codecov.io/bash) -t repository-upload-token
+  - bash <(curl -s https://codecov.io/bash)
