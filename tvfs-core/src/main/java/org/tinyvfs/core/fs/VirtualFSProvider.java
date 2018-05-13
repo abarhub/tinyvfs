@@ -84,7 +84,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 	}
 
 	@Override
-	public FileSystem newFileSystem(URI uri, Map<String, ?> env) throws IOException {
+	public FileSystem newFileSystem(URI uri, Map<String, ?> env) {
 		return createFileSystem(uri, env);
 	}
 
@@ -261,7 +261,7 @@ public class VirtualFSProvider extends FileSystemProvider {
 		TVFSTools.checkParam(path instanceof TVFSAbsolutePath, "le chemin est relatif :" + path);
 		TVFSAbsolutePath p2 = (TVFSAbsolutePath) path;
 		Path p3 = p2.getRealPath();
-		LOGGER.debug(path + "->" + p3);
+		LOGGER.debug("{}->{}", path, p3);
 		return p3;
 	}
 
